@@ -1,3 +1,8 @@
+#[cfg(target_os = "openbsd")]
+use i3status_again::backends::openbsd::*;
+
+use i3status_again::blocks::*;
+
 use std::io::Write;
 use std::{thread, time};
 
@@ -7,10 +12,17 @@ fn main() {
 	println!();
 	std::io::stdout().flush().unwrap();
 
+	let datetime_backend = DateTimeBackend{};
+	println!("[");
+
 	loop {
-		println!(r#"[ {{"full_text":"🕐 14:32"}}, {{"full_text":"CPU 23%"}}, {{"full_text":"wlan0: -52dBm"}} ]"#);
+		println!(
+			r#"[ {{"full_text":"{}"}} ],"#,
+			datetime_backend.get_datetime()
+		);
 		std::io::stdout().flush().unwrap();
 
 		thread::sleep(sleep_time);
 	}
+	
 }

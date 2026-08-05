@@ -3,6 +3,7 @@
 
 use chrono::Local;
 use crate::backends::Backend;
+use crate::bar::BlockOutput;
 use crate::config::DateTimeConfig;
 
 pub struct DateTimeBackend {
@@ -18,7 +19,7 @@ impl DateTimeBackend {
 }
 
 impl Backend for DateTimeBackend {
-	fn get_output(&self) -> String {
-		format!("{}", Local::now().format(self.format.as_str()))
+	fn get_output(&self) -> BlockOutput {
+		BlockOutput::new(&format!("{}", Local::now().format(self.format.as_str())))
 	}
 }

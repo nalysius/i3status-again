@@ -8,6 +8,8 @@
 //! This way the other parts of the program don't need to know that backends
 //! are OS-specific. 
 
+use crate::bar::BlockOutput;
+
 #[cfg(target_os = "openbsd")]
 pub mod openbsd;
 #[cfg(target_os = "openbsd")]
@@ -19,7 +21,7 @@ pub enum BackendType {
 
 impl BackendType {
 	/// A shortcut function to call get_output on the backend.
-	pub fn get_output(&self) -> String {
+	pub fn get_output(&self) -> BlockOutput {
 		match &self {
 			Self::DateTime(d) => d.get_output(),
 		}
@@ -28,5 +30,5 @@ impl BackendType {
 
 pub trait Backend {
 	/// Main method of a backend to generate an output.
-	fn get_output(&self) -> String;
+	fn get_output(&self) -> BlockOutput;
 }

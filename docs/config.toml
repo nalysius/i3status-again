@@ -1,0 +1,3 @@
+[[blocks]]
+block = "datetime"
+format = "%Y-%m-%d %H:%M"

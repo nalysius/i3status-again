@@ -4,5 +4,7 @@
 
 #[cfg(target_os = "openbsd")]
 pub mod sysctl;
+#[cfg(target_os = "openbsd")]
+pub mod openbsd_constants;
 
 // TODO: re-export functions and structs

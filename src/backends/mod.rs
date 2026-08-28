@@ -15,8 +15,11 @@ pub mod openbsd;
 #[cfg(target_os = "openbsd")]
 pub use crate::backends::openbsd::*;
 
+/// An enum to represent the types of backends.
+/// This way it's one type that can represent several backends.
 pub enum BackendType {
 	DateTime(DateTimeBackend),
+	Battery(BatteryBackend),
 }
 
 impl BackendType {
@@ -24,6 +27,7 @@ impl BackendType {
 	pub fn get_output(&self) -> BlockOutput {
 		match &self {
 			Self::DateTime(d) => d.get_output(),
+			Self::Battery(b) => b.get_output(),
 		}
 	}
 }

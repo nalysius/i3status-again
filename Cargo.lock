@@ -8,7 +8,7 @@ version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "819e7219dbd41043ac279b19830f2efc897156490d7fd6ea916720117ee66311"
 dependencies = [
- "libc",
+ "libc 0.2.189",
 ]
 
 [[package]]
@@ -103,6 +103,7 @@ name = "i3status-again"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "libc 1.0.0-alpha.4",
  "serde",
  "serde_json",
  "toml",
@@ -164,6 +165,12 @@ name = "libc"
 version = "0.2.189"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2"
+
+[[package]]
+name = "libc"
+version = "1.0.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d0f24f33af482526a4e3f9b47f0abb2c6377a1713c8aa4a8106994689a4cfa5"
 
 [[package]]
 name = "log"

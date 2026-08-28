@@ -11,11 +11,24 @@ use toml;
 #[serde(tag = "block", rename_all = "lowercase")]
 pub enum BlockConfig {
 	DateTime(DateTimeConfig),
+	Battery(BatteryConfig),
 }
 
 /// The configuration for the "datetime" block.
 #[derive(Debug, Deserialize)]
 pub struct DateTimeConfig {
+	/// The string used to format the date time.
+	/// Used with chrono.
+	pub format: String,
+}
+
+/// The configuration for the "battery" block.
+#[derive(Debug, Deserialize)]
+pub struct BatteryConfig {
+	/// The string used to format the battery display.
+	/// Supports placeholders:
+	/// - {rem_percent} the percentage of remaining energy, like 42. Doesn't contain the percent character.
+	/// - {rem_time} The estimated remaining time, like 02:42.
 	pub format: String,
 }
 
@@ -34,6 +47,10 @@ impl Config {
 					let dt_backend = DateTimeBackend::from_config(&d);
 					backends.push(BackendType::DateTime(dt_backend));
 				},
+				BlockConfig::Battery(b) => {
+					let bt_backend = BatteryBackend::from_config(&b);
+					backends.push(BackendType::Battery(bt_backend));
+				}
 			}
 		}
 		backends

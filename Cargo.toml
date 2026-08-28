@@ -8,4 +8,4 @@ chrono = { version = "0.4.45", default-features = false, features = ["alloc", "s
 toml = "1.1.4"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
-libc = "0.2.189"
+libc = "1.0.0-alpha.4"

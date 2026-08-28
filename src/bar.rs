@@ -7,6 +7,7 @@ use serde::Serialize;
 /// JSON for i3bar.
 #[derive(Debug, Serialize)]
 pub struct BlockOutput {
+	/// The text to display in the block. Example: "BAT 42% 02:12".
 	full_text: String,
 }
 

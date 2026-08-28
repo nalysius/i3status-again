@@ -2,9 +2,9 @@
 //! Wrappers of unsafe code are defined here to avoid unsafe
 //! being used everywhere. Example: sysctl.
 
-#[cfg(target_os = "openbsd")]
-pub mod sysctl;
-#[cfg(target_os = "openbsd")]
-pub mod openbsd_constants;
+pub mod apm;
 
-// TODO: re-export functions and structs
+//pub mod sysctl;
+
+//pub use crate::sensors::sysctl::*;
+

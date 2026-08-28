@@ -16,6 +16,7 @@ fn main() {
 	let sleep_time = time::Duration::from_millis(1000);
 
 	println!(r#"{{"version":1}}"#);
+	// Open a JSON array
 	println!("\n[");
 	std::io::stdout().flush().unwrap();
 
@@ -29,5 +30,4 @@ fn main() {
 		std::io::stdout().flush().unwrap();
 		thread::sleep(sleep_time);
 	}
-	
 }

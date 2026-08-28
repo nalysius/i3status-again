@@ -6,7 +6,17 @@ use std::error;
 use std::fs;
 use toml;
 
+
 /// Lists the different types of blocks that can be found in the configuration.
+/// In the configuration, the field "block" identifies the type of block
+/// (e.g.: "datetime") and the fields of the corresponding configuration fields
+/// are there, no need of a [[blocks.datetime]] section or anything. Example:
+///
+/// [[blocks]]
+/// block = "datetime"
+/// format = "%Y-%m-%d %H:%M"
+///
+/// The fields format comes directly from the DateTimeConfig.
 #[derive(Debug, Deserialize)]
 #[serde(tag = "block", rename_all = "lowercase")]
 pub enum BlockConfig {
@@ -18,7 +28,7 @@ pub enum BlockConfig {
 #[derive(Debug, Deserialize)]
 pub struct DateTimeConfig {
 	/// The string used to format the date time.
-	/// Used with chrono.
+	/// See the crate chrono for the placeholders. Example: %Y-%m-%d %H:%M.
 	pub format: String,
 }
 
@@ -27,18 +37,25 @@ pub struct DateTimeConfig {
 pub struct BatteryConfig {
 	/// The string used to format the battery display.
 	/// Supports placeholders:
-	/// - {rem_percent} the percentage of remaining energy, like 42. Doesn't contain the percent character.
-	/// - {rem_time} The estimated remaining time, like 02:42.
+	/// - {rem_percent} the percentage of remaining energy, like 42. Doesn't
+	///   contain the percent character.
+	/// - {rem_time} the estimated remaining time, like 02:42.
+	/// - {chr_state} the charging state of the battery, either CHR if charging
+	///   or BAT otherwise.
 	pub format: String,
 }
 
-/// The global configuration structure
+/// The global configuration structure.
+///
+/// It's a list of [[blocks]] section with BlockConfig in each. See BlockConfig
+/// and docs/config.toml for an example of configuration.
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub blocks: Vec<BlockConfig>,
 }
 
 impl Config {
+	/// Convert the configuration to a list of BackendType.
 	pub fn to_backends(&self) -> Vec<BackendType> {
 		let mut backends = Vec::new();
 		for block in &self.blocks {

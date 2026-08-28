@@ -1,22 +1,24 @@
-//! The backends module defines the blocks implementation, depending
-//! on the OS. OpenBSD and Linux don't handle everything the same way,
-//! like networking and battery. So, the implementation is different for
-//! each OS.
+//! The backends module defines the blocks implementation.
 //!
-//! The backends, like crate::backends::openbsd::datetime::DateTimeBackend
-//! are re-exported so they look like crate::backends::DateTimeBackend.
-//! This way the other parts of the program don't need to know that backends
-//! are OS-specific. 
+//! Enumerations and traits are defined to make usage of backends outside
+//! of the module easier. For example a Vec<BackendType> can contains several
+//! backends, even if they are different.
+//!
+//! Backends are shared between OS, no OS-dependant code can live here. It lives
+//! in the os module.
+
+pub mod battery;
+pub mod datetime;
+
+pub use crate::backends::datetime::DateTimeBackend;
+pub use crate::backends::battery::BatteryBackend;
 
 use crate::bar::BlockOutput;
 
-#[cfg(target_os = "openbsd")]
-pub mod openbsd;
-#[cfg(target_os = "openbsd")]
-pub use crate::backends::openbsd::*;
-
-/// An enum to represent the types of backends.
-/// This way it's one type that can represent several backends.
+/// BackendType is an enumeration used to represent backend types.
+///
+/// It makes storing different backends together easier. Instead of a
+/// Vec<dyn Backend>, store a Vec<BackendType>.
 pub enum BackendType {
 	DateTime(DateTimeBackend),
 	Battery(BatteryBackend),
@@ -32,6 +34,7 @@ impl BackendType {
 	}
 }
 
+/// A simple trait to enforce some methods in every traits.
 pub trait Backend {
 	/// Main method of a backend to generate an output.
 	fn get_output(&self) -> BlockOutput;

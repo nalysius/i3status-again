@@ -3,8 +3,6 @@
 //! being used everywhere. Example: sysctl.
 
 pub mod apm;
+pub mod sysctl;
 
-//pub mod sysctl;
-
-//pub use crate::sensors::sysctl::*;
 

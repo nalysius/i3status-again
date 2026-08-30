@@ -4,10 +4,6 @@
 
 // percentage = (hw.sensors.acpibat0.watthour3 + hw.sensors.acpibat1.watthour3) / (hw.sensors.acpibat0.watthour1 + hw.sensors.acpibat1.watthour1) * 100
 
-use std::io;
-use std::mem;
-use std::ptr;
-
 /// A sensor flag for sensor invalid
 /// See /usr/include/sys/sensor.h:120
 pub const SENSOR_FINVALID: i32 = 0x0001;
@@ -20,52 +16,52 @@ pub const SENSOR_FUNKNOWN: i32 = 0x0002;
 /// becomes stable in the future, use it to be safe in case OpenBSD adds a new
 /// type of sensor.
 /// See /usr/include/sys/sensor.h:57
-const SENSOR_MAX_TYPES: usize = 23;
+pub const SENSOR_MAX_TYPES: usize = 23;
 
 /// Sensor states.
 /// See /usr/include/sys/sensors.h:100
 #[repr(C)]
 pub enum SensorStatus {
-	SENSOR_S_UNSPEC,
-	SENSOR_S_OK,
-	SENSOR_S_WARN,
-	SENSOR_S_CRIT,
-	SENSOR_S_UNKNOWN,
+	SensorSUnspec,
+	SensorSOk,
+	SensorSWarn,
+	SensorSCrit,
+	SensorSUnknown,
 }
 
 /// Sensor types
 /// See /usr/include/sys/sensors.h:33
 #[repr(C)]
 pub enum SensorType {
-	SENSOR_TEMP,			/* temperature (uK) */
-	SENSOR_FANRPM,			/* fan revolution speed */
-	SENSOR_VOLTS_DC,		/* voltage (uV DC) */
-	SENSOR_VOLTS_AC,		/* voltage (uV AC) */
-	SENSOR_OHMS,			/* resistance */
-	SENSOR_WATTS,			/* power (uW) */
-	SENSOR_AMPS,			/* current (uA) */
-	SENSOR_WATTHOUR,		/* power capacity (uWh) */
-	SENSOR_AMPHOUR,			/* power capacity (uAh) */
-	SENSOR_INDICATOR,		/* boolean indicator */
-	SENSOR_INTEGER,			/* generic integer value */
-	SENSOR_PERCENT,			/* percent (m%) */
-	SENSOR_LUX,			/* illuminance (ulx) */
-	SENSOR_DRIVE,			/* disk */
-	SENSOR_TIMEDELTA,		/* system time error (nSec) */
-	SENSOR_HUMIDITY,		/* humidity (m%RH) */
-	SENSOR_FREQ,			/* frequency (uHz) */
-	SENSOR_ANGLE,			/* angle (uDegrees) */
-	SENSOR_DISTANCE,		/* distance (uMeter) */
-	SENSOR_PRESSURE,		/* pressure (mPa) */
-	SENSOR_ACCEL,			/* acceleration (u m/s^2) */
-	SENSOR_VELOCITY,		/* velocity (u m/s) */
-	SENSOR_ENERGY,			/* energy (uJ) */
-	SENSOR_MAX_TYPES
+	SensorTemp,			/* temperature (uK) */
+	SensorFanrpm,			/* fan revolution speed */
+	SensorVoltsDc,		/* voltage (uV DC) */
+	SensorVoltsAc,		/* voltage (uV AC) */
+	SensorOhms,			/* resistance */
+	SensorWatts,			/* power (uW) */
+	SensorApms,			/* current (uA) */
+	SensorWatthour,		/* power capacity (uWh) */
+	SensorAmphour,			/* power capacity (uAh) */
+	SensorIndicator,		/* boolean indicator */
+	SensorInteger,			/* generic integer value */
+	SensorPercent,			/* percent (m%) */
+	SensorLux,			/* illuminance (ulx) */
+	SensorDrive,			/* disk */
+	SensorTimedelta,		/* system time error (nSec) */
+	SensorHumidity,		/* humidity (m%RH) */
+	SensorFreq,			/* frequency (uHz) */
+	SensorAngle,			/* angle (uDegrees) */
+	SensorDistance,		/* distance (uMeter) */
+	SensorPressure,		/* pressure (mPa) */
+	SensorAccel,			/* acceleration (u m/s^2) */
+	SensorVelicity,		/* velocity (u m/s) */
+	SensorEnergy,			/* energy (uJ) */
+	SensorMaxType
 }
 
 /// See /usr/include/sys/sensors.h:112
 #[repr(C)]
-struct Sensor {
+pub struct Sensor {
 	desc: [u8; 32],
 	timeval: libc::timeval,
     value: i64,
@@ -77,7 +73,7 @@ struct Sensor {
 
 /// See /usr/include/sys/sensors.h:127
 #[repr(C)]
-struct SensorDev {
+pub struct SensorDev {
 	/// SensorDev number
     num: i32,
 	/// Unix device name

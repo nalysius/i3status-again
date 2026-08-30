@@ -432,196 +432,197 @@ pub const EPROC_UNVEIL: i32 = 0x04;
 pub const EPROC_LKUNVAIL: i32 = 0x08;
 
 /// See /usr/include/sys/sysctl.h
-struct KinfoProc {
+#[allow(non_snake_case)]
+pub struct KinfoProc {
 	/// PTR: linked run/sleep queue
-	p_forw: u64,
+	pub p_forw: u64,
 	/// PTR: linked run/sleep queue
-	p_back: u64,
+	pub p_back: u64,
 	/// PTR: address of proc
-	p_paddr: u64,
+	pub p_paddr: u64,
 	/// PTR: Kernel virtual addr or u-area
-	p_addr: u64,
+	pub p_addr: u64,
 	/// PTR: Ptr to open files structure
-	p_fd: u64,
+	pub p_fd: u64,
 	/// PTR: unused, always zero
-	p_stats: u64,
+	pub p_stats: u64,
 	/// PTR: Process limits
-	p_limit: u64,
+	pub p_limit: u64,
 	/// PTR: Address space
-	p_vmspace: u64,
+	pub p_vmspace: u64,
 	/// PTR: Signal actions, state
-	p_sigacts: u64,
+	pub p_sigacts: u64,
 	/// PTR: session pointer
-	p_sess: u64,
+	pub p_sess: u64,
 	/// PTR: tty session pointer
-	p_tsess: u64,
+	pub p_tsess: u64,
 	/// PTR: Exit information
-	p_ru: u64,
+	pub p_ru: u64,
 	/// LONG: extra kinfo_proc flags
-	p_eflag: u64,
+	pub p_eflag: u64,
 	/// Unused, always zero
-	p_exitsig: i32,
+	pub p_exitsig: i32,
 	/// INT: P_* flags
-	p_flag: i32,
+	pub p_flag: i32,
 	/// PID_T: Process identifier
-	p_pid: i32,
+	pub p_pid: i32,
 	/// PID_T: Parent process id
-	p_ppid: i32,
+	pub p_ppid: i32,
 	/// PID_T: session id
-	p_sid: i32,
+	pub p_sid: i32,
 	/// PID_T: process group id. sys/proc.h hijacks p_pgid
-	p__pgid: i32,
+	pub p__pgid: i32,
 	/// PID_T: tty process group id
-	p_tpgid: i32,
+	pub p_tpgid: i32,
 	/// UID_T: effective user id
-	p_uid: u32,
+	pub p_uid: u32,
 	/// UID_T: real user id
-	p_ruid: u32,
+	pub p_ruid: u32,
 	/// GID_T: effective group id
-	p_gid: u32,
+	pub p_gid: u32,
 	/// GID_T: real group id
-	p_rgid: u32,
+	pub p_rgid: u32,
 	/// GID_T: groups
-	p_groups: [u32; KI_NGROUPS],
+	pub p_groups: [u32; KI_NGROUPS],
 	/// SHORT: number of groups
-	p_ngroups: i16,
+	pub p_ngroups: i16,
 	/// SHORT: job control counter
-	p_jobc: i16,
+	pub p_jobc: i16,
 	/// DEV_T: controlling tty dev
-	p_tdev: u32,
+	pub p_tdev: u32,
 	///U_INT: Time averaged value pf p_cpticks
-	p_estcpu: u32,
+	pub p_estcpu: u32,
 	/// STRUCT TIMEVAL: real time
-	p_rtime_sec: u32,
+	pub p_rtime_sec: u32,
 	/// STRUCT TIMEVAL: real time
-	p_rtime_usec: u32,
+	pub p_rtime_usec: u32,
 	/// INT: Ticks of cpu time
-	p_cpticks: i32,
+	pub p_cpticks: i32,
 	/// FIXPT_T: %cpu for this process
-	p_pctcpu: u32,
+	pub p_pctcpu: u32,
 	/// Unused, always zero
-	p_swtime: u32,
+	pub p_swtime: u32,
 	/// U_INT: Time since last blocked
-	p_slptime: u32,
+	pub p_slptime: u32,
 	/// INT: PSCHED_* flags
-	p_schedflags: i32,
+	pub p_schedflags: i32,
 	/// U_QUAD_T: Stat clock hits in user mode
-	p_uticks: u64,
+	pub p_uticks: u64,
 	/// U_QUAD_T: Stat clock hits in system mode
-	p_sticks: u64,
+	pub p_sticks: u64,
 	/// U_QUAD_T: Stat clock hits processing ints
-	p_iticks: u64,
+	pub p_iticks: u64,
 	/// PTR: Trace to vnode or file
-	p_ptracep: u64,
+	pub p_ptracep: u64,
 	/// INT: Kernel trace points
-	p_traceflag: i32,
+	pub p_traceflag: i32,
 	/// INT: If non-zero: don't swap
-	p_holdcnt: i32,
+	pub p_holdcnt: i32,
 	/// INT: Signals arrived but not delivered
-	p_siglist: i32,
+	pub p_siglist: i32,
 	/// SIGSET_T:  Current signal mask
-	p_sigmask: u32,
+	pub p_sigmask: u32,
 	/// SIGSET_T: Signals being ignored
-	p_sigignore: u32,
+	pub p_sigignore: u32,
 	/// SIGSET_T: Signals being caught by user
-	p_sigcatch: u32,
+	pub p_sigcatch: u32,
 	/// CHAR: S* process status (from LWP)
-	p_stat: i8,
+	pub p_stat: i8,
 	/// U_CHAR: Process priority
-	p_priority: u8,
+	pub p_priority: u8,
 	/// U_CHAR: User-priority based on p_estcpu and ps_nice
-	p_usrpri: u8,
+	pub p_usrpri: u8,
 	/// U_CHAR: Process "nice" value
-	p_nice: u8,
+	pub p_nice: u8,
 	/// U_SHORT: Exit status for wait; also stop signal
-	p_xstat: u16,
+	pub p_xstat: u16,
 	/// U_SHORT: unused
-	p_spare: u16,
-	p_comm: [u8; KI_MAXLOGNAME],
+	pub p_spare: u16,
+	pub p_comm: [u8; KI_MAXLOGNAME],
 	/// wchan message
-	p_wmesg: [u8; KI_WMESGLEN],
+	pub p_wmesg: [u8; KI_WMESGLEN],
 	/// PTR: sleep address
-	p_wchan: u64,
+	pub p_wchan: u64,
 	/// setlogin() name
-	p_login: [u8; KI_MAXLOGNAME],
+	pub p_login: [u8; KI_MAXLOGNAME],
 	/// SEGSZ_T: current resident set size in pages
-	p_vm_rssize: i32,
+	pub p_vm_rssize: i32,
 	/// SEGSZ_T: text size (pages)
-	p_vm_tsize: i32,
+	pub p_vm_tsize: i32,
 	/// SEGSZ_T: data size (pages)
-	p_vm_dsize: i32,
+	pub p_vm_dsize: i32,
 	/// SEGSZ_T: stack size (pages)
-	p_vm_ssize: i32,
+	pub p_vm_ssize: i32,
 	/// CHAR: following p_u* members from struct user are valid. 64-bits for alignment
-	p_uvalid: i64,
+	pub p_uvalid: i64,
 	/// STRUCT TIMEVAL: starting time
-	p_ustart_sec: u64,
+	pub p_ustart_sec: u64,
 	/// STRUCT TIMEVAL: starting time
-	p_ustart_usec: u32,
+	pub p_ustart_usec: u32,
 	/// STRUCT TIMEVAL: user time
-	p_uutime_sec: u32,
+	pub p_uutime_sec: u32,
 	/// STRUCT TIMEVAL: user  time
-	p_uutime_usec: u32,
+	pub p_uutime_usec: u32,
 	/// STRUCT TIMEVAL: system time
-	p_ustime_sec: u32,
+	pub p_ustime_sec: u32,
 	/// STRUCT TIMEVAL: system time
-	p_ustime_usec: u32,
+	pub p_ustime_usec: u32,
 	/// LONG: max resident set size
-	p_uru_maxrss: u64,
+	pub p_uru_maxrss: u64,
 	/// LONG: integral shared memory size
-	p_uru_ixrss: u64,
+	pub p_uru_ixrss: u64,
 	/// LONG: integral unshared data
-	p_uru_idrss: u64,
+	pub p_uru_idrss: u64,
 	/// LONG: integral unshared stack
-	p_uru_isrrs: u64,
+	pub p_uru_isrrs: u64,
 	/// LONG: page reclaims
-	p_uru_minflt: u64,
+	pub p_uru_minflt: u64,
 	/// LONG: page faults
-	p_uru_majflt: u64,
+	pub p_uru_majflt: u64,
 	/// LONG: swaps
-	p_uru_nswap: u64,
+	pub p_uru_nswap: u64,
 	/// LONG: block input operations
-	p_uru_inblock: u64,
+	pub p_uru_inblock: u64,
 	/// LONG: block output operations
-	p_uru_oublock: u64,
+	pub p_uru_oublock: u64,
 	/// LONG: messages sent
-	p_uru_msgsnd: u64,
+	pub p_uru_msgsnd: u64,
 	/// LONG: messages received
-	p_uru_msgrcv: u64,
+	pub p_uru_msgrcv: u64,
 	/// LONG: signals received
-	p_uru_nsignals: u64,
+	pub p_uru_nsignals: u64,
 	/// LONG: voluntary context switches
-	p_uru_nvcsw: u64,
+	pub p_uru_nvcsw: u64,
 	/// LONG: involuntary context switches
-	p_uru_nivcsw: u64,
+	pub p_uru_nivcsw: u64,
 	/// STRUCT TIMEVAL: child u+s time
-	p_uctime_sec: u32,
+	pub p_uctime_sec: u32,
 	/// STRUCT TIMEVAL: child u+s time
-	p_uctime_usec: u32,
+	pub p_uctime_usec: u32,
 	/// UINT: PS_* flags on the process
-	p_psflags: u32,
+	pub p_psflags: u32,
 	/// UINT: Accounting flags
-	p_acflag: u32,
+	pub p_acflag: u32,
 	/// UID_T: saved user id
-	p_svuid: u32,
+	pub p_svuid: u32,
 	/// GID_T: saved group id
-	p_svgid: u32,
+	pub p_svgid: u32,
 	/// syscall emulation name
-	p_emul: [u8; KI_EMULNAMELEN],
+	pub p_emul: [u8; KI_EMULNAMELEN],
 	/// RLIM_T: soft limit for rss
-	p_rlim_rss_cur: u64,
+	pub p_rlim_rss_cur: u64,
 	/// LONG: CPU id
-	p_cpuid: u64,
+	pub p_cpuid: u64,
 	/// VSIZE_T: virtual size
-	p_vm_map_size: u64,
+	pub p_vm_map_size: u64,
 	/// PID_T: Thread identifier
-	p_tid: i32,
+	pub p_tid: i32,
 	/// U_INT: Routing table identifier
-	p_rtableid: u32,
+	pub p_rtableid: u32,
 	/// U_INT64_T: Pledge flags
-	p_pledge: u64,
+	pub p_pledge: u64,
 	/// Thread name
-	p_name: [u8; KI_MAXCOMLEN],
+	pub p_name: [u8; KI_MAXCOMLEN],
 }
 
 /// VM address range entry, matching struct vm_map_entry.  Useful for

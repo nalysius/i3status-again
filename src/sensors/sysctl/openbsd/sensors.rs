@@ -59,6 +59,7 @@ pub enum SensorType {
 	SensorMaxType
 }
 
+/// A Sensor.
 /// See /usr/include/sys/sensors.h:112
 #[repr(C)]
 pub struct Sensor {
@@ -71,15 +72,17 @@ pub struct Sensor {
     flags: i32,
 }
 
+/// A Sensor Device.
 /// See /usr/include/sys/sensors.h:127
 #[repr(C)]
 pub struct SensorDev {
 	/// SensorDev number
-    num: i32,
+    pub num: i32,
 	/// Unix device name
-    xname: [u8; 16],
-    max_numt: [i32; SENSOR_MAX_TYPES],
-    sensors_count: i32,
+    pub xname: [u8; 16],
+	/// Max number of sensors for this device
+    pub max_numt: [i32; SENSOR_MAX_TYPES],
+    pub sensors_count: i32,
 }
 
 

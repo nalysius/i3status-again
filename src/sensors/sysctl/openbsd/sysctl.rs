@@ -11,7 +11,7 @@ pub const CTL_MAX_NAME: i32 = 12;
 /// type given below. Each sysctl level defines a set of name/type
 /// pairs to be used by sysctl(1) in manipulating the subsystem.
 #[repr(C)]
-pub enum CtlName {
+pub struct CtlName {
 	/// Subsystem name
 	ctl_name: &'static str,
 	/// Type of name
@@ -23,7 +23,7 @@ pub const CTLTYPE_NODE: i32 = 1;
 /// Name describes an integer
 pub const CTLTYPE_INT: i32 = 2;
 /// Name describes a string
-pub const CTLTYPE_INT: i32 = 3;
+pub const CTLTYPE_STRING: i32 = 3;
 /// Name describes a 64-bit number
 pub const CTLTYPE_QUAD: i32 = 4;
 /// Name describes a structure
@@ -64,7 +64,7 @@ pub const CTL_NAMES: [(&str, i32); 11] = [
 	("machdep", CTLTYPE_NODE),
 	("gap", 0),
 	("ddb", CTLTYPE_NODE),
-	("vfs", Y),
+	("vfs", CTLTYPE_NODE),
 ];
 
 // CTL_KERN identifier
@@ -244,7 +244,7 @@ pub const KERN_AUTOCONF_SERIAL: i32 = 91;
 pub const KERN_MAXID: i32 = 92;
 
 /// Map CTL kern to their types
-pub const CTL_KERN_NAMES: [(&str, i32), 92] = [
+pub const CTL_KERN_NAMES: [(&str, i32); 92] = [
 	("", 0),
 	("ostype", CTLTYPE_STRING),
 	("osrelease", CTLTYPE_STRING),
@@ -379,7 +379,7 @@ pub const KERN_AUDIO_KBDCONTROL: i32 = 2;
 pub const KERN_AUDIO_MAXID: i32 = 3;
 
 /// Map the kern audio names to their types
-pub const CTL_KERN_AUDIO_NAMES: [(&str, i32), 3] = [
+pub const CTL_KERN_AUDIO_NAMES: [(&str, i32); 3] = [
 	("", 0),
 	("record", CTLTYPE_INT),
 	("kbdcontrol", CTLTYPE_INT),
@@ -390,7 +390,7 @@ pub const KERN_VIDEO_RECORD: i32 = 1;
 pub const KERN_VIDEO_MAXID: i32 = 2;
 
 /// Map the kern video names to their types
-pub const CTL_KERN_VIDEO_NAMES: [(&str, i32), 2]= [
+pub const CTL_KERN_VIDEO_NAMES: [(&str, i32); 2]= [
 	("", 0),
 	("record", CTLTYPE_INT),
 ];
@@ -401,8 +401,8 @@ pub const KERN_WITNESS_LOCKTRACE: i32 = 2;
 pub const KERN_WITNESS_MAXID: i32 = 3;
 
 /// Map their kern witness names to their types
-pub const CTL_KERN_WITNESS_NAMES: [(&str, i32), 3] = [
-	("", ""),
+pub const CTL_KERN_WITNESS_NAMES: [(&str, i32); 3] = [
+	("", 0),
 	("watch", CTLTYPE_INT),
 	("locktrace", CTLTYPE_INT)
 ];
@@ -413,14 +413,14 @@ pub const CTL_KERN_WITNESS_NAMES: [(&str, i32), 3] = [
  * elements should only be added to the end of this structure so
  * binary compatibility can be preserved.
  */
-pub const KI_NGROUPS: i32 = 16;
+pub const KI_NGROUPS: usize = 16;
 /// Includes NUL. From /usr/include/sys/syslimits.h:83
-pub const KI_MAXCOMLEN: i32 = 24;
-pub const KI_WMESGLEN: i32 = 8;
-pub const KI_MAXLOGNAME: i32 = 32;
-pub const KI_EMULNAMELEN: i32 = 8;
+pub const KI_MAXCOMLEN: usize = 24;
+pub const KI_WMESGLEN: usize = 8;
+pub const KI_MAXLOGNAME: usize = 32;
+pub const KI_EMULNAMELEN: usize = 8;
 
-pub const KI_NOCPU: i32 = u64::MAX;
+pub const KI_NOCPU: u64 = u64::MAX;
 
 /// Controlling tty vnode active
 pub const EPROC_CTTY: i32 = 0x01;
@@ -482,7 +482,7 @@ struct KinfoProc {
 	/// GID_T: real group id
 	p_rgid: u32,
 	/// GID_T: groups
-	p_groups: u32[KI_NGROUPS],
+	p_groups: [u32; KI_NGROUPS],
 	/// SHORT: number of groups
 	p_ngroups: i16,
 	/// SHORT: job control counter
@@ -621,7 +621,7 @@ struct KinfoProc {
 	/// U_INT64_T: Pledge flags
 	p_pledge: u64,
 	/// Thread name
-	p_name: [u8, KI_MAXCOMLEN],
+	p_name: [u8; KI_MAXCOMLEN],
 }
 
 /// VM address range entry, matching struct vm_map_entry.  Useful for
@@ -700,8 +700,8 @@ pub const KERN_FILE_RDIR: i32 = -3;
 pub const KERN_FILE_TRACE: i32 = -4;
 
 /// Rounded up from 90
-pub const KI_MNAMELEN: i32 = 96;
-pub const KI_UNPPATHLEN: i32 = 104;
+pub const KI_MNAMELEN: usize = 96;
+pub const KI_UNPPATHLEN: usize = 104;
 
 pub struct KinfoFile {
 	/// PTR: address of struct file

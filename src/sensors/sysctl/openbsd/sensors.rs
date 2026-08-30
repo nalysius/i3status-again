@@ -20,7 +20,7 @@ pub const SENSOR_FUNKNOWN: i32 = 0x0002;
 /// becomes stable in the future, use it to be safe in case OpenBSD adds a new
 /// type of sensor.
 /// See /usr/include/sys/sensor.h:57
-const SENSOR_MAX_TYPES: i32 = 23;
+const SENSOR_MAX_TYPES: usize = 23;
 
 /// Sensor states.
 /// See /usr/include/sys/sensors.h:100
@@ -71,7 +71,7 @@ struct Sensor {
     value: i64,
 	type_: SensorType,
 	status: SensorStatus,
-	numt: i32
+	numt: i32,
     flags: i32,
 }
 

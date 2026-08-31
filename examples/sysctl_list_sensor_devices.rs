@@ -1,6 +1,5 @@
 //! This example shows how to list the available device sensors using sysctl on
 //! OpenBSD.
-//! On other operating systems, changing the value of mib should be enough.
 //! See https://man.openbsd.org/sysctl.2
 //! and https://docs.rs/libc/latest/libc/fn.sysctl.html
 
@@ -35,6 +34,10 @@ fn main() {
 			);
 			if ret == -1 {
 				println!("No more devices.");
+				break;
+			}
+			if size != size_of::<SensorDev>() {
+				println!("Size is invalid. A field could have been updated / added in SensorDev.");
 				break;
 			}
 			buf.set_len(size);

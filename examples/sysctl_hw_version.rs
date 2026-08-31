@@ -1,5 +1,4 @@
 //! This example shows how to query hw.version using sysctl on OpenBSD.
-//! On other operating systems, changing the value of mib should be enough.
 //! See https://man.openbsd.org/sysctl.2
 //! and https://docs.rs/libc/latest/libc/fn.sysctl.html
 

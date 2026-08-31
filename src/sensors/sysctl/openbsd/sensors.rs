@@ -33,43 +33,98 @@ pub enum SensorStatus {
 /// See /usr/include/sys/sensors.h:33
 #[repr(C)]
 pub enum SensorType {
-	SensorTemp,			/* temperature (uK) */
-	SensorFanrpm,			/* fan revolution speed */
-	SensorVoltsDc,		/* voltage (uV DC) */
-	SensorVoltsAc,		/* voltage (uV AC) */
-	SensorOhms,			/* resistance */
-	SensorWatts,			/* power (uW) */
-	SensorApms,			/* current (uA) */
-	SensorWatthour,		/* power capacity (uWh) */
-	SensorAmphour,			/* power capacity (uAh) */
-	SensorIndicator,		/* boolean indicator */
-	SensorInteger,			/* generic integer value */
-	SensorPercent,			/* percent (m%) */
-	SensorLux,			/* illuminance (ulx) */
-	SensorDrive,			/* disk */
-	SensorTimedelta,		/* system time error (nSec) */
-	SensorHumidity,		/* humidity (m%RH) */
-	SensorFreq,			/* frequency (uHz) */
-	SensorAngle,			/* angle (uDegrees) */
-	SensorDistance,		/* distance (uMeter) */
-	SensorPressure,		/* pressure (mPa) */
-	SensorAccel,			/* acceleration (u m/s^2) */
-	SensorVelicity,		/* velocity (u m/s) */
-	SensorEnergy,			/* energy (uJ) */
+	/// Temperature (uK)
+	SensorTemp,
+	/// Fan revolution speed
+	SensorFanrpm,
+	/// Voltage (uV DC)
+	SensorVoltsDc,
+	/// Voltage (uV AC)
+	SensorVoltsAc,
+	/// Resistance
+	SensorOhms,
+	/// Power (uW)
+	SensorWatts,
+	/// Current (uA)
+	SensorAmps,
+	/// Power capacity (uWh)
+	SensorWatthour,
+	/// Power capacity (uAh)
+	SensorAmphour,
+	/// Boolean indicator
+	SensorIndicator,
+	/// Generic integer value
+	SensorInteger,
+	/// Percent (m%)
+	SensorPercent,
+	/// Illuminance (ulx)
+	SensorLux,
+	/// Disk
+	SensorDrive,
+	/// System time error (nSec)
+	SensorTimedelta,
+	/// Humidity (m%RH)
+	SensorHumidity,
+	/// Frequency (uHz)
+	SensorFreq,
+	/// Angle (uDegrees)
+	SensorAngle,
+	/// Distance (uMeter)
+	SensorDistance,
+	/// Pressure (mPa)
+	SensorPressure,
+	/// Acceleration (u m/s^2)
+	SensorAccel,
+	/// Velocity (u m/s)
+	SensorVelocity,
+	/// Energy
+	SensorEnergy,
 	SensorMaxType
+}
+
+impl ToString for SensorType {
+	/// Convert a SensorType to a string
+	fn to_string(&self) -> String {
+		match &self {
+			SensorType::SensorTemp => "temp".to_string(),
+			SensorType::SensorFanrpm => "fan".to_string(),
+			SensorType::SensorVoltsDc => "volt".to_string(),
+			SensorType::SensorVoltsAc => "acvolt".to_string(),
+			SensorType::SensorOhms => "resistance".to_string(),
+			SensorType::SensorWatts => "power".to_string(),
+			SensorType::SensorAmps => "current".to_string(),
+			SensorType::SensorWatthour => "watthour".to_string(),
+			SensorType::SensorAmphour => "amphour".to_string(),
+			SensorType::SensorIndicator => "indicator".to_string(),
+			SensorType::SensorInteger => "raw".to_string(),
+			SensorType::SensorPercent => "percent".to_string(),
+			SensorType::SensorLux => "illuminance".to_string(),
+			SensorType::SensorDrive => "drive".to_string(),
+			SensorType::SensorTimedelta => "timedelta".to_string(),
+			SensorType::SensorHumidity => "humidity".to_string(),
+			SensorType::SensorFreq => "frequency".to_string(),
+			SensorType::SensorAngle => "angle".to_string(),
+			SensorType::SensorDistance => "distance".to_string(),
+			SensorType::SensorPressure => "pressure".to_string(),
+			SensorType::SensorAccel => "acceleration".to_string(),
+			SensorType::SensorVelocity => "velocity".to_string(),
+			SensorType::SensorEnergy => "energy".to_string(),
+			SensorType::SensorMaxType => "undefined".to_string(),
+		}
+	}
 }
 
 /// A Sensor.
 /// See /usr/include/sys/sensors.h:112
 #[repr(C)]
 pub struct Sensor {
-	desc: [u8; 32],
-	timeval: libc::timeval,
-    value: i64,
-	type_: SensorType,
-	status: SensorStatus,
-	numt: i32,
-    flags: i32,
+	pub desc: [u8; 32],
+	pub timeval: libc::timeval,
+    pub value: i64,
+	pub type_: SensorType,
+	pub status: SensorStatus,
+	pub numt: i32,
+    pub flags: i32,
 }
 
 /// A Sensor Device.

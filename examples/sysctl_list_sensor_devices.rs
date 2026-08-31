@@ -3,10 +3,8 @@
 //! See https://man.openbsd.org/sysctl.2
 //! and https://docs.rs/libc/latest/libc/fn.sysctl.html
 
-// [CTL_HW, HW_SENSORS, device_id, sensor_type, j]
-
-use i3status_again::sensors::sysctl::openbsd::sensors::{SensorDev};
-use i3status_again::sensors::sysctl::openbsd::sysctl::{CTL_HW, HW_SENSORS};
+use i3status_again::sensors::sysctl::openbsd::headers::sensors::{SensorDev};
+use i3status_again::sensors::sysctl::openbsd::headers::sysctl::{CTL_HW, HW_SENSORS};
 
 
 use libc::{c_void, size_t, sysctl};

@@ -2,7 +2,7 @@
 //! See https://man.openbsd.org/sysctl.2
 //! and https://docs.rs/libc/latest/libc/fn.sysctl.html
 
-use i3status_again::sensors::sysctl::openbsd::sysctl::{CTL_HW, HW_VERSION};
+use i3status_again::sensors::sysctl::openbsd::headers::sysctl::{CTL_HW, HW_VERSION};
 
 use libc::{c_void, size_t, sysctl};
 

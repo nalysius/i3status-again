@@ -21,6 +21,7 @@ pub const SENSOR_MAX_TYPES: usize = 23;
 /// Sensor states.
 /// See /usr/include/sys/sensors.h:100
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub enum SensorStatus {
 	SensorSUnspec,
 	SensorSOk,
@@ -32,6 +33,7 @@ pub enum SensorStatus {
 /// Sensor types
 /// See /usr/include/sys/sensors.h:33
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub enum SensorType {
 	/// Temperature (uK)
 	SensorTemp,
@@ -117,6 +119,7 @@ impl ToString for SensorType {
 /// A Sensor.
 /// See /usr/include/sys/sensors.h:112
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct Sensor {
 	pub desc: [u8; 32],
 	pub timeval: libc::timeval,
@@ -130,6 +133,7 @@ pub struct Sensor {
 /// A Sensor Device.
 /// See /usr/include/sys/sensors.h:127
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct SensorDev {
 	/// SensorDev number
     pub num: i32,

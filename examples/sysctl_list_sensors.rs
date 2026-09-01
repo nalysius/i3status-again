@@ -42,8 +42,7 @@ fn main() {
 		}
 
 		let device: SensorDev = unsafe { buf.assume_init() };
-		let device_name: String;
-		device_name = String::from_utf8(device.xname.to_vec()).unwrap();
+		let device_name = String::from_utf8(device.xname.to_vec()).unwrap();
 		
 		// Loop over the device' sensors
 		// SensorDev.max_numt is index by type of sensor. See sensors::sysctl::openbsd::SensorType.
@@ -78,7 +77,8 @@ fn main() {
 				// Note: the values are raw. Example: hw.sensors.cpu0.temp is in
 				// micro Kelvin, not Celsius.
 				let sensor_name = sensor.type_.to_string();
-				println!("hw.sensors.{}.{}{} = {}", device_name, sensor_name, sensor_id, sensor.value);
+				let sensor_desc = String::from_utf8(sensor.desc.to_vec()).unwrap();
+				println!("hw.sensors.{}.{}{} = {} / {}", device_name, sensor_name, sensor_id, sensor.value, sensor_desc);
 			}
 		}
 		

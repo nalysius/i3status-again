@@ -59,8 +59,7 @@ pub fn sysctl_sensordev(mib: &[c_int]) -> Result<SensorDev, SysctlError> {
 /// DON'T use it to query a String or any type with a dynamic size.
 fn sysctl_fixed<T: Copy>(mib: &[c_int]) -> Result<T, SysctlError> {
 	let mut size = size_of::<T>();
-	// Read the data of the sensor device #device_id
-	let mut buf = MaybeUninit::uninit();
+	let mut buf = MaybeUninit::<T>::uninit();
 	let ret: c_int;
 	unsafe {
 		ret = sysctl(
@@ -112,14 +111,15 @@ pub fn sysctlnametomib(name: &str) -> Result<Vec<c_int>, SysctlError> {
 			.to_string();
 		
 		// Loop over the device' sensors
-		// SensorDev.max_numt is index by type of sensor. See sensors::sysctl::openbsd::SensorType.
-		// SensorTemp = 0, SensorFanrpm = 1, etc.
+		// SensorDev.max_numt is index by type of sensor.
+		// See sensors::sysctl::openbsd::headers::SensorType.
+		// SensorType::SensorTemp = 0, SensorType::SensorFanrpm = 1, etc.
 		for sensor_type_id in 0..SENSOR_MAX_TYPES {
 			let sensor_number = device.max_numt[sensor_type_id];
 			for sensor_id in 0..sensor_number {
 				let mib = [CTL_HW, HW_SENSORS, device_id, sensor_type_id.try_into().unwrap(), sensor_id];
 				let sensor: Sensor = sysctl_sensor(&mib)?;
-				// Note: the values are raw. Example: hw.sensors.cpu0.temp is in
+				// The values are raw. Example: hw.sensors.cpu0.temp is in
 				// micro Kelvin, not Celsius.
 				let sensor_name = sensor.type_.to_string();
 				let found_name = &format!("hw.sensors.{}.{}{}", device_name, sensor_name, sensor_id);

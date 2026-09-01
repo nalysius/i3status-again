@@ -5,3 +5,4 @@ format = "%Y-%m-%d %H:%M"
 [[blocks]]
 block = "battery"
 format = "{chr_state} {rem_percent}% {rem_time}"
+#index = 0

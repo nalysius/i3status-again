@@ -2,8 +2,6 @@
 //! functions and structs used on OpenBSD to request sensors information.
 //! See /usr/include/sys/sensors.h.
 
-// percentage = (hw.sensors.acpibat0.watthour3 + hw.sensors.acpibat1.watthour3) / (hw.sensors.acpibat0.watthour1 + hw.sensors.acpibat1.watthour1) * 100
-
 /// A sensor flag for sensor invalid
 /// See /usr/include/sys/sensor.h:120
 pub const SENSOR_FINVALID: i32 = 0x0001;
@@ -138,6 +136,16 @@ pub struct Sensor {
     pub flags: i32,
 }
 
+impl Sensor {
+	/// Get the sensor description as a string.
+	pub fn get_desc(&self) -> String {
+		String::from_utf8(self.desc.to_vec())
+			.unwrap()
+			.trim_matches(char::from(0))
+			.to_string()
+	}
+}
+
 /// A Sensor Device.
 /// See /usr/include/sys/sensors.h:127
 #[repr(C)]
@@ -152,4 +160,28 @@ pub struct SensorDev {
     pub sensors_count: i32,
 }
 
+impl SensorDev {
+	/// Get the identifier of the device.
+	/// Example: for acpibat0 it returns 0.
+	/// Default to u8::MAX
+	pub fn get_id(&self) -> u8 {
+		self.get_name()
+			.chars()
+			.rev()
+			.take_while(|c| c.is_ascii_digit())
+			.collect::<Vec<_>>()
+			.into_iter()
+			.rev()
+			.collect::<String>()
+			.parse()
+			.unwrap_or(u8::MAX)
+	}
 
+	/// Get the device name as a String
+	pub fn get_name(&self) -> String {
+		String::from_utf8(self.xname.to_vec())
+			.unwrap()
+			.trim_end_matches(char::from(0))
+			.to_string()
+	}
+}

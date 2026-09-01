@@ -95,10 +95,7 @@ pub fn sysctl_sensors(device_type: SensorDevType, sensor_type: SensorType) -> Re
 			Ok(d) => d,
 		};
 
-		let device_name = String::from_utf8(device.xname.to_vec())
-			.unwrap()
-			.trim_matches(char::from(0))
-			.to_string();
+		let device_name = device.get_name();
 		let found_device_t = SensorDevType::try_from(device_name.as_str());
 
 		// No need to enumerate the sensors if the device doesn't have the
@@ -182,10 +179,7 @@ pub fn sysctlnametomib(name: &str) -> Result<Vec<c_int>, SysctlError> {
 		let device: SensorDev = sysctl_sensordev(&mib)?;
 		// The device name has a length of 16, so the null chars used to fill the
 		// string need to be trimmed.
-		let device_name: String = String::from_utf8(device.xname.to_vec())
-			.unwrap()
-			.trim_matches(char::from(0))
-			.to_string();
+		let device_name: String = device.get_name();
 		
 		// Loop over the device' sensors
 		// SensorDev.max_numt is index by type of sensor.

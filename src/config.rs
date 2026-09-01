@@ -43,6 +43,9 @@ pub struct BatteryConfig {
 	/// - {chr_state} the charging state of the battery, either CHR if charging
 	///   or BAT otherwise.
 	pub format: String,
+	/// The identifier of the battery to monitor, starting from 0.
+	/// If None, all the batteries are monitored and displayed as one.
+	pub index: Option<u8>,
 }
 
 /// The global configuration structure.

@@ -10,6 +10,6 @@ fn main() {
 		let sensor_name = sensor.type_.to_string();
 		let sensor_desc: String = String::from_utf8(sensor.desc.to_vec())
 			.unwrap();
-		println!("{}.{}{} ({})", device_name, sensor_name, sensor.numt, sensor_desc);
+		println!("{}.{}{}: {} ({})", device_name, sensor_name, sensor.numt, sensor.value, sensor_desc);
 	}
 }

@@ -36,7 +36,7 @@ pub enum SensorStatus {
 #[derive(Clone, Copy)]
 pub enum SensorType {
 	/// Temperature (uK)
-	SensorTemp,
+	SensorTemp = 0,
 	/// Fan revolution speed
 	SensorFanrpm,
 	/// Voltage (uV DC)
@@ -121,12 +121,20 @@ impl ToString for SensorType {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct Sensor {
+	/// The description of the sensor (e.g.: remaining capacity).
 	pub desc: [u8; 32],
+	/// Datetime when the value was measured.
 	pub timeval: libc::timeval,
+	/// The measured value.
     pub value: i64,
+	/// The type of sensor.
 	pub type_: SensorType,
+	/// The status of the sensor.
 	pub status: SensorStatus,
+	/// The index of sensor. For example in hw.sensors.acpibat0.watthour3
+	/// numt = 3.
 	pub numt: i32,
+	/// SENSOR_* flags.
     pub flags: i32,
 }
 
@@ -135,87 +143,13 @@ pub struct Sensor {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct SensorDev {
-	/// SensorDev number
+	/// SensorDev number.
     pub num: i32,
-	/// Unix device name
+	/// Unix device name.
     pub xname: [u8; 16],
-	/// Max number of sensors for this device
+	/// The number of sensors of this device, indexed by type.
     pub max_numt: [i32; SENSOR_MAX_TYPES],
     pub sensors_count: i32,
 }
 
 
-/*
-/// Represents the quality of the sensor.
-pub enum SensorQuality {
-    Ok,
-    Warning,
-    Critical,
-    Error,
-    Unavailable,
-}
-
-/// Represents what kind of sensor has been requested.
-pub enum SensorKind {
-	/// °C
-	Temperature,
-	/// V
-    Voltage,
-	/// A
-    Current,
-	/// W
-    Power,
-	/// Wh
-    Energy,
-	/// Hz
-    Frequency,
-	/// Rounds / minute (fan)
-    RPM,
-    Unknown,
-}
-
-/// Represents a value read from a sensor.
-pub struct SensorValue {
-	/// Name of the device (e.g.: acpibat0)
-    pub device: String,
-	/// Name of the sensor (e.g.: watthour3)
-    pub sensor: String,
-	/// The kind of sensor (e.g.: SensorKind::Power)
-    pub kind: SensorKind,
-	/// The unit to display (e.g.: Wh)
-    pub unit: &'static str,
-	/// The raw value read from the sensor
-    pub value: f64,
-	/// The quality status
-    pub quality: SensorQuality,
-}
-
-
-impl SensorValue {
-	/// Get a human-readable label associated with the device.
-	/// TODO: match partial strings, like "acpibat*" in case there are more
-	/// batteries.
-	pub fn get_device_label(&self) -> String {
-		match self.device.as_str() {
-			"acpibat0" => "BAT 1".to_string(),
-			"acpibat1" => "BAT 2".to_string(),
-			"acpibat2" => "BAT 3".to_string(),
-			"cpu0" => "CPU 1".to_string(),
-			"cpu1" => "CPU 2".to_string(),
-			"cpu2" => "CPU 3".to_string(),
-			"cpu3" => "CPU 4".to_string(),
-			"cpu4" => "CPU 5".to_string(),
-			"cpu5" => "CPU 6".to_string(),
-			"cpu7" => "CPU 7".to_string(),
-			"cpu8" => "CPU 8".to_string(),
-			"nvme0" => "Disk 1".to_string(),
-			"nvme1" => "Disk 2".to_string(),
-			"nvme2" => "Disk 3".to_string(),
-			_ => "".to_string(),
-		}
-	}
-}
-
-
-
-*/

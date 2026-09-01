@@ -1,10 +1,12 @@
 //! The sensors::sysctl::openbsd module defines what's needed to use sysctl
 //! on OpenBSD.
 
+use libc::{c_int, c_void, size_t, sysctl};
+use std::convert::TryFrom;
 use std::error::Error;
 use std::fmt;
 use std::mem::MaybeUninit;
-use libc::{c_int, c_void, size_t, sysctl};
+use std::string::ToString;
 
 pub mod headers;
 
@@ -41,6 +43,81 @@ impl fmt::Display for SysctlError {
 }
 
 impl Error for SysctlError {
+}
+
+/// Sensor device types
+/// Not from sensors.h.
+#[derive(PartialEq)]
+pub enum SensorDevType {
+	/// The device is a battery.
+	SensorDevBattery,
+	/// The device is a CPU.
+	SensorDevCpu,
+}
+
+impl<'a> TryFrom<&str> for SensorDevType {
+	type Error = String;
+
+	/// Try to convert a string to a SensorDevType
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+		if value.starts_with("acpibat") {
+			return Ok(Self::SensorDevBattery);
+		} else if value.starts_with("cpu") {
+			return Ok(Self::SensorDevCpu);
+		}
+		Err("No match".to_string())
+	}
+}
+
+/// A wrapper around sysctl to get all sensors maching the types.
+///
+/// To filter the returned sensors, one can use the Sensor.desc field.
+/// For example when requesting the watthours of the batteries, instead
+/// of depending on the index (e.g.: watthour3), using the description
+/// "remaining capacity" should be more flexible.
+///
+/// ## Examples
+///
+/// To get all the watthours of all batteries:
+///   let sensors_res = sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatthour);
+///
+/// To get all the frequencies of all CPUs:
+///   let sensors_res = sysctl_sensors(SensorDevType::SensorDevCpu, SensorType::SensorFreq);
+pub fn sysctl_sensors(device_type: SensorDevType, sensor_type: SensorType) -> Result<Vec<(SensorDev, Sensor)>, SysctlError> {
+	let mut sensors: Vec<(SensorDev, Sensor)> = Vec::new();
+	// Loop over all the sensor devices
+	let mut device_id = 0;
+	loop {
+		let mib = [CTL_HW, HW_SENSORS, device_id];
+		let device: SensorDev = match sysctl_sensordev(&mib) {
+			Err(SysctlError::NotFound) => return Ok(sensors),
+			Err(x) => return Err(x),
+			Ok(d) => d,
+		};
+
+		let device_name = String::from_utf8(device.xname.to_vec())
+			.unwrap()
+			.trim_matches(char::from(0))
+			.to_string();
+		let found_device_t = SensorDevType::try_from(device_name.as_str());
+
+		// No need to enumerate the sensors if the device doesn't have the
+		// right type.
+		if found_device_t.is_err() || found_device_t.unwrap() != device_type {
+			device_id += 1;
+			continue;
+		}
+		
+		// Loop over the device' sensors for the right type
+		let sensor_type_id: usize = sensor_type as usize;
+		let sensor_number = device.max_numt[sensor_type_id];
+		for sensor_id in 0..sensor_number {
+			let mib = [CTL_HW, HW_SENSORS, device_id, sensor_type_id.try_into().unwrap(), sensor_id];
+			let sensor: Sensor = sysctl_sensor(&mib)?;
+			sensors.push((device, sensor));
+		}
+		device_id += 1;
+	}
 }
 
 /// A wrapper around sysctl to get a Sensor.

@@ -2,24 +2,24 @@
 //! about the battery. It provides the public functions required to the battery
 //! backend to easily get access to the battery informations.
 
+// TODO: let the sysctl errors flow to the backends as String.
+
 use crate::sensors::sysctl::openbsd::*;
 
-/// Get the level of battery in percent.
+/// Get the remaining capacity and last full capacity of the battery.
 ///
-/// bat_index is the index of the battery to monitor. If None, all the batteries
-/// found are used to be displayed in a single block.
-/// To monitor only acpibat0 for example, give Some(0).
+/// If bat_index is None, all the batteries are read and their values are
+/// combined. If it's Some(0) for example, acpibat0 will be used.
 ///
-/// Returns 0 if there is an error.
-/// percentage = (hw.sensors.acpibat0.watthour3 (remaining capacity)) / (hw.sensors.acpibat0.watthour0 (last full capacity)) * 100
-pub fn get_battery_level(bat_index: Option<u8>) -> u8 {
+/// Returns (remaining_cap, last_full_cap), in uWh.
+fn get_battery_watthours(bat_index: Option<u8>) -> (i64, i64) {
 	let mut remaining_cap: i64 = 0;
 	let mut last_full_cap: i64 = 0;
 
 	// Get all the watthours for all the batteries
 	let sensors_res = sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatthour);
 	if sensors_res.is_err() {
-		return 0;
+		return (0, 0);
 	}
 	let sensors = sensors_res.unwrap();
 	let bat_id: u8 = bat_index.unwrap_or(u8::MAX);
@@ -35,6 +35,19 @@ pub fn get_battery_level(bat_index: Option<u8>) -> u8 {
 			}
 		}
 	}
+	(remaining_cap, last_full_cap)
+}
+
+/// Get the level of battery in percent.
+///
+/// bat_index is the index of the battery to monitor. If None, all the batteries
+/// found are used to be displayed in a single block.
+/// To monitor only acpibat0 for example, give Some(0).
+///
+/// Returns 0 if there is an error.
+/// percentage = (hw.sensors.acpibat0.watthour3 (remaining capacity)) / (hw.sensors.acpibat0.watthour0 (last full capacity)) * 100
+pub fn get_battery_level(bat_index: Option<u8>) -> u8 {
+	let (remaining_cap, last_full_cap) = get_battery_watthours(bat_index);
 	if last_full_cap > 0 {
 		return (remaining_cap as f64 / last_full_cap as f64 * 100.0)
 			.round()

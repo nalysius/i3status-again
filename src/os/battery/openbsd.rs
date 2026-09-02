@@ -101,21 +101,32 @@ fn is_charging() -> bool {
 
 /// Get the remaining time of the battery.
 ///
-/// Return 00:00 if there is an error.
-/// minutes = SUM(remaining capacity) / SUM(rate)
+/// When the battery is charging, returns the time before the battery is full.
+/// When the battery is discharging, returns the time before the battery is empty.
+///
+/// If there are several batteries, only one is used at a time. The other one
+/// has a rate (power0) of 0 uW, meaning the remaining time is 00:00.
+/// It can lead to strange display like "BAT 65% 00:00". Doesn't happen when
+/// there is only one battery or they are all monitored in one block.
+///
+/// minutes_bef_full = SUM(remaining capacity) / SUM(rate) * 60
+/// minutes_bef_empty = ((SUM(last full capacity) - SUM(remaining capacity)) / SUM(rate)) * 60
 pub fn get_remaining_time(bat_index: Option<u8>) -> String {
 	let power = get_battery_power(bat_index);
-	let (remaining_cap, _last_full_cap) = get_battery_watthours(bat_index);
+	let (remaining_cap, last_full_cap) = get_battery_watthours(bat_index);
 
-	// TODO: check battery charging or discharging
-	if power > 0 {
-		let mut minutes = (remaining_cap as f64 / power as f64 * 60.0) as u32;
-		let hours = minutes / 60;
-		minutes = minutes % 60;
-		return format!("{:02}:{:02}", hours, minutes);
+	if power == 0 {
+		return "00:00".to_string();
 	}
 
-	"00:00".to_string()
+	let mut minutes: u32 = if is_charging() {
+		(((last_full_cap as f64 - remaining_cap as f64) / power as f64) * 60.0) as u32
+	} else {
+		(remaining_cap as f64 / power as f64 * 60.0) as u32
+	};
+	let hours = minutes / 60;
+	minutes = minutes % 60;
+	return format!("{:02}:{:02}", hours, minutes);
 }
 
 /// Get the state of the battery.

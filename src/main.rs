@@ -26,7 +26,7 @@ fn main() {
 			outputs.push(backend.get_output());
 		}
 
-		println!("{}", json!(outputs));
+		println!("{},", json!(outputs));
 		std::io::stdout().flush().unwrap();
 		thread::sleep(sleep_time);
 	}

@@ -8,9 +8,11 @@
 //! in the os module.
 
 pub mod battery;
+pub mod cpu_temp;
 pub mod datetime;
 
 pub use crate::blocks::battery::BatteryBlock;
+pub use crate::blocks::cpu_temp::CpuTempBlock;
 pub use crate::blocks::datetime::DateTimeBlock;
 
 use crate::bar::BlockOutput;
@@ -20,16 +22,18 @@ use crate::bar::BlockOutput;
 /// It makes storing different blocks together easier. Instead of a
 /// Vec<dyn Block>, store a Vec<BlockType>.
 pub enum BlockType {
-    DateTime(DateTimeBlock),
     Battery(BatteryBlock),
+    CpuTemp(CpuTempBlock),
+    DateTime(DateTimeBlock),
 }
 
 impl BlockType {
     /// A shortcut function to call get_output on the block.
     pub fn get_output(&self) -> BlockOutput {
         match &self {
-            Self::DateTime(d) => d.get_output(),
             Self::Battery(b) => b.get_output(),
+            Self::CpuTemp(c) => c.get_output(),
+            Self::DateTime(d) => d.get_output(),
         }
     }
 }

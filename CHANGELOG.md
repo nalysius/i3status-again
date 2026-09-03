@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- A block "cpu_temp" for OpenBSD, that displays the temperature of the CPU in
+  Celsius or Fahrenheit.
 - Documentation in the [./docs](./docs) directory to explain the choices that
   have been made, the project architecture, and describe how the blocks work.
 

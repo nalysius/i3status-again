@@ -56,6 +56,44 @@ format = "{chr_state} {rem_percent}% {rem_time}"
   batteries, define several "battery" blocks, one with index = 0, the other one
   with index = 1 and so on.
 
+#### Note for OpenBSD
+
+On OpenBSD, sysctl reads values under `hw.sensors.acpibatX`, where X can be
+`index`.
+
+### CPU Temperature
+
+The cpu_temp block displays the temperature of the CPU. Here is its configuration:
+
+```toml
+[[blocks]]
+block = "cpu_temp"
+format = "{temp} {unit}"
+#index = 0
+#unit = "fahrenheit"
+```
+
+- `block` contains the name of the block, here "cpu_temp".
+- `format` describes how to display the temperature of the CPU. Some people
+  want the unit, some others want only the value, all can choose.
+  There are two placeholders that can be used:
+  - `{temp}` means temperature. It's the temperature of the CPU, without the
+	unit.
+  - `{unit}` is the temperature unit, °C of °F.
+- `{index}` is the index of the CPU to monitor. Remove or comment this setting
+  if you have only one CPU or if you have several that you want to combine
+  to display in one block. If you want to have one block for each of your
+  CPUs, define several "cpu_temp" blocks, one with index = 0, the other one
+  with index = 1 and so on. If you combine several CPUs or if one CPU has several
+  temperature sensors, the maximum value is used.
+- `unit` contains the wanted unit of the temperature. Either "celsius" or
+  "fahrenheit".
+
+#### Note for OpenBSD
+
+On OpenBSD, sysctl reads values under `hw.sensors.cpuX`, where X can be
+`index`.
+
 ### Datetime
 
 The datetime block shows the current date and time. Here is the configuration:

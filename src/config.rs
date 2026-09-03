@@ -1,6 +1,7 @@
 //! The config module handles the configuration.
 
 use crate::blocks::*;
+use crate::common::TempUnit;
 use serde::Deserialize;
 use std::error;
 use std::fs;
@@ -21,6 +22,8 @@ use toml;
 pub enum BlockConfig {
     DateTime(DateTimeConfig),
     Battery(BatteryConfig),
+    #[serde(rename = "cpu_temp")]
+    CpuTemp(CpuTempConfig),
 }
 
 /// The configuration for the "datetime" block.
@@ -47,6 +50,23 @@ pub struct BatteryConfig {
     pub index: Option<u8>,
 }
 
+/// The configuration for the "cpu_temp" block.
+#[derive(Debug, Deserialize)]
+pub struct CpuTempConfig {
+    /// The string used to format the CPU temperature display.
+    /// Supports placeholders:
+    /// - {temp} the temperature without the unit.
+    /// - {unit} the unit of the temperature, like °C or °F.
+    pub format: String,
+    /// The identifier of the CPU to monitor, starting from 0.
+    /// If None, all the CPUs are monitored and displayed as one.
+    pub index: Option<u8>,
+    /// The unit of the temperature.
+    /// Default to Celsius.
+    #[serde(default)]
+    pub unit: TempUnit,
+}
+
 /// The global configuration structure.
 ///
 /// It's a list of [[blocks]] section with BlockConfig in each. See BlockConfig
@@ -62,13 +82,17 @@ impl Config {
         let mut blocks = Vec::new();
         for block in &self.blocks {
             match block {
-                BlockConfig::DateTime(d) => {
-                    let dt_block = DateTimeBlock::from_config(&d);
-                    blocks.push(BlockType::DateTime(dt_block));
-                }
                 BlockConfig::Battery(b) => {
                     let bt_block = BatteryBlock::from_config(&b);
                     blocks.push(BlockType::Battery(bt_block));
+                }
+                BlockConfig::CpuTemp(c) => {
+                    let ct_block = CpuTempBlock::from_config(&c);
+                    blocks.push(BlockType::CpuTemp(ct_block));
+                }
+                BlockConfig::DateTime(d) => {
+                    let dt_block = DateTimeBlock::from_config(&d);
+                    blocks.push(BlockType::DateTime(dt_block));
                 }
             }
         }

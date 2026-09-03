@@ -12,3 +12,4 @@
 //! consistent abstraction.
 
 pub mod battery;
+pub mod cpu_temp;

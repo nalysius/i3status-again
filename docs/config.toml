@@ -1,4 +1,10 @@
 [[blocks]]
+block = "cpu_temp"
+format = "{temp} {unit}"
+#index = 0
+# unit = "fahrenheit"
+
+[[blocks]]
 block = "battery"
 format = "{chr_state} {rem_percent}% {rem_time}"
 #index = 0

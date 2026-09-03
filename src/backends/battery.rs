@@ -23,9 +23,18 @@ impl BatteryBackend {
 
 impl Backend for BatteryBackend {
 	fn get_output(&self) -> BlockOutput {
-		let rem_percentage = get_battery_level(self.index).to_string();
-		let bat_state = get_battery_state();
-		let rem_time = get_remaining_time(self.index);
+		let rem_percentage: String = match get_battery_level(self.index) {
+			Ok(l) => format!("{}", l),
+			Err(e) => e.to_string(),
+		};
+		let bat_state: String = match get_battery_state() {
+			Ok(s) => format!("{}", s),
+			Err(e) => e.to_string(),
+		};
+		let rem_time: String = match get_remaining_time(self.index) {
+			Ok(t) => format!("{}", t),
+			Err(e) => e.to_string(),
+		};
 		let out = self.format
 			.replace("{rem_percent}", &rem_percentage)
 			.replace("{chr_state}", &bat_state)

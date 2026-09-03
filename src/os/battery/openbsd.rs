@@ -2,8 +2,7 @@
 //! about the battery. It provides the public functions required to the battery
 //! backend to easily get access to the battery informations.
 
-// TODO: let the sysctl errors flow to the backends as String.
-
+use crate::os::battery::BatteryError;
 use crate::sensors::sysctl::openbsd::*;
 
 /// Get the remaining capacity and last full capacity of the battery.
@@ -12,16 +11,16 @@ use crate::sensors::sysctl::openbsd::*;
 /// combined. If it's Some(0) for example, acpibat0 will be used.
 ///
 /// Returns (remaining_cap, last_full_cap), in uWh.
-fn get_battery_watthours(bat_index: Option<u8>) -> (i64, i64) {
+fn get_battery_watthours(bat_index: Option<u8>) -> Result<(i64, i64), BatteryError> {
 	let mut remaining_cap: i64 = 0;
 	let mut last_full_cap: i64 = 0;
 
 	// Get all the watthours for all the batteries
-	let sensors_res = sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatthour);
-	if sensors_res.is_err() {
-		return (0, 0);
-	}
-	let sensors = sensors_res.unwrap();
+	let sensors = match sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatthour) {
+		Ok(v) => v,
+		Err(e) => return Err(e.into()),
+	};
+
 	let bat_id: u8 = bat_index.unwrap_or(u8::MAX);
 	for (device, sensor) in sensors {
 		let sensor_desc = sensor.get_desc();
@@ -35,7 +34,7 @@ fn get_battery_watthours(bat_index: Option<u8>) -> (i64, i64) {
 			}
 		}
 	}
-	(remaining_cap, last_full_cap)
+	Ok((remaining_cap, last_full_cap))
 }
 
 /// Get the power of the battery.
@@ -44,15 +43,15 @@ fn get_battery_watthours(bat_index: Option<u8>) -> (i64, i64) {
 /// combined. If it's Some(0) for example, acpibat0 will be used.
 ///
 /// Returns the power in uWh.
-fn get_battery_power(bat_index: Option<u8>) -> i64 {
+fn get_battery_power(bat_index: Option<u8>) -> Result<i64, BatteryError> {
 	let mut power: i64 = 0;
 
 	// Get all the powers for all the batteries
-	let sensors_res = sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatts);
-	if sensors_res.is_err() {
-		return 0;
-	}
-	let sensors = sensors_res.unwrap();
+	let sensors = match sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatts) {
+		Ok(v) => v,
+		Err(e) => return Err(e.into()),
+	};
+
 	let bat_id: u8 = bat_index.unwrap_or(u8::MAX);
 	for (device, sensor) in sensors {
 		let sensor_desc = sensor.get_desc();
@@ -64,7 +63,7 @@ fn get_battery_power(bat_index: Option<u8>) -> i64 {
 			}
 		}
 	}
-	power
+	Ok(power)
 }
 
 /// Get the level of battery in percent.
@@ -75,28 +74,28 @@ fn get_battery_power(bat_index: Option<u8>) -> i64 {
 ///
 /// Returns 0 if there is an error.
 /// percentage = SUM(remaining capacity) / SUM(last full capacity) * 100
-pub fn get_battery_level(bat_index: Option<u8>) -> u8 {
-	let (remaining_cap, last_full_cap) = get_battery_watthours(bat_index);
+pub fn get_battery_level(bat_index: Option<u8>) -> Result<u8, BatteryError> {
+	let (remaining_cap, last_full_cap) = get_battery_watthours(bat_index)?;
 	if last_full_cap > 0 {
-		return (remaining_cap as f64 / last_full_cap as f64 * 100.0)
+		return Ok((remaining_cap as f64 / last_full_cap as f64 * 100.0)
 			.round()
-			.clamp(0.0, 100.0) as u8;
+			.clamp(0.0, 100.0) as u8);
 	}
-	return 0;
+	return Ok(0);
 }
 
 /// Return whether the battery is charging.
-fn is_charging() -> bool {
+fn is_charging() -> Result<bool, BatteryError> {
 	let mib = match sysctlnametomib("hw.sensors.acpiac0.indicator0") {
-		Err(_e) => return false,
 		Ok(m) => m,
+		Err(e) => return Err(e.into()),
 	};
 
 	let sensor = match sysctl_sensor(&mib) {
-		Err(_e) => return false,
 		Ok(s) => s,
+		Err(e) => return Err(e.into()),
 	};
-	return sensor.value > 0;
+	return Ok(sensor.value > 0);
 }
 
 /// Get the remaining time of the battery.
@@ -111,31 +110,31 @@ fn is_charging() -> bool {
 ///
 /// minutes_bef_full = SUM(remaining capacity) / SUM(rate) * 60
 /// minutes_bef_empty = ((SUM(last full capacity) - SUM(remaining capacity)) / SUM(rate)) * 60
-pub fn get_remaining_time(bat_index: Option<u8>) -> String {
-	let power = get_battery_power(bat_index);
-	let (remaining_cap, last_full_cap) = get_battery_watthours(bat_index);
+pub fn get_remaining_time(bat_index: Option<u8>) -> Result<String, BatteryError> {
+	let power = get_battery_power(bat_index)?;
+	let (remaining_cap, last_full_cap) = get_battery_watthours(bat_index)?;
 
 	if power == 0 {
-		return "".to_string();
+		return Ok("".to_string());
 	}
 
-	let mut minutes: u32 = if is_charging() {
+	let mut minutes: u32 = if is_charging()? {
 		(((last_full_cap as f64 - remaining_cap as f64) / power as f64) * 60.0) as u32
 	} else {
 		(remaining_cap as f64 / power as f64 * 60.0) as u32
 	};
 	let hours = minutes / 60;
 	minutes = minutes % 60;
-	return format!("{:02}:{:02}", hours, minutes);
+	return Ok(format!("{:02}:{:02}", hours, minutes));
 }
 
 /// Get the state of the battery.
 ///
 /// Returns "CHR" if charging, "BAT" otherwise.
-pub fn get_battery_state() -> String {
-	if is_charging() {
-		return "CHR".to_string();
+pub fn get_battery_state() -> Result<String, BatteryError> {
+	if is_charging()? {
+		return Ok("CHR".to_string());
 	} else {
-		return "BAT".to_string();
+		return Ok("BAT".to_string());
 	}
 }

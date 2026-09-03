@@ -19,7 +19,7 @@ The table below shows which blocks are supported on which operating systems.
 | battery    |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | datetime   |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
 
-✅ = supported
+✅ = supported  
 ❌ = not yet supported
 
 ## Features

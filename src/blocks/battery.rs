@@ -1,27 +1,27 @@
-//! The backends::battery module implements the battery block.
+//! The blocks::battery module implements the battery block.
 
-use crate::backends::Backend;
+use crate::blocks::Block;
 use crate::bar::BlockOutput;
 use crate::config::BatteryConfig;
 use crate::os::battery::*;
 
-pub struct BatteryBackend {
+pub struct BatteryBlock {
 	/// The format string to use.
 	format: String,
 	/// The 0-based index of the battery to monitor.
 	index: Option<u8>,
 }
 
-impl BatteryBackend {
+impl BatteryBlock {
 	pub fn from_config(config: &BatteryConfig) -> Self {
-		BatteryBackend {
+		BatteryBlock {
 			format: config.format.to_string(),
 			index: config.index,
 		}
 	}
 }
 
-impl Backend for BatteryBackend {
+impl Block for BatteryBlock {
 	fn get_output(&self) -> BlockOutput {
 		let rem_percentage: String = match get_battery_level(self.index) {
 			Ok(l) => format!("{}", l),

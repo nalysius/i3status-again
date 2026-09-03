@@ -1,6 +1,6 @@
 //! The config module handles the configuration.
 
-use crate::backends::*;
+use crate::blocks::*;
 use serde::Deserialize;
 use std::error;
 use std::fs;
@@ -58,22 +58,22 @@ pub struct Config {
 }
 
 impl Config {
-	/// Convert the configuration to a list of BackendType.
-	pub fn to_backends(&self) -> Vec<BackendType> {
-		let mut backends = Vec::new();
+	/// Convert the configuration to a list of BlockType.
+	pub fn to_blocks(&self) -> Vec<BlockType> {
+		let mut blocks = Vec::new();
 		for block in &self.blocks {
 			match block {
 				BlockConfig::DateTime(d) => {
-					let dt_backend = DateTimeBackend::from_config(&d);
-					backends.push(BackendType::DateTime(dt_backend));
+					let dt_block = DateTimeBlock::from_config(&d);
+					blocks.push(BlockType::DateTime(dt_block));
 				},
 				BlockConfig::Battery(b) => {
-					let bt_backend = BatteryBackend::from_config(&b);
-					backends.push(BackendType::Battery(bt_backend));
+					let bt_block = BatteryBlock::from_config(&b);
+					blocks.push(BlockType::Battery(bt_block));
 				}
 			}
 		}
-		backends
+		blocks
 	}
 }
 

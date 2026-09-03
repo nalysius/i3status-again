@@ -1,25 +1,25 @@
-//! The backends::datetime module implements the datetime block.
+//! The blocks::datetime module implements the datetime block.
 
 use chrono::Local;
-use crate::backends::Backend;
+use crate::blocks::Block;
 use crate::bar::BlockOutput;
 use crate::config::DateTimeConfig;
 
-pub struct DateTimeBackend {
+pub struct DateTimeBlock {
 	/// The datetime format string. See the chrono crate for
 	/// documentation.
 	pub format: String,
 }
 
-impl DateTimeBackend {
+impl DateTimeBlock {
 	pub fn from_config(config: &DateTimeConfig) -> Self {
-		DateTimeBackend {
+		DateTimeBlock {
 			format: config.format.to_string(),
 		}
 	}
 }
 
-impl Backend for DateTimeBackend {
+impl Block for DateTimeBlock {
 	fn get_output(&self) -> BlockOutput {
 		BlockOutput::new(
 			&format!(

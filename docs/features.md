@@ -50,11 +50,11 @@ format = "{chr_state} {rem_percent}% {rem_time}"
 	rate (how many watts are consumed). If the value is 0, which happens on one
 	battery when a machine has several of them, the remaining time is an empty
 	string.
-- `index` is the index of the battery to monitor. Remove or comment this setting
-  if you have only one battery or if you have several that you want to combine
-  to display in one block. If you want to have one block for each of your
-  batteries, define several "battery" blocks, one with index = 0, the other one
-  with index = 1 and so on.
+- `index` (optional) is the index of the battery to monitor.
+  Remove or comment this setting if you have only one battery or if you
+  have several of them that you want to combine to display in one block. If you
+  want to have one block for each of your batteries, define several "battery"
+  blocks, one with index = 0, the other one with index = 1 and so on.
 
 #### Note for OpenBSD
 
@@ -86,8 +86,8 @@ format = "{temp} {unit}"
   CPUs, define several "cpu_temp" blocks, one with index = 0, the other one
   with index = 1 and so on. If you combine several CPUs or if one CPU has several
   temperature sensors, the maximum value is used.
-- `unit` contains the wanted unit of the temperature. Either "celsius" or
-  "fahrenheit".
+- `unit` (optional, default = "celsius") contains the wanted unit of the
+  temperature. Either "celsius" or "fahrenheit".
 
 #### Note for OpenBSD
 

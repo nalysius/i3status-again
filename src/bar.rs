@@ -7,14 +7,14 @@ use serde::Serialize;
 /// JSON for i3bar.
 #[derive(Debug, Serialize)]
 pub struct BlockOutput {
-	/// The text to display in the block. Example: "BAT 42% 02:12".
-	full_text: String,
+    /// The text to display in the block. Example: "BAT 42% 02:12".
+    full_text: String,
 }
 
 impl BlockOutput {
-	pub fn new(full_text: &str) -> Self {
-		Self {
-			full_text: full_text.to_string(),
-		}
-	}
+    pub fn new(full_text: &str) -> Self {
+        Self {
+            full_text: full_text.to_string(),
+        }
+    }
 }

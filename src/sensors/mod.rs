@@ -3,5 +3,3 @@
 //! being used everywhere. Example: sysctl.
 
 pub mod sysctl;
-
-

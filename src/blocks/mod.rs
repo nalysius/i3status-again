@@ -10,8 +10,8 @@
 pub mod battery;
 pub mod datetime;
 
-pub use crate::blocks::datetime::DateTimeBlock;
 pub use crate::blocks::battery::BatteryBlock;
+pub use crate::blocks::datetime::DateTimeBlock;
 
 use crate::bar::BlockOutput;
 
@@ -20,22 +20,22 @@ use crate::bar::BlockOutput;
 /// It makes storing different blocks together easier. Instead of a
 /// Vec<dyn Block>, store a Vec<BlockType>.
 pub enum BlockType {
-	DateTime(DateTimeBlock),
-	Battery(BatteryBlock),
+    DateTime(DateTimeBlock),
+    Battery(BatteryBlock),
 }
 
 impl BlockType {
-	/// A shortcut function to call get_output on the block.
-	pub fn get_output(&self) -> BlockOutput {
-		match &self {
-			Self::DateTime(d) => d.get_output(),
-			Self::Battery(b) => b.get_output(),
-		}
-	}
+    /// A shortcut function to call get_output on the block.
+    pub fn get_output(&self) -> BlockOutput {
+        match &self {
+            Self::DateTime(d) => d.get_output(),
+            Self::Battery(b) => b.get_output(),
+        }
+    }
 }
 
 /// A simple trait to enforce some methods in every traits.
 pub trait Block {
-	/// Main method of a block to generate an output.
-	fn get_output(&self) -> BlockOutput;
+    /// Main method of a block to generate an output.
+    fn get_output(&self) -> BlockOutput;
 }

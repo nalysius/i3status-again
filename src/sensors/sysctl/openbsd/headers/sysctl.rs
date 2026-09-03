@@ -12,10 +12,10 @@ pub const CTL_MAX_NAME: i32 = 12;
 /// pairs to be used by sysctl(1) in manipulating the subsystem.
 #[repr(C)]
 pub struct CtlName {
-	/// Subsystem name
-	ctl_name: &'static str,
-	/// Type of name
-	ctl_type: i32,
+    /// Subsystem name
+    ctl_name: &'static str,
+    /// Type of name
+    ctl_type: i32,
 }
 
 /// Name is a node
@@ -54,17 +54,17 @@ pub const CTL_MAXID: i32 = 11;
 
 /// Map the CTL names to their types
 pub const CTL_NAMES: [(&str, i32); 11] = [
-	("", 0),
-	("kern", CTLTYPE_NODE),
-	("vm", CTLTYPE_NODE),
-	("gap", 0),
-	("net", CTLTYPE_NODE),
-	("debug", CTLTYPE_NODE),
-	("hw", CTLTYPE_NODE),
-	("machdep", CTLTYPE_NODE),
-	("gap", 0),
-	("ddb", CTLTYPE_NODE),
-	("vfs", CTLTYPE_NODE),
+    ("", 0),
+    ("kern", CTLTYPE_NODE),
+    ("vm", CTLTYPE_NODE),
+    ("gap", 0),
+    ("net", CTLTYPE_NODE),
+    ("debug", CTLTYPE_NODE),
+    ("hw", CTLTYPE_NODE),
+    ("machdep", CTLTYPE_NODE),
+    ("gap", 0),
+    ("ddb", CTLTYPE_NODE),
+    ("vfs", CTLTYPE_NODE),
 ];
 
 // CTL_KERN identifier
@@ -245,98 +245,98 @@ pub const KERN_MAXID: i32 = 92;
 
 /// Map CTL kern to their types
 pub const CTL_KERN_NAMES: [(&str, i32); 92] = [
-	("", 0),
-	("ostype", CTLTYPE_STRING),
-	("osrelease", CTLTYPE_STRING),
-	("osrevision", CTLTYPE_INT),
-	("version", CTLTYPE_STRING),
-	("maxvnodes", CTLTYPE_INT),
-	("maxproc", CTLTYPE_INT),
-	("maxfiles", CTLTYPE_INT),
-	("argmax", CTLTYPE_INT),
-	("securelevel", CTLTYPE_INT),
-	("hostname", CTLTYPE_STRING),
-	("hostid", CTLTYPE_INT),
-	("clockrate", CTLTYPE_STRUCT),
-	("gap", 0),
-	("gap", 0),
-	("gap", 0),
-	("profiling", CTLTYPE_NODE),
-	("posix1version", CTLTYPE_INT),
-	("ngroups", CTLTYPE_INT),
-	("job_control", CTLTYPE_INT),
-	("saved_ids", CTLTYPE_INT),
-	("boottime", CTLTYPE_STRUCT),
-	("domainname", CTLTYPE_STRING),
-	("maxpartitions", CTLTYPE_INT),
-	("rawpartition", CTLTYPE_INT),
-	("maxthread", CTLTYPE_INT),
-	("nthreads", CTLTYPE_INT),
-	("osversion", CTLTYPE_STRING),
-	("somaxconn", CTLTYPE_INT),
-	("sominconn", CTLTYPE_INT),
-	("gap", 0),
-	("gap", 0),
-	("nosuidcoredump", CTLTYPE_INT),
-	("fsync", CTLTYPE_INT),
-	("sysvmsg", CTLTYPE_INT),
-	("sysvsem", CTLTYPE_INT),
-	("sysvshm", CTLTYPE_INT),
-	("gap", 0),
-	("msgbufsize", CTLTYPE_INT),
-	("malloc", CTLTYPE_NODE),
-	("cp_time", CTLTYPE_STRUCT),
-	("nchstats", CTLTYPE_STRUCT),
-	("forkstat", CTLTYPE_STRUCT),
-	("gap", 0),
-	("tty", CTLTYPE_NODE),
-	("ccpu", CTLTYPE_INT),
-	("fscale", CTLTYPE_INT),
-	("nprocs", CTLTYPE_INT),
-	("msgbuf", CTLTYPE_STRUCT),
-	("pool", CTLTYPE_NODE),
-	("stackgap_random", CTLTYPE_INT),
-	("sysvipc_info", CTLTYPE_INT),
-	("allowkmem", CTLTYPE_INT),
-	("witnesswatch", CTLTYPE_INT),
-	("splassert", CTLTYPE_INT),
-	("procargs", CTLTYPE_NODE),
-	("nfiles", CTLTYPE_INT),
-	("ttycount", CTLTYPE_INT),
-	("numvnodes", CTLTYPE_INT),
-	("mbstat", CTLTYPE_STRUCT),
-	("witness", CTLTYPE_NODE),
-	("seminfo", CTLTYPE_STRUCT),
-	("shminfo", CTLTYPE_STRUCT),
-	("intrcnt", CTLTYPE_NODE),
-	("watchdog", CTLTYPE_NODE),
-	("allowdt", CTLTYPE_INT),
-	("proc", CTLTYPE_STRUCT),
-	("maxclusters", CTLTYPE_INT),
-	("evcount", CTLTYPE_NODE),
-	("timecounter", CTLTYPE_NODE),
-	("maxlocksperuid", CTLTYPE_INT),
-	("cp_time2", CTLTYPE_STRUCT),
-	("bufcachepercent", CTLTYPE_INT),
-	("file", CTLTYPE_STRUCT),
-	("wxabort", CTLTYPE_INT),
-	("consdev", CTLTYPE_STRUCT),
-	("netlivelocks", CTLTYPE_INT),
-	("pool_debug", CTLTYPE_INT),
-	("proc_cwd", CTLTYPE_NODE),
-	("proc_nobroadcastkill", CTLTYPE_NODE),
-	("proc_vmmap", CTLTYPE_NODE),
-	("global_ptrace", CTLTYPE_INT),
-	("consbufsize", CTLTYPE_INT),
-	("consbuf", CTLTYPE_STRUCT),
-	("audio", CTLTYPE_STRUCT),
-	("cpustats", CTLTYPE_STRUCT),
-	("pfstatus", CTLTYPE_STRUCT),
-	("timeout_stats", CTLTYPE_STRUCT),
-	("utc_offset", CTLTYPE_INT),
-	("video", CTLTYPE_STRUCT),
-	("clockintr", CTLTYPE_NODE),
-	("autoconf_serial", CTLTYPE_INT),
+    ("", 0),
+    ("ostype", CTLTYPE_STRING),
+    ("osrelease", CTLTYPE_STRING),
+    ("osrevision", CTLTYPE_INT),
+    ("version", CTLTYPE_STRING),
+    ("maxvnodes", CTLTYPE_INT),
+    ("maxproc", CTLTYPE_INT),
+    ("maxfiles", CTLTYPE_INT),
+    ("argmax", CTLTYPE_INT),
+    ("securelevel", CTLTYPE_INT),
+    ("hostname", CTLTYPE_STRING),
+    ("hostid", CTLTYPE_INT),
+    ("clockrate", CTLTYPE_STRUCT),
+    ("gap", 0),
+    ("gap", 0),
+    ("gap", 0),
+    ("profiling", CTLTYPE_NODE),
+    ("posix1version", CTLTYPE_INT),
+    ("ngroups", CTLTYPE_INT),
+    ("job_control", CTLTYPE_INT),
+    ("saved_ids", CTLTYPE_INT),
+    ("boottime", CTLTYPE_STRUCT),
+    ("domainname", CTLTYPE_STRING),
+    ("maxpartitions", CTLTYPE_INT),
+    ("rawpartition", CTLTYPE_INT),
+    ("maxthread", CTLTYPE_INT),
+    ("nthreads", CTLTYPE_INT),
+    ("osversion", CTLTYPE_STRING),
+    ("somaxconn", CTLTYPE_INT),
+    ("sominconn", CTLTYPE_INT),
+    ("gap", 0),
+    ("gap", 0),
+    ("nosuidcoredump", CTLTYPE_INT),
+    ("fsync", CTLTYPE_INT),
+    ("sysvmsg", CTLTYPE_INT),
+    ("sysvsem", CTLTYPE_INT),
+    ("sysvshm", CTLTYPE_INT),
+    ("gap", 0),
+    ("msgbufsize", CTLTYPE_INT),
+    ("malloc", CTLTYPE_NODE),
+    ("cp_time", CTLTYPE_STRUCT),
+    ("nchstats", CTLTYPE_STRUCT),
+    ("forkstat", CTLTYPE_STRUCT),
+    ("gap", 0),
+    ("tty", CTLTYPE_NODE),
+    ("ccpu", CTLTYPE_INT),
+    ("fscale", CTLTYPE_INT),
+    ("nprocs", CTLTYPE_INT),
+    ("msgbuf", CTLTYPE_STRUCT),
+    ("pool", CTLTYPE_NODE),
+    ("stackgap_random", CTLTYPE_INT),
+    ("sysvipc_info", CTLTYPE_INT),
+    ("allowkmem", CTLTYPE_INT),
+    ("witnesswatch", CTLTYPE_INT),
+    ("splassert", CTLTYPE_INT),
+    ("procargs", CTLTYPE_NODE),
+    ("nfiles", CTLTYPE_INT),
+    ("ttycount", CTLTYPE_INT),
+    ("numvnodes", CTLTYPE_INT),
+    ("mbstat", CTLTYPE_STRUCT),
+    ("witness", CTLTYPE_NODE),
+    ("seminfo", CTLTYPE_STRUCT),
+    ("shminfo", CTLTYPE_STRUCT),
+    ("intrcnt", CTLTYPE_NODE),
+    ("watchdog", CTLTYPE_NODE),
+    ("allowdt", CTLTYPE_INT),
+    ("proc", CTLTYPE_STRUCT),
+    ("maxclusters", CTLTYPE_INT),
+    ("evcount", CTLTYPE_NODE),
+    ("timecounter", CTLTYPE_NODE),
+    ("maxlocksperuid", CTLTYPE_INT),
+    ("cp_time2", CTLTYPE_STRUCT),
+    ("bufcachepercent", CTLTYPE_INT),
+    ("file", CTLTYPE_STRUCT),
+    ("wxabort", CTLTYPE_INT),
+    ("consdev", CTLTYPE_STRUCT),
+    ("netlivelocks", CTLTYPE_INT),
+    ("pool_debug", CTLTYPE_INT),
+    ("proc_cwd", CTLTYPE_NODE),
+    ("proc_nobroadcastkill", CTLTYPE_NODE),
+    ("proc_vmmap", CTLTYPE_NODE),
+    ("global_ptrace", CTLTYPE_INT),
+    ("consbufsize", CTLTYPE_INT),
+    ("consbuf", CTLTYPE_STRUCT),
+    ("audio", CTLTYPE_STRUCT),
+    ("cpustats", CTLTYPE_STRUCT),
+    ("pfstatus", CTLTYPE_STRUCT),
+    ("timeout_stats", CTLTYPE_STRUCT),
+    ("utc_offset", CTLTYPE_INT),
+    ("video", CTLTYPE_STRUCT),
+    ("clockintr", CTLTYPE_NODE),
+    ("autoconf_serial", CTLTYPE_INT),
 ];
 
 // KERN_PROC subtypes
@@ -380,9 +380,9 @@ pub const KERN_AUDIO_MAXID: i32 = 3;
 
 /// Map the kern audio names to their types
 pub const CTL_KERN_AUDIO_NAMES: [(&str, i32); 3] = [
-	("", 0),
-	("record", CTLTYPE_INT),
-	("kbdcontrol", CTLTYPE_INT),
+    ("", 0),
+    ("record", CTLTYPE_INT),
+    ("kbdcontrol", CTLTYPE_INT),
 ];
 
 // KERN_VIDEO
@@ -390,10 +390,7 @@ pub const KERN_VIDEO_RECORD: i32 = 1;
 pub const KERN_VIDEO_MAXID: i32 = 2;
 
 /// Map the kern video names to their types
-pub const CTL_KERN_VIDEO_NAMES: [(&str, i32); 2]= [
-	("", 0),
-	("record", CTLTYPE_INT),
-];
+pub const CTL_KERN_VIDEO_NAMES: [(&str, i32); 2] = [("", 0), ("record", CTLTYPE_INT)];
 
 // KERN_WITNESS
 pub const KERN_WITNESS_WATCH: i32 = 1;
@@ -401,11 +398,8 @@ pub const KERN_WITNESS_LOCKTRACE: i32 = 2;
 pub const KERN_WITNESS_MAXID: i32 = 3;
 
 /// Map their kern witness names to their types
-pub const CTL_KERN_WITNESS_NAMES: [(&str, i32); 3] = [
-	("", 0),
-	("watch", CTLTYPE_INT),
-	("locktrace", CTLTYPE_INT)
-];
+pub const CTL_KERN_WITNESS_NAMES: [(&str, i32); 3] =
+    [("", 0), ("watch", CTLTYPE_INT), ("locktrace", CTLTYPE_INT)];
 
 /*
  * KERN_PROC subtype ops return arrays of relatively fixed size
@@ -434,195 +428,195 @@ pub const EPROC_LKUNVAIL: i32 = 0x08;
 /// See /usr/include/sys/sysctl.h
 #[allow(non_snake_case)]
 pub struct KinfoProc {
-	/// PTR: linked run/sleep queue
-	pub p_forw: u64,
-	/// PTR: linked run/sleep queue
-	pub p_back: u64,
-	/// PTR: address of proc
-	pub p_paddr: u64,
-	/// PTR: Kernel virtual addr or u-area
-	pub p_addr: u64,
-	/// PTR: Ptr to open files structure
-	pub p_fd: u64,
-	/// PTR: unused, always zero
-	pub p_stats: u64,
-	/// PTR: Process limits
-	pub p_limit: u64,
-	/// PTR: Address space
-	pub p_vmspace: u64,
-	/// PTR: Signal actions, state
-	pub p_sigacts: u64,
-	/// PTR: session pointer
-	pub p_sess: u64,
-	/// PTR: tty session pointer
-	pub p_tsess: u64,
-	/// PTR: Exit information
-	pub p_ru: u64,
-	/// LONG: extra kinfo_proc flags
-	pub p_eflag: u64,
-	/// Unused, always zero
-	pub p_exitsig: i32,
-	/// INT: P_* flags
-	pub p_flag: i32,
-	/// PID_T: Process identifier
-	pub p_pid: i32,
-	/// PID_T: Parent process id
-	pub p_ppid: i32,
-	/// PID_T: session id
-	pub p_sid: i32,
-	/// PID_T: process group id. sys/proc.h hijacks p_pgid
-	pub p__pgid: i32,
-	/// PID_T: tty process group id
-	pub p_tpgid: i32,
-	/// UID_T: effective user id
-	pub p_uid: u32,
-	/// UID_T: real user id
-	pub p_ruid: u32,
-	/// GID_T: effective group id
-	pub p_gid: u32,
-	/// GID_T: real group id
-	pub p_rgid: u32,
-	/// GID_T: groups
-	pub p_groups: [u32; KI_NGROUPS],
-	/// SHORT: number of groups
-	pub p_ngroups: i16,
-	/// SHORT: job control counter
-	pub p_jobc: i16,
-	/// DEV_T: controlling tty dev
-	pub p_tdev: u32,
-	///U_INT: Time averaged value pf p_cpticks
-	pub p_estcpu: u32,
-	/// STRUCT TIMEVAL: real time
-	pub p_rtime_sec: u32,
-	/// STRUCT TIMEVAL: real time
-	pub p_rtime_usec: u32,
-	/// INT: Ticks of cpu time
-	pub p_cpticks: i32,
-	/// FIXPT_T: %cpu for this process
-	pub p_pctcpu: u32,
-	/// Unused, always zero
-	pub p_swtime: u32,
-	/// U_INT: Time since last blocked
-	pub p_slptime: u32,
-	/// INT: PSCHED_* flags
-	pub p_schedflags: i32,
-	/// U_QUAD_T: Stat clock hits in user mode
-	pub p_uticks: u64,
-	/// U_QUAD_T: Stat clock hits in system mode
-	pub p_sticks: u64,
-	/// U_QUAD_T: Stat clock hits processing ints
-	pub p_iticks: u64,
-	/// PTR: Trace to vnode or file
-	pub p_ptracep: u64,
-	/// INT: Kernel trace points
-	pub p_traceflag: i32,
-	/// INT: If non-zero: don't swap
-	pub p_holdcnt: i32,
-	/// INT: Signals arrived but not delivered
-	pub p_siglist: i32,
-	/// SIGSET_T:  Current signal mask
-	pub p_sigmask: u32,
-	/// SIGSET_T: Signals being ignored
-	pub p_sigignore: u32,
-	/// SIGSET_T: Signals being caught by user
-	pub p_sigcatch: u32,
-	/// CHAR: S* process status (from LWP)
-	pub p_stat: i8,
-	/// U_CHAR: Process priority
-	pub p_priority: u8,
-	/// U_CHAR: User-priority based on p_estcpu and ps_nice
-	pub p_usrpri: u8,
-	/// U_CHAR: Process "nice" value
-	pub p_nice: u8,
-	/// U_SHORT: Exit status for wait; also stop signal
-	pub p_xstat: u16,
-	/// U_SHORT: unused
-	pub p_spare: u16,
-	pub p_comm: [u8; KI_MAXLOGNAME],
-	/// wchan message
-	pub p_wmesg: [u8; KI_WMESGLEN],
-	/// PTR: sleep address
-	pub p_wchan: u64,
-	/// setlogin() name
-	pub p_login: [u8; KI_MAXLOGNAME],
-	/// SEGSZ_T: current resident set size in pages
-	pub p_vm_rssize: i32,
-	/// SEGSZ_T: text size (pages)
-	pub p_vm_tsize: i32,
-	/// SEGSZ_T: data size (pages)
-	pub p_vm_dsize: i32,
-	/// SEGSZ_T: stack size (pages)
-	pub p_vm_ssize: i32,
-	/// CHAR: following p_u* members from struct user are valid. 64-bits for alignment
-	pub p_uvalid: i64,
-	/// STRUCT TIMEVAL: starting time
-	pub p_ustart_sec: u64,
-	/// STRUCT TIMEVAL: starting time
-	pub p_ustart_usec: u32,
-	/// STRUCT TIMEVAL: user time
-	pub p_uutime_sec: u32,
-	/// STRUCT TIMEVAL: user  time
-	pub p_uutime_usec: u32,
-	/// STRUCT TIMEVAL: system time
-	pub p_ustime_sec: u32,
-	/// STRUCT TIMEVAL: system time
-	pub p_ustime_usec: u32,
-	/// LONG: max resident set size
-	pub p_uru_maxrss: u64,
-	/// LONG: integral shared memory size
-	pub p_uru_ixrss: u64,
-	/// LONG: integral unshared data
-	pub p_uru_idrss: u64,
-	/// LONG: integral unshared stack
-	pub p_uru_isrrs: u64,
-	/// LONG: page reclaims
-	pub p_uru_minflt: u64,
-	/// LONG: page faults
-	pub p_uru_majflt: u64,
-	/// LONG: swaps
-	pub p_uru_nswap: u64,
-	/// LONG: block input operations
-	pub p_uru_inblock: u64,
-	/// LONG: block output operations
-	pub p_uru_oublock: u64,
-	/// LONG: messages sent
-	pub p_uru_msgsnd: u64,
-	/// LONG: messages received
-	pub p_uru_msgrcv: u64,
-	/// LONG: signals received
-	pub p_uru_nsignals: u64,
-	/// LONG: voluntary context switches
-	pub p_uru_nvcsw: u64,
-	/// LONG: involuntary context switches
-	pub p_uru_nivcsw: u64,
-	/// STRUCT TIMEVAL: child u+s time
-	pub p_uctime_sec: u32,
-	/// STRUCT TIMEVAL: child u+s time
-	pub p_uctime_usec: u32,
-	/// UINT: PS_* flags on the process
-	pub p_psflags: u32,
-	/// UINT: Accounting flags
-	pub p_acflag: u32,
-	/// UID_T: saved user id
-	pub p_svuid: u32,
-	/// GID_T: saved group id
-	pub p_svgid: u32,
-	/// syscall emulation name
-	pub p_emul: [u8; KI_EMULNAMELEN],
-	/// RLIM_T: soft limit for rss
-	pub p_rlim_rss_cur: u64,
-	/// LONG: CPU id
-	pub p_cpuid: u64,
-	/// VSIZE_T: virtual size
-	pub p_vm_map_size: u64,
-	/// PID_T: Thread identifier
-	pub p_tid: i32,
-	/// U_INT: Routing table identifier
-	pub p_rtableid: u32,
-	/// U_INT64_T: Pledge flags
-	pub p_pledge: u64,
-	/// Thread name
-	pub p_name: [u8; KI_MAXCOMLEN],
+    /// PTR: linked run/sleep queue
+    pub p_forw: u64,
+    /// PTR: linked run/sleep queue
+    pub p_back: u64,
+    /// PTR: address of proc
+    pub p_paddr: u64,
+    /// PTR: Kernel virtual addr or u-area
+    pub p_addr: u64,
+    /// PTR: Ptr to open files structure
+    pub p_fd: u64,
+    /// PTR: unused, always zero
+    pub p_stats: u64,
+    /// PTR: Process limits
+    pub p_limit: u64,
+    /// PTR: Address space
+    pub p_vmspace: u64,
+    /// PTR: Signal actions, state
+    pub p_sigacts: u64,
+    /// PTR: session pointer
+    pub p_sess: u64,
+    /// PTR: tty session pointer
+    pub p_tsess: u64,
+    /// PTR: Exit information
+    pub p_ru: u64,
+    /// LONG: extra kinfo_proc flags
+    pub p_eflag: u64,
+    /// Unused, always zero
+    pub p_exitsig: i32,
+    /// INT: P_* flags
+    pub p_flag: i32,
+    /// PID_T: Process identifier
+    pub p_pid: i32,
+    /// PID_T: Parent process id
+    pub p_ppid: i32,
+    /// PID_T: session id
+    pub p_sid: i32,
+    /// PID_T: process group id. sys/proc.h hijacks p_pgid
+    pub p__pgid: i32,
+    /// PID_T: tty process group id
+    pub p_tpgid: i32,
+    /// UID_T: effective user id
+    pub p_uid: u32,
+    /// UID_T: real user id
+    pub p_ruid: u32,
+    /// GID_T: effective group id
+    pub p_gid: u32,
+    /// GID_T: real group id
+    pub p_rgid: u32,
+    /// GID_T: groups
+    pub p_groups: [u32; KI_NGROUPS],
+    /// SHORT: number of groups
+    pub p_ngroups: i16,
+    /// SHORT: job control counter
+    pub p_jobc: i16,
+    /// DEV_T: controlling tty dev
+    pub p_tdev: u32,
+    ///U_INT: Time averaged value pf p_cpticks
+    pub p_estcpu: u32,
+    /// STRUCT TIMEVAL: real time
+    pub p_rtime_sec: u32,
+    /// STRUCT TIMEVAL: real time
+    pub p_rtime_usec: u32,
+    /// INT: Ticks of cpu time
+    pub p_cpticks: i32,
+    /// FIXPT_T: %cpu for this process
+    pub p_pctcpu: u32,
+    /// Unused, always zero
+    pub p_swtime: u32,
+    /// U_INT: Time since last blocked
+    pub p_slptime: u32,
+    /// INT: PSCHED_* flags
+    pub p_schedflags: i32,
+    /// U_QUAD_T: Stat clock hits in user mode
+    pub p_uticks: u64,
+    /// U_QUAD_T: Stat clock hits in system mode
+    pub p_sticks: u64,
+    /// U_QUAD_T: Stat clock hits processing ints
+    pub p_iticks: u64,
+    /// PTR: Trace to vnode or file
+    pub p_ptracep: u64,
+    /// INT: Kernel trace points
+    pub p_traceflag: i32,
+    /// INT: If non-zero: don't swap
+    pub p_holdcnt: i32,
+    /// INT: Signals arrived but not delivered
+    pub p_siglist: i32,
+    /// SIGSET_T:  Current signal mask
+    pub p_sigmask: u32,
+    /// SIGSET_T: Signals being ignored
+    pub p_sigignore: u32,
+    /// SIGSET_T: Signals being caught by user
+    pub p_sigcatch: u32,
+    /// CHAR: S* process status (from LWP)
+    pub p_stat: i8,
+    /// U_CHAR: Process priority
+    pub p_priority: u8,
+    /// U_CHAR: User-priority based on p_estcpu and ps_nice
+    pub p_usrpri: u8,
+    /// U_CHAR: Process "nice" value
+    pub p_nice: u8,
+    /// U_SHORT: Exit status for wait; also stop signal
+    pub p_xstat: u16,
+    /// U_SHORT: unused
+    pub p_spare: u16,
+    pub p_comm: [u8; KI_MAXLOGNAME],
+    /// wchan message
+    pub p_wmesg: [u8; KI_WMESGLEN],
+    /// PTR: sleep address
+    pub p_wchan: u64,
+    /// setlogin() name
+    pub p_login: [u8; KI_MAXLOGNAME],
+    /// SEGSZ_T: current resident set size in pages
+    pub p_vm_rssize: i32,
+    /// SEGSZ_T: text size (pages)
+    pub p_vm_tsize: i32,
+    /// SEGSZ_T: data size (pages)
+    pub p_vm_dsize: i32,
+    /// SEGSZ_T: stack size (pages)
+    pub p_vm_ssize: i32,
+    /// CHAR: following p_u* members from struct user are valid. 64-bits for alignment
+    pub p_uvalid: i64,
+    /// STRUCT TIMEVAL: starting time
+    pub p_ustart_sec: u64,
+    /// STRUCT TIMEVAL: starting time
+    pub p_ustart_usec: u32,
+    /// STRUCT TIMEVAL: user time
+    pub p_uutime_sec: u32,
+    /// STRUCT TIMEVAL: user  time
+    pub p_uutime_usec: u32,
+    /// STRUCT TIMEVAL: system time
+    pub p_ustime_sec: u32,
+    /// STRUCT TIMEVAL: system time
+    pub p_ustime_usec: u32,
+    /// LONG: max resident set size
+    pub p_uru_maxrss: u64,
+    /// LONG: integral shared memory size
+    pub p_uru_ixrss: u64,
+    /// LONG: integral unshared data
+    pub p_uru_idrss: u64,
+    /// LONG: integral unshared stack
+    pub p_uru_isrrs: u64,
+    /// LONG: page reclaims
+    pub p_uru_minflt: u64,
+    /// LONG: page faults
+    pub p_uru_majflt: u64,
+    /// LONG: swaps
+    pub p_uru_nswap: u64,
+    /// LONG: block input operations
+    pub p_uru_inblock: u64,
+    /// LONG: block output operations
+    pub p_uru_oublock: u64,
+    /// LONG: messages sent
+    pub p_uru_msgsnd: u64,
+    /// LONG: messages received
+    pub p_uru_msgrcv: u64,
+    /// LONG: signals received
+    pub p_uru_nsignals: u64,
+    /// LONG: voluntary context switches
+    pub p_uru_nvcsw: u64,
+    /// LONG: involuntary context switches
+    pub p_uru_nivcsw: u64,
+    /// STRUCT TIMEVAL: child u+s time
+    pub p_uctime_sec: u32,
+    /// STRUCT TIMEVAL: child u+s time
+    pub p_uctime_usec: u32,
+    /// UINT: PS_* flags on the process
+    pub p_psflags: u32,
+    /// UINT: Accounting flags
+    pub p_acflag: u32,
+    /// UID_T: saved user id
+    pub p_svuid: u32,
+    /// GID_T: saved group id
+    pub p_svgid: u32,
+    /// syscall emulation name
+    pub p_emul: [u8; KI_EMULNAMELEN],
+    /// RLIM_T: soft limit for rss
+    pub p_rlim_rss_cur: u64,
+    /// LONG: CPU id
+    pub p_cpuid: u64,
+    /// VSIZE_T: virtual size
+    pub p_vm_map_size: u64,
+    /// PID_T: Thread identifier
+    pub p_tid: i32,
+    /// U_INT: Routing table identifier
+    pub p_rtableid: u32,
+    /// U_INT64_T: Pledge flags
+    pub p_pledge: u64,
+    /// Thread name
+    pub p_name: [u8; KI_MAXCOMLEN],
 }
 
 /// VM address range entry, matching struct vm_map_entry.  Useful for
@@ -631,28 +625,28 @@ pub struct KinfoProc {
 /// To iterate entries, set the last kve_end as the base address into
 /// kve_start.
 pub struct KinfoVmEntry {
-	/// vaddr_t
-	pub kve_start: libc::c_ulong,
-	/// vaddr_t
-	pub kve_end: libc::c_ulong,
-	/// vsize_t
-	pub kve_guard: libc::c_ulong,
-	/// vsize_t
-	pub kve_fspace: libc::c_ulong,
-	/// vsize_t
-	pub kve_fspace_augment: libc::c_ulong,
-	/// voff_t
-	pub kve_offset: u64,
-	pub kve_wired_count: libc::c_int,
-	pub kve_etype: libc::c_int,
-	pub kve_protection: libc::c_int,
-	pub kve_max_protection: libc::c_int,
-	pub kve_advice: libc::c_int,
-	pub kve_inheritance: libc::c_int,
-	pub kve_flags: u8,
+    /// vaddr_t
+    pub kve_start: libc::c_ulong,
+    /// vaddr_t
+    pub kve_end: libc::c_ulong,
+    /// vsize_t
+    pub kve_guard: libc::c_ulong,
+    /// vsize_t
+    pub kve_fspace: libc::c_ulong,
+    /// vsize_t
+    pub kve_fspace_augment: libc::c_ulong,
+    /// voff_t
+    pub kve_offset: u64,
+    pub kve_wired_count: libc::c_int,
+    pub kve_etype: libc::c_int,
+    pub kve_protection: libc::c_int,
+    pub kve_max_protection: libc::c_int,
+    pub kve_advice: libc::c_int,
+    pub kve_inheritance: libc::c_int,
+    pub kve_flags: u8,
 }
 
-// keep in sync with UVM_ET_* 
+// keep in sync with UVM_ET_*
 pub const KVE_ET_OBJ: i32 = 0x00000001;
 pub const KVE_ET_SUBMAP: i32 = 0x00000002;
 pub const KVE_ET_COPYONWRITE: i32 = 0x00000004;
@@ -666,7 +660,7 @@ pub const KVE_ET_SYSCALL: i32 = 0x00000200;
 pub const KVE_ET_FREEMAPPED: i32 = 0x00000800;
 
 pub const KVE_PROT_NONE: i32 = 0x00000000;
-pub const KVE_PROT_READ: i32	= 0x00000001;
+pub const KVE_PROT_READ: i32 = 0x00000001;
 pub const KVE_PROT_WRITE: i32 = 0x00000002;
 pub const KVE_PROT_EXEC: i32 = 0x00000004;
 
@@ -705,139 +699,139 @@ pub const KI_MNAMELEN: usize = 96;
 pub const KI_UNPPATHLEN: usize = 104;
 
 pub struct KinfoFile {
-	/// PTR: address of struct file
-	pub f_fileaddr: u64,
-	/// UINT: flags (see fcntl.h)
-	pub f_flag: u32,
-	/// UINT: internal flags
-	pub f_iflags: u32,
-	/// INT: descriptor
-	pub f_type: u32,
-	/// UINT: reference count
-	pub f_count: u32,
-	/// UINT: references from msg queue
-	pub f_msgcount: u32,
-	/// INT: number active users
-	pub f_usecount: u32,
-	/// PTR: creds for descriptors
-	pub f_ucred: u64,
-	/// UID_T: descriptor credentials
-	pub f_uid: u32,
-	/// GID_T: descriptor credentials
-	pub f_gid: u32,
-	/// PTR: address of fileops
-	pub f_ops: u64,
-	/// OFF_T: offset
-	pub f_offset: u64,
-	/// PTR: descriptor data
-	pub f_data: u64,
-	/// UINT64: number of read transfers
-	pub f_rxfer: u64,
-	/// UINT64: number of write transfers
-	pub f_rwfer: u64,
-	/// UINT64: number of seek operations
-	pub f_seek: u64,
-	/// UINT64: total bytes read
-	pub f_rbytes: u64,
-	/// UINT64: total bytes written
-	pub f_wbytes: u64,
-	/// PTR: socket, specinfo, etc
-	pub v_un: u64,
-	/// ENUM: vnode type
-	pub v_type: u32,
-	/// ENUM: type of underlying data
-	pub v_tag: u32,
-	/// UINT: vnode flags
-	pub v_flag: u32,
-	/// DEV_T raw device
-	pub va_rdev: u32,
-	/// PTR: private data for fs
-	pub v_data: u64,
-	/// PTR: mount info for fs
-	pub v_mount: u64,
-	/// LONG: file id
-	pub va_fileid: u64,
-	/// UINT64_T: file size in bytes
-	pub va_size: u64,
-	/// MODE_T: file access mode and type
-	pub va_mode: u32,
-	/// DEV_T: filesystem device
-	pub va_fsid: u32,
-	pub f_mntonname: [u8; KI_MNAMELEN],
-	/// SHORT: socket type
-	pub so_type: u32,
-	/// SHORT: socket state
-	pub so_state: u32,
-	/// PTR: socket pcb. For non-root, -1 if not NULL
-	pub so_pcb: u64,
-	/// SHORT: socket protocol type
-	pub so_protocol: u32,
-	/// INT: socket domain family
-	pub so_family: u32,
-	/// PTR: pointer to per-protocol pcb
-	pub inp_ppcb: u64,
-	/// SHORT: local inet port
-	pub inp_lport: u32,
-	/// STRUCT: local inet addr
-	pub inp_laddru: [u32; 4],
-	/// SHORT: foreign inet port
-	pub inp_fport: u32,
-	/// STRUCT: foreign inet addr
-	pub inp_faddru: [u32; 4],
-	/// PTR: connected socket cntrl block
-	pub inp_conn: u64,
-	/// PTR: link with other direction
-	pub pipe_peer: u64,
-	/// UINT: pipe status info
-	pub pipe_state: u32,
-	/// INT: number of pending events
-	pub kq_count: u32,
-	/// INT: kqueue status information
-	pub kq_state: u32,
-	/// Unused
-	pub __unused1: u32,
-	/// PID_T: process id
-	pub p_pid: u32,
-	/// INT: descriptor number
-	pub fd_fd: i32,
-	/// CHAR: open file flags
-	pub fd_ofileflags: u32,
-	/// UID_T: process credentials
-	pub p_uid: u32,
-	/// GID_T: process credentials
-	pub p_gid: u32,
-	/// PID_T: thread id
-	pub p_tid: u32,
-	pub p_comm: [u8; KI_MAXCOMLEN],
-	/// UINT: Routing table identifier
-	pub inp_rtableid: u32,
-	/// PTR: f_data of spliced socket
-	pub so_splice: u64,
-	/// OFF_T: already spliced count or -1 ir this is target of splice
-	pub so_splicelen: i64,
-	/// LONG: chars in receive buf
-	pub so_rcv_cc: u64,
-	/// LONG: chars in send buf
-	pub so_snd_cc: u64,
-	/// PTR: CONNECTED SOCKETS
-	pub unp_refs: u64,
-	/// PTR: link to next connected socket
-	pub unp_nextref: u64,
-	/// PTR: address ps the socket address
-	pub unp_addr: u64,
-	pub unp_path: [u8; KI_UNPPATHLEN],
-	/// CHAR: raw protocol id
-	pub inp_proto: u32,
-	/// SHORT: tcp state
-	pub t_state: u32,
-	/// ULONG: tcp receive window
-	pub t_rcv_wnd: u64,
-	/// ULONG: tcp send window
-	pub t_snd_wnd: u64,
-	/// ULONG: tcp congestion-controlled window
-	pub t_snd_cwnd: u64,
-	/// NLINK_T: number of references to file
-	pub va_nlink: u32,
+    /// PTR: address of struct file
+    pub f_fileaddr: u64,
+    /// UINT: flags (see fcntl.h)
+    pub f_flag: u32,
+    /// UINT: internal flags
+    pub f_iflags: u32,
+    /// INT: descriptor
+    pub f_type: u32,
+    /// UINT: reference count
+    pub f_count: u32,
+    /// UINT: references from msg queue
+    pub f_msgcount: u32,
+    /// INT: number active users
+    pub f_usecount: u32,
+    /// PTR: creds for descriptors
+    pub f_ucred: u64,
+    /// UID_T: descriptor credentials
+    pub f_uid: u32,
+    /// GID_T: descriptor credentials
+    pub f_gid: u32,
+    /// PTR: address of fileops
+    pub f_ops: u64,
+    /// OFF_T: offset
+    pub f_offset: u64,
+    /// PTR: descriptor data
+    pub f_data: u64,
+    /// UINT64: number of read transfers
+    pub f_rxfer: u64,
+    /// UINT64: number of write transfers
+    pub f_rwfer: u64,
+    /// UINT64: number of seek operations
+    pub f_seek: u64,
+    /// UINT64: total bytes read
+    pub f_rbytes: u64,
+    /// UINT64: total bytes written
+    pub f_wbytes: u64,
+    /// PTR: socket, specinfo, etc
+    pub v_un: u64,
+    /// ENUM: vnode type
+    pub v_type: u32,
+    /// ENUM: type of underlying data
+    pub v_tag: u32,
+    /// UINT: vnode flags
+    pub v_flag: u32,
+    /// DEV_T raw device
+    pub va_rdev: u32,
+    /// PTR: private data for fs
+    pub v_data: u64,
+    /// PTR: mount info for fs
+    pub v_mount: u64,
+    /// LONG: file id
+    pub va_fileid: u64,
+    /// UINT64_T: file size in bytes
+    pub va_size: u64,
+    /// MODE_T: file access mode and type
+    pub va_mode: u32,
+    /// DEV_T: filesystem device
+    pub va_fsid: u32,
+    pub f_mntonname: [u8; KI_MNAMELEN],
+    /// SHORT: socket type
+    pub so_type: u32,
+    /// SHORT: socket state
+    pub so_state: u32,
+    /// PTR: socket pcb. For non-root, -1 if not NULL
+    pub so_pcb: u64,
+    /// SHORT: socket protocol type
+    pub so_protocol: u32,
+    /// INT: socket domain family
+    pub so_family: u32,
+    /// PTR: pointer to per-protocol pcb
+    pub inp_ppcb: u64,
+    /// SHORT: local inet port
+    pub inp_lport: u32,
+    /// STRUCT: local inet addr
+    pub inp_laddru: [u32; 4],
+    /// SHORT: foreign inet port
+    pub inp_fport: u32,
+    /// STRUCT: foreign inet addr
+    pub inp_faddru: [u32; 4],
+    /// PTR: connected socket cntrl block
+    pub inp_conn: u64,
+    /// PTR: link with other direction
+    pub pipe_peer: u64,
+    /// UINT: pipe status info
+    pub pipe_state: u32,
+    /// INT: number of pending events
+    pub kq_count: u32,
+    /// INT: kqueue status information
+    pub kq_state: u32,
+    /// Unused
+    pub __unused1: u32,
+    /// PID_T: process id
+    pub p_pid: u32,
+    /// INT: descriptor number
+    pub fd_fd: i32,
+    /// CHAR: open file flags
+    pub fd_ofileflags: u32,
+    /// UID_T: process credentials
+    pub p_uid: u32,
+    /// GID_T: process credentials
+    pub p_gid: u32,
+    /// PID_T: thread id
+    pub p_tid: u32,
+    pub p_comm: [u8; KI_MAXCOMLEN],
+    /// UINT: Routing table identifier
+    pub inp_rtableid: u32,
+    /// PTR: f_data of spliced socket
+    pub so_splice: u64,
+    /// OFF_T: already spliced count or -1 ir this is target of splice
+    pub so_splicelen: i64,
+    /// LONG: chars in receive buf
+    pub so_rcv_cc: u64,
+    /// LONG: chars in send buf
+    pub so_snd_cc: u64,
+    /// PTR: CONNECTED SOCKETS
+    pub unp_refs: u64,
+    /// PTR: link to next connected socket
+    pub unp_nextref: u64,
+    /// PTR: address ps the socket address
+    pub unp_addr: u64,
+    pub unp_path: [u8; KI_UNPPATHLEN],
+    /// CHAR: raw protocol id
+    pub inp_proto: u32,
+    /// SHORT: tcp state
+    pub t_state: u32,
+    /// ULONG: tcp receive window
+    pub t_rcv_wnd: u64,
+    /// ULONG: tcp send window
+    pub t_snd_wnd: u64,
+    /// ULONG: tcp congestion-controlled window
+    pub t_snd_cwnd: u64,
+    /// NLINK_T: number of references to file
+    pub va_nlink: u32,
 }
 
 // KERN_INTRCNT
@@ -854,10 +848,10 @@ pub const KERN_INTRCNT_MAXID: i32 = 5;
 /// Map the CTL kern intrcnt names to their types
 /// See /usr/include/sys/sysctl:851
 pub const CTL_KERN_INTRCNT_NAMES: [(&str, i32); 4] = [
-	("", 0),
-	("nintrcnt", CTLTYPE_INT),
-	("intrcnt", CTLTYPE_NODE),
-	("intrname", CTLTYPE_NODE),
+    ("", 0),
+    ("nintrcnt", CTLTYPE_INT),
+    ("intrcnt", CTLTYPE_NODE),
+    ("intrname", CTLTYPE_NODE),
 ];
 
 // KERN_WATCHDOG
@@ -865,11 +859,8 @@ pub const KERN_WATCHDOG_PERIOD: i32 = 1;
 pub const KERN_WATCHDOG_AUTO: i32 = 2;
 pub const KERN_WATCHDOG_MAXID: i32 = 3;
 
-pub const CTL_KERN_WATCHDOG_NAMES: [(&str, i32); 3] = [
-	("", 0),
-	("period", CTLTYPE_INT),
-	("auto", CTLTYPE_INT),
-];
+pub const CTL_KERN_WATCHDOG_NAMES: [(&str, i32); 3] =
+    [("", 0), ("period", CTLTYPE_INT), ("auto", CTLTYPE_INT)];
 
 // KERN_TIMECOUNTER
 
@@ -885,11 +876,11 @@ pub const KERN_TIMECOUNTER_MAXID: i32 = 5;
 
 /// Map the CTL kern timetounter names to their types
 pub const CTL_KERN_TIMECOUNTER_NAMES: [(&str, i32); 5] = [
-	("", 0),
-	("tick", CTLTYPE_INT),
-	("timestepwarnings", CTLTYPE_INT),
-	("hardware", CTLTYPE_STRING),
-	("choice", CTLTYPE_STRING),
+    ("", 0),
+    ("tick", CTLTYPE_INT),
+    ("timestepwarnings", CTLTYPE_INT),
+    ("hardware", CTLTYPE_STRING),
+    ("choice", CTLTYPE_STRING),
 ];
 
 // KERN_CLOCKINTR
@@ -898,10 +889,7 @@ pub const KERN_CLOCKINTR_STATS: i32 = 1;
 pub const KERN_CLOCKINTR_MAXID: i32 = 2;
 
 /// Map the CTL kern clockintr names to their types
-pub const CTL_KERN_CLOCKINTR_NAMES: [(&str, i32); 2] = [
-	("", 0),
-	("stats", CTLTYPE_STRUCT),
-];
+pub const CTL_KERN_CLOCKINTR_NAMES: [(&str, i32); 2] = [("", 0), ("stats", CTLTYPE_STRUCT)];
 
 // CTL_HW identifiers
 /// String: machine class
@@ -968,36 +956,36 @@ pub const HW_MAXID: i32 = 30;
 /// Map the CTL hw names to their type
 /// See /usr/include/sys/sysctl.h:933
 pub const CTL_HW_NAMES: [(&str, i32); 30] = [
-	("", 0),
-	("machine", CTLTYPE_STRING),
-	("model", CTLTYPE_STRING),
-	("ncpu", CTLTYPE_INT),
-	("byteorder", CTLTYPE_INT),
-	("gap", 0),
-	("gap", 0),
-	("pagesize", CTLTYPE_INT),
-	("disknames", CTLTYPE_STRING),
-	("diskstats", CTLTYPE_STRUCT),
-	("diskcount", CTLTYPE_INT),
-	("sensors", CTLTYPE_NODE),
-	("cpuspeed", CTLTYPE_INT),
-	("setperf", CTLTYPE_INT),
-	("vendor", CTLTYPE_STRING),
-	("product", CTLTYPE_STRING),
-	("version", CTLTYPE_STRING),
-	("serialno", CTLTYPE_STRING),
-	("uuid", CTLTYPE_STRING),
-	("physmem", CTLTYPE_QUAD),
-	("usermem", CTLTYPE_QUAD),
-	("ncpufound", CTLTYPE_INT),
-	("allowpowerdown", CTLTYPE_INT),
-	("perfpolicy", CTLTYPE_STRING),
-	("smt", CTLTYPE_INT),
-	("ncpuonline", CTLTYPE_INT),
-	("power", CTLTYPE_INT),
-	("battery", CTLTYPE_NODE),
-	("ucomnames", CTLTYPE_STRING),
-	("blockcpu", CTLTYPE_STRING),
+    ("", 0),
+    ("machine", CTLTYPE_STRING),
+    ("model", CTLTYPE_STRING),
+    ("ncpu", CTLTYPE_INT),
+    ("byteorder", CTLTYPE_INT),
+    ("gap", 0),
+    ("gap", 0),
+    ("pagesize", CTLTYPE_INT),
+    ("disknames", CTLTYPE_STRING),
+    ("diskstats", CTLTYPE_STRUCT),
+    ("diskcount", CTLTYPE_INT),
+    ("sensors", CTLTYPE_NODE),
+    ("cpuspeed", CTLTYPE_INT),
+    ("setperf", CTLTYPE_INT),
+    ("vendor", CTLTYPE_STRING),
+    ("product", CTLTYPE_STRING),
+    ("version", CTLTYPE_STRING),
+    ("serialno", CTLTYPE_STRING),
+    ("uuid", CTLTYPE_STRING),
+    ("physmem", CTLTYPE_QUAD),
+    ("usermem", CTLTYPE_QUAD),
+    ("ncpufound", CTLTYPE_INT),
+    ("allowpowerdown", CTLTYPE_INT),
+    ("perfpolicy", CTLTYPE_STRING),
+    ("smt", CTLTYPE_INT),
+    ("ncpuonline", CTLTYPE_INT),
+    ("power", CTLTYPE_INT),
+    ("battery", CTLTYPE_NODE),
+    ("ucomnames", CTLTYPE_STRING),
+    ("blockcpu", CTLTYPE_STRING),
 ];
 
 // HW_BATTERY
@@ -1009,13 +997,12 @@ pub const HW_BATTERY_CHARGESTART: i32 = 2;
 pub const HW_BATTERY_CHARGESTOP: i32 = 3;
 pub const HW_BATTERY_MAXID: i32 = 4;
 
-
 /// Mat the CTL hw battery names to their types
 pub const CTL_HW_BATTERY_NAMES: [(&str, i32); 4] = [
-	("", 0),
-	("chargemode", CTLTYPE_INT),
-	("chargestart", CTLTYPE_INT),
-	("chargestop", CTLTYPE_INT),
+    ("", 0),
+    ("chargemode", CTLTYPE_INT),
+    ("chargestart", CTLTYPE_INT),
+    ("chargestop", CTLTYPE_INT),
 ];
 
 /*
@@ -1041,26 +1028,25 @@ pub const CTL_DEBUG_MAXID: i32 = 20;
 /// variables are added, they must also be declared here and also
 /// entered into the array.
 pub struct CtlDebug {
-	/// Name of debugging variable
-	pub debugname: *mut libc::c_char,
-	/// Pointer to debugging variable
-	pub debugvar: *mut libc::c_int,
+    /// Name of debugging variable
+    pub debugname: *mut libc::c_char,
+    /// Pointer to debugging variable
+    pub debugvar: *mut libc::c_int,
 }
 
 /// Exported sysctl variable with valid bounds. Both bounds are inclusive to
 /// allow full range of values.
 ///
 pub struct SysctlBoundedArgs {
-	/// identifier shared with userspace as a CTL_ constant
-	pub mib: libc::c_int,
-	/// Never NULL
-	pub var: *mut libc::c_int,
-	/// Checking is disabled if minimum == maximum
-	pub minimum: libc::c_int,
-	/// Read-only variable if minimum > maximum
-	pub maximum: libc::c_int,
+    /// identifier shared with userspace as a CTL_ constant
+    pub mib: libc::c_int,
+    /// Never NULL
+    pub var: *mut libc::c_int,
+    /// Checking is disabled if minimum == maximum
+    pub minimum: libc::c_int,
+    /// Read-only variable if minimum > maximum
+    pub maximum: libc::c_int,
 }
 
 /// Special case minimum,maximum marker for sysctl_bounded_args.
 pub const SYSCTL_INT_READONLY: (i32, i32) = (1, 0);
-

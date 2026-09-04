@@ -59,7 +59,8 @@ format = "{chr_state} {rem_percent}% {rem_time}"
 #### Note for OpenBSD
 
 On OpenBSD, sysctl reads values under `hw.sensors.acpibatX`, where X can be
-`index`.
+`index` to know the battery level, and `hw.sensors.acpiac0.indicator0` to know
+if it's charging.
 
 ### CPU Frequency
 

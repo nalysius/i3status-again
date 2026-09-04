@@ -12,6 +12,7 @@ pub mod headers;
 
 pub use crate::sensors::sysctl::openbsd::headers::sensors::*;
 pub use crate::sensors::sysctl::openbsd::headers::sysctl::*;
+pub use crate::sensors::sysctl::openbsd::headers::uvmexp::*;
 
 /// An error that can occurs using sysctl
 #[derive(Debug)]
@@ -135,6 +136,11 @@ pub fn sysctl_sensor(mib: &[c_int]) -> Result<Sensor, SysctlError> {
 /// A wrapper around sysctl to get a SensorDev.
 pub fn sysctl_sensordev(mib: &[c_int]) -> Result<SensorDev, SysctlError> {
     sysctl_fixed(mib)
+}
+
+/// A wrapper around sysctl to get a uvmexp.
+pub fn sysctl_uvmexp(mib: &[c_int]) -> Result<uvmexp, SysctlError> {
+	sysctl_fixed(mib)
 }
 
 /// A wrapper around sysctl.

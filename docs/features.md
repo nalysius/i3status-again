@@ -61,6 +61,40 @@ format = "{chr_state} {rem_percent}% {rem_time}"
 On OpenBSD, sysctl reads values under `hw.sensors.acpibatX`, where X can be
 `index`.
 
+### CPU Frequency
+
+The cpu_freq block displays the frequency of the CPU. Here is its configuration:
+
+```toml
+[[blocks]]
+block = "cpu_freq"
+format = "{freq} {unit}"
+#index = 0
+#unit = "ghz"
+#aggregation = "average"
+```
+
+- `block` contains the name of the block, here "cpu_freq".
+- `format` describes how to display the information about the battery. Some people
+  want only the value, some others want the unit, all can choose.
+  There are two placeholders that can be used:
+  - `freq` means frequency. It's the frequency of the CPU without the unit, like
+	"2.65".
+  - `unit` is the frequency unit, either "MHz" or "GHz".
+- `index` (optional) is the index of the CPU to monitor. Remove or comment this
+  setting if you have only one CPU or if you want to combine all your CPUs in one
+  block.
+- `unit` (optional, default = "ghz") is the frequency unit to compute, either
+  "ghz" or "mhz".
+- `aggregation` (optional, default = "average") is the aggregation method to use
+  if several CPUs are combined in one block. Available are "average" and
+  "maximum".
+
+#### Note for OpenBSD
+
+On OpenBSD, sysctl reads values under `hw.sensors.cpuX.frequency0` where X can
+be `index`.
+
 ### CPU Temperature
 
 The cpu_temp block displays the temperature of the CPU. Here is its configuration:

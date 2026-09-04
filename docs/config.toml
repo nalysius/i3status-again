@@ -1,8 +1,17 @@
+# See docs/features.md for the full documentation about the blocks.
+
+[[blocks]]
+block = "cpu_freq"
+format = "{freq} {unit}"
+#index = 0
+#unit = "ghz"
+#aggregation = "average"
+
 [[blocks]]
 block = "cpu_temp"
 format = "{temp} {unit}"
 #index = 0
-# unit = "fahrenheit"
+#unit = "celsius"
 
 [[blocks]]
 block = "battery"

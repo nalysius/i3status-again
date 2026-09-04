@@ -14,40 +14,39 @@ pub enum TempUnit {
 }
 
 impl fmt::Display for TempUnit {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
-		match self {
-			TempUnit::Celsius => write!(f, "°C"),
-			TempUnit::Fahrenheit => write!(f, "°F"),
-		}
-	}
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        match self {
+            TempUnit::Celsius => write!(f, "°C"),
+            TempUnit::Fahrenheit => write!(f, "°F"),
+        }
+    }
 }
-/*
+
 /// Aggregation unit
 #[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum AggregatUnit {
-	#[default]
-	Average,
-	Maximum,
+    #[default]
+    Average,
+    Maximum,
 }
 
 /// Frequency unit
 #[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum FreqUnit {
-	/// Mega Hertz
-	MHz,
-	/// Giga Herts
-	#[default]
-	GHz,
+    /// Mega Hertz
+    MHz,
+    /// Giga Herts
+    #[default]
+    GHz,
 }
 
 impl fmt::Display for FreqUnit {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
-		match self {
-			FreqUnit::MHz => write!(f, "MHz"),
-			FreqUnit::GHz => write!(f, "GHz"),
-		}
-	}
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        match self {
+            FreqUnit::MHz => write!(f, "MHz"),
+            FreqUnit::GHz => write!(f, "GHz"),
+        }
+    }
 }
-*/

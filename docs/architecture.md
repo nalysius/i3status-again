@@ -12,13 +12,22 @@ The `src/` directory looks like this :
 |-- bar.rs
 |-- blocks
 |   |-- battery.rs
+|   |-- cpu_freq.rs
+|   |-- cpu_temp.rs
 |   |-- datetime.rs
 |   `-- mod.rs
+|-- common.rs
 |-- config.rs
 |-- lib.rs
 |-- main.rs
 |-- os
 |   |-- battery
+|   |   |-- mod.rs
+|   |   `-- openbsd.rs
+|   |-- cpu_freq
+|   |   |-- mod.rs
+|   |   `-- openbsd.rs
+|   |-- cpu_temp
 |   |   |-- mod.rs
 |   |   `-- openbsd.rs
 |   `-- mod.rs
@@ -39,6 +48,13 @@ The `src/` directory looks like this :
 The `bar` module handles the i3bar protocol, it defines a `BlockOutput` struct
 that is returned by the blocks. Then it is encoded to JSON, so the blocks don't
 have to bother with it.
+
+### `common`
+
+The `common` module defines some structs that are common to several modules. For
+example, the struct TempUnit is defined here and is used in `config`, `blocks`
+and `os` to let the user decide which temperature unit to use. This module must
+remain as small as possible.
 
 ### `config`
 

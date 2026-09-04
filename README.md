@@ -17,6 +17,7 @@ The table below shows which blocks are supported on which operating systems.
 |            | OpenBSD | FreeBSD | NetBSD | DragonFly BSD | Linux |
 |------------|---------|---------|--------|---------------|-------|
 | battery    |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
+| cpu_freq   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | cpu_temp   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | datetime   |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
 

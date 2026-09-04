@@ -1,7 +1,7 @@
 //! The config module handles the configuration.
 
 use crate::blocks::*;
-use crate::common::TempUnit;
+use crate::common::{AggregatUnit, FreqUnit, TempUnit};
 use serde::Deserialize;
 use std::error;
 use std::fs;
@@ -24,6 +24,8 @@ pub enum BlockConfig {
     Battery(BatteryConfig),
     #[serde(rename = "cpu_temp")]
     CpuTemp(CpuTempConfig),
+    #[serde(rename = "cpu_freq")]
+    CpuFreq(CpuFreqConfig),
 }
 
 /// The configuration for the "datetime" block.
@@ -38,12 +40,7 @@ pub struct DateTimeConfig {
 #[derive(Debug, Deserialize)]
 pub struct BatteryConfig {
     /// The string used to format the battery display.
-    /// Supports placeholders:
-    /// - {rem_percent} the percentage of remaining energy, like 42. Doesn't
-    ///   contain the percent character.
-    /// - {rem_time} the estimated remaining time, like 02:42.
-    /// - {chr_state} the charging state of the battery, either CHR if charging
-    ///   or BAT otherwise.
+    /// Supported placeholders are documented in docs/features.md.
     pub format: String,
     /// The identifier of the battery to monitor, starting from 0.
     /// If None, all the batteries are monitored and displayed as one.
@@ -54,9 +51,7 @@ pub struct BatteryConfig {
 #[derive(Debug, Deserialize)]
 pub struct CpuTempConfig {
     /// The string used to format the CPU temperature display.
-    /// Supports placeholders:
-    /// - {temp} the temperature without the unit.
-    /// - {unit} the unit of the temperature, like °C or °F.
+    /// Supported placeholders are documented in docs/features.md.
     pub format: String,
     /// The identifier of the CPU to monitor, starting from 0.
     /// If None, all the CPUs are monitored and displayed as one.
@@ -65,6 +60,25 @@ pub struct CpuTempConfig {
     /// Default to Celsius.
     #[serde(default)]
     pub unit: TempUnit,
+}
+
+/// The configuration for the "cpu_temp" block.
+#[derive(Debug, Deserialize)]
+pub struct CpuFreqConfig {
+    /// The string used to format the CPU frequency display.
+    /// Supported placeholders are documented in docs/features.md.
+    pub format: String,
+    /// The identifier of the CPU to monitor, starting from 0.
+    /// If None, all the CPUs are monitored and displayed as one.
+    pub index: Option<u8>,
+    /// The unit of the frequency.
+    /// Default to GHz.
+    #[serde(default)]
+    pub unit: FreqUnit,
+    /// How to aggregate the data if there are several CPUs.
+    /// Default to average.
+    #[serde(default)]
+    pub aggregation: AggregatUnit,
 }
 
 /// The global configuration structure.
@@ -85,6 +99,10 @@ impl Config {
                 BlockConfig::Battery(b) => {
                     let bt_block = BatteryBlock::from_config(&b);
                     blocks.push(BlockType::Battery(bt_block));
+                }
+                BlockConfig::CpuFreq(c) => {
+                    let cf_block = CpuFreqBlock::from_config(&c);
+                    blocks.push(BlockType::CpuFreq(cf_block));
                 }
                 BlockConfig::CpuTemp(c) => {
                     let ct_block = CpuTempBlock::from_config(&c);

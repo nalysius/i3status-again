@@ -8,10 +8,12 @@
 //! in the os module.
 
 pub mod battery;
+pub mod cpu_freq;
 pub mod cpu_temp;
 pub mod datetime;
 
 pub use crate::blocks::battery::BatteryBlock;
+pub use crate::blocks::cpu_freq::CpuFreqBlock;
 pub use crate::blocks::cpu_temp::CpuTempBlock;
 pub use crate::blocks::datetime::DateTimeBlock;
 
@@ -23,6 +25,7 @@ use crate::bar::BlockOutput;
 /// Vec<dyn Block>, store a Vec<BlockType>.
 pub enum BlockType {
     Battery(BatteryBlock),
+    CpuFreq(CpuFreqBlock),
     CpuTemp(CpuTempBlock),
     DateTime(DateTimeBlock),
 }
@@ -32,6 +35,7 @@ impl BlockType {
     pub fn get_output(&self) -> BlockOutput {
         match &self {
             Self::Battery(b) => b.get_output(),
+            Self::CpuFreq(c) => c.get_output(),
             Self::CpuTemp(c) => c.get_output(),
             Self::DateTime(d) => d.get_output(),
         }

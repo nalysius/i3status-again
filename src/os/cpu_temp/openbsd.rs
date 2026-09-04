@@ -16,7 +16,7 @@ use crate::sensors::sysctl::openbsd::*;
 ///
 /// unit is the target unit of temperature.
 pub fn get_cpu_temp(cpu_index: Option<u8>, unit: TempUnit) -> Result<u8, CpuTempError> {
-    let sensors = match sysctl_sensors(SensorDevType::SensorDevCpu, SensorType::SensorTemp) {
+    let sensors = match sysctl_sensors(SensorDevType::SensorDevCpu, SENSOR_TYPE_TEMP) {
         Ok(v) => v,
         Err(e) => return Err(e.into()),
     };
@@ -24,7 +24,7 @@ pub fn get_cpu_temp(cpu_index: Option<u8>, unit: TempUnit) -> Result<u8, CpuTemp
     let mut max_temp: u8 = 0;
     let cpu_id: u8 = cpu_index.unwrap_or(u8::MAX);
     for (device, sensor) in sensors {
-        let device_id = device.get_id();
+        let device_id = get_sensordev_id(&device);
         if cpu_id == device_id || cpu_index.is_none() {
             let mut temp: u8 = kelvin_to_celsius((sensor.value / 1_000_000) as u32);
             if unit == TempUnit::Fahrenheit {

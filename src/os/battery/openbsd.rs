@@ -16,16 +16,15 @@ fn get_battery_watthours(bat_index: Option<u8>) -> Result<(i64, i64), BatteryErr
     let mut last_full_cap: i64 = 0;
 
     // Get all the watthours for all the batteries
-    let sensors = match sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatthour)
-    {
+    let sensors = match sysctl_sensors(SensorDevType::SensorDevBattery, SENSOR_TYPE_WATTHOUR) {
         Ok(v) => v,
         Err(e) => return Err(e.into()),
     };
 
     let bat_id: u8 = bat_index.unwrap_or(u8::MAX);
     for (device, sensor) in sensors {
-        let sensor_desc = sensor.get_desc();
-        let device_id = device.get_id();
+        let sensor_desc = get_sensor_desc(&sensor);
+        let device_id = get_sensordev_id(&device);
 
         if bat_id == device_id || bat_index.is_none() {
             if sensor_desc == "remaining capacity" {
@@ -48,15 +47,15 @@ fn get_battery_power(bat_index: Option<u8>) -> Result<i64, BatteryError> {
     let mut power: i64 = 0;
 
     // Get all the powers for all the batteries
-    let sensors = match sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatts) {
+    let sensors = match sysctl_sensors(SensorDevType::SensorDevBattery, SENSOR_TYPE_WATTS) {
         Ok(v) => v,
         Err(e) => return Err(e.into()),
     };
 
     let bat_id: u8 = bat_index.unwrap_or(u8::MAX);
     for (device, sensor) in sensors {
-        let sensor_desc = sensor.get_desc();
-        let device_id = device.get_id();
+        let sensor_desc = get_sensor_desc(&sensor);
+        let device_id = get_sensordev_id(&device);
 
         if bat_id == device_id || bat_index.is_none() {
             if sensor_desc == "rate" {

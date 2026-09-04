@@ -2,8 +2,10 @@
 //! structures used in OpenBSD to access sysctl.
 //! See /usr/include/sys/sysctl.h
 
+use libc::{c_char, c_int, c_ulong, size_t};
+
 /// Largest number of components supported
-pub const CTL_MAX_NAME: i32 = 12;
+pub const CTL_MAX_NAME: c_int = 12;
 
 /// Each subsystem defined by sysctl defines a list of variables
 /// for that subsystem. Each name is either a node with further
@@ -11,49 +13,49 @@ pub const CTL_MAX_NAME: i32 = 12;
 /// type given below. Each sysctl level defines a set of name/type
 /// pairs to be used by sysctl(1) in manipulating the subsystem.
 #[repr(C)]
-pub struct CtlName {
+pub struct ctlname {
     /// Subsystem name
     ctl_name: &'static str,
     /// Type of name
-    ctl_type: i32,
+    ctl_type: c_int,
 }
 
 /// Name is a node
-pub const CTLTYPE_NODE: i32 = 1;
+pub const CTLTYPE_NODE: c_int = 1;
 /// Name describes an integer
-pub const CTLTYPE_INT: i32 = 2;
+pub const CTLTYPE_INT: c_int = 2;
 /// Name describes a string
-pub const CTLTYPE_STRING: i32 = 3;
+pub const CTLTYPE_STRING: c_int = 3;
 /// Name describes a 64-bit number
-pub const CTLTYPE_QUAD: i32 = 4;
+pub const CTLTYPE_QUAD: c_int = 4;
 /// Name describes a structure
-pub const CTLTYPE_STRUCT: i32 = 5;
+pub const CTLTYPE_STRUCT: c_int = 5;
 
 /// Unused
-pub const CTL_UNSPEC: i32 = 0;
+pub const CTL_UNSPEC: c_int = 0;
 /// "High kernel": proc, limits
-pub const CTL_KERN: i32 = 1;
+pub const CTL_KERN: c_int = 1;
 /// Virtual memory
-pub const CTL_VM: i32 = 2;
+pub const CTL_VM: c_int = 2;
 // No 3, gap for CTL_FS
 /// Network, see /usr/include/sys/socket.h
-pub const CTL_NET: i32 = 4;
+pub const CTL_NET: c_int = 4;
 /// Debugging parameters
-pub const CTL_DEBUG: i32 = 5;
+pub const CTL_DEBUG: c_int = 5;
 /// Generic cpu/io
-pub const CTL_HW: i32 = 6;
+pub const CTL_HW: c_int = 6;
 /// Machine dependent
-pub const CTL_MACHDEP: i32 = 7;
+pub const CTL_MACHDEP: c_int = 7;
 // No 8, was CTL_USER, which is removed
 /// DDB user interface, see /usr/include/ddb/db_var.h
-pub const CTL_DDB: i32 = 9;
+pub const CTL_DDB: c_int = 9;
 /// VFS sysctl's
-pub const CTL_VFS: i32 = 10;
+pub const CTL_VFS: c_int = 10;
 /// Number of valid top-level ids
-pub const CTL_MAXID: i32 = 11;
+pub const CTL_MAXID: c_int = 11;
 
 /// Map the CTL names to their types
-pub const CTL_NAMES: [(&str, i32); 11] = [
+pub const CTL_NAMES: [(&str, c_int); CTL_MAXID as size_t] = [
     ("", 0),
     ("kern", CTLTYPE_NODE),
     ("vm", CTLTYPE_NODE),
@@ -69,182 +71,182 @@ pub const CTL_NAMES: [(&str, i32); 11] = [
 
 // CTL_KERN identifier
 /// String: system version
-pub const KERN_OSTYPE: i32 = 1;
+pub const KERN_OSTYPE: c_int = 1;
 /// String: system release
-pub const KERN_OSRELEASE: i32 = 2;
+pub const KERN_OSRELEASE: c_int = 2;
 /// Int: system revision
-pub const KERN_OSREV: i32 = 3;
+pub const KERN_OSREV: c_int = 3;
 /// String: compile time info
-pub const KERN_VERSION: i32 = 4;
+pub const KERN_VERSION: c_int = 4;
 /// Int: max vnodes
-pub const KERN_MAXVNODES: i32 = 5;
+pub const KERN_MAXVNODES: c_int = 5;
 /// Int: max processes
-pub const KERN_MAXPROC: i32 = 6;
+pub const KERN_MAXPROC: c_int = 6;
 /// Int: max open files
-pub const KERN_MAXFILES: i32 = 7;
+pub const KERN_MAXFILES: c_int = 7;
 /// Int: max arguments to exec
-pub const KERN_ARGMAX: i32 = 8;
+pub const KERN_ARGMAX: c_int = 8;
 /// Int: system security level
-pub const KERN_SECURELVL: i32 = 9;
+pub const KERN_SECURELVL: c_int = 9;
 /// String: hostname
-pub const KERN_HOSTNAME: i32 = 10;
+pub const KERN_HOSTNAME: c_int = 10;
 /// Int: host identifier
-pub const KERN_HOSTID: i32 = 11;
+pub const KERN_HOSTID: c_int = 11;
 /// Stuct: struct clockinfo
-pub const KERN_CLOCKRATE: i32 = 12;
+pub const KERN_CLOCKRATE: c_int = 12;
 // No 13, 14 or 15. Were KERN_DNSJACKPORT, KERN_PROC and KERN_FILE
 /// Node: kernel profiling info
-pub const KERN_PROF: i32 = 16;
+pub const KERN_PROF: c_int = 16;
 /// Int: POSIX.1 version
-pub const KERN_POSIX1: i32 = 17;
+pub const KERN_POSIX1: c_int = 17;
 /// Int: ~ of supplemental group ids
-pub const KERN_NGROUPS: i32 = 18;
+pub const KERN_NGROUPS: c_int = 18;
 /// Int: is job control available
-pub const KERN_JOB_CONTROL: i32 = 19;
+pub const KERN_JOB_CONTROL: c_int = 19;
 /// Int: saved set-user/group-ID
-pub const KERN_SAVED_IDS: i32 = 20;
+pub const KERN_SAVED_IDS: c_int = 20;
 /// Struct: time kernel was booted
-pub const KERN_BOOTTIME: i32 = 21;
+pub const KERN_BOOTTIME: c_int = 21;
 /// String: (YP) domain name
-pub const KERN_DOMAINNAME: i32 = 22;
+pub const KERN_DOMAINNAME: c_int = 22;
 /// Int: number of partitions / disk
-pub const KERN_MAXPARTITIONS: i32 = 23;
+pub const KERN_MAXPARTITIONS: c_int = 23;
 /// Int: raw partition number
-pub const KERN_RAWPARTITION: i32 = 24;
+pub const KERN_RAWPARTITION: c_int = 24;
 /// Int: max threads
-pub const KERN_MAXTHREAD: i32 = 25;
+pub const KERN_MAXTHREAD: c_int = 25;
 /// Int: number of threads
-pub const KERN_NTHREADS: i32 = 26;
+pub const KERN_NTHREADS: c_int = 26;
 /// String: kernel build version
-pub const KERN_OSVERSION: i32 = 27;
+pub const KERN_OSVERSION: c_int = 27;
 /// Int: listen queue maximum
-pub const KERN_SOMAXCONN: i32 = 28;
+pub const KERN_SOMAXCONN: c_int = 28;
 /// Int: half-open controllable param
-pub const KERN_SOMINCONN: i32 = 29;
+pub const KERN_SOMINCONN: c_int = 29;
 // No 30 or 31, were KERN_USERMOUNT and KERN_RND
 /// Int: no setuid coredumps ever
-pub const KERN_NOSUIDCOREDUMP: i32 = 32;
+pub const KERN_NOSUIDCOREDUMP: c_int = 32;
 /// Int: file synchronization support
-pub const KERN_FSYNC: i32 = 33;
+pub const KERN_FSYNC: c_int = 33;
 /// Int: SysV message queue support
-pub const KERN_SYSVMSG: i32 = 34;
+pub const KERN_SYSVMSG: c_int = 34;
 /// Int: SysV semaphore support
-pub const KERN_SYSVSEM: i32 = 35;
+pub const KERN_SYSVSEM: c_int = 35;
 /// Int: SysV shared memory support
-pub const KERN_SYSVSHM: i32 = 36;
+pub const KERN_SYSVSHM: c_int = 36;
 // No 37, was KERN_ARND
 /// Int: size of message buffer
-pub const KERN_MSGBUFSIZE: i32 = 38;
+pub const KERN_MSGBUFSIZE: c_int = 38;
 /// Note: malloc statistics
-pub const KERN_MALLOCSTATS: i32 = 39;
+pub const KERN_MALLOCSTATS: c_int = 39;
 /// Array: cp_time
-pub const KERN_CPTIME: i32 = 40;
+pub const KERN_CPTIME: c_int = 40;
 /// Struct: vfs cache statistics
-pub const KERN_NCHSTATS: i32 = 41;
+pub const KERN_NCHSTATS: c_int = 41;
 /// Struct: fork statistics
-pub const KERN_FORKSTAT: i32 = 42;
+pub const KERN_FORKSTAT: c_int = 42;
 // No 43, was KERN_NSELCOLL
 /// Node: tty information
-pub const KERN_TTY: i32 = 44;
+pub const KERN_TTY: c_int = 44;
 /// Int: ccpu
-pub const KERN_CCPU: i32 = 45;
+pub const KERN_CCPU: c_int = 45;
 /// Int: fscale
-pub const KERN_FSCALE: i32 = 46;
+pub const KERN_FSCALE: c_int = 46;
 /// Int: number of processes
-pub const KERN_NPROCS: i32 = 47;
+pub const KERN_NPROCS: c_int = 47;
 /// Message buffer, KERN_MSGBUFSIZE
-pub const KERN_MSGBUF: i32 = 48;
+pub const KERN_MSGBUF: c_int = 48;
 /// Struct: pool information
-pub const KERN_POOL: i32 = 49;
+pub const KERN_POOL: c_int = 49;
 /// Int: stackgap_random
-pub const KERN_STACKGAPRANDOM: i32 = 50;
+pub const KERN_STACKGAPRANDOM: c_int = 50;
 /// Struct: SysV sem/shm/msg info
-pub const KERN_SYSVIPC_INFO: i32 = 51;
+pub const KERN_SYSVIPC_INFO: c_int = 51;
 /// Int: allowkmem
-pub const KERN_ALLOWKMEM: i32 = 52;
+pub const KERN_ALLOWKMEM: c_int = 52;
 /// Int: witnesswatch
-pub const KERN_WITNESSWATCH: i32 = 53;
+pub const KERN_WITNESSWATCH: c_int = 53;
 /// Int: splassert
-pub const KERN_SPLASSERT: i32 = 54;
+pub const KERN_SPLASSERT: c_int = 54;
 /// Node: proc args and env
-pub const KERN_PROC_ARGS: i32 = 55;
+pub const KERN_PROC_ARGS: c_int = 55;
 /// Int: number of open files
-pub const KERN_NFILES: i32 = 56;
+pub const KERN_NFILES: c_int = 56;
 /// Int: number of tty devices
-pub const KERN_TTYCOUNT: i32 = 57;
+pub const KERN_TTYCOUNT: c_int = 57;
 /// Int: number of vnodes in use
-pub const KERN_NUMVNODES: i32 = 58;
+pub const KERN_NUMVNODES: c_int = 58;
 /// Struct: mbuf statistics
-pub const KERN_MBSTAT: i32 = 59;
+pub const KERN_MBSTAT: c_int = 59;
 /// Node: witness
-pub const KERN_WITNESS: i32 = 60;
+pub const KERN_WITNESS: c_int = 60;
 /// Struct: SysV struct seminfo
-pub const KERN_SEMINFO: i32 = 61;
+pub const KERN_SEMINFO: c_int = 61;
 /// Struct: SysV struct shminfo
-pub const KERN_SHMINFO: i32 = 62;
+pub const KERN_SHMINFO: c_int = 62;
 /// Node: interrupt counters
-pub const KERN_INTRCNT: i32 = 63;
+pub const KERN_INTRCNT: c_int = 63;
 /// Node: watchdog
-pub const KERN_WATCHDOG: i32 = 64;
+pub const KERN_WATCHDOG: c_int = 64;
 /// Int: allowdt
-pub const KERN_ALLOWDT: i32 = 65;
+pub const KERN_ALLOWDT: c_int = 65;
 /// Struct: process entries
-pub const KERN_PROC: i32 = 66;
+pub const KERN_PROC: c_int = 66;
 /// Number of mclusters
-pub const KERN_MAXCLUSTERS: i32 = 67;
+pub const KERN_MAXCLUSTERS: c_int = 67;
 /// Node: event counters
-pub const KERN_EVCOUNT: i32 = 68;
+pub const KERN_EVCOUNT: c_int = 68;
 /// Node: timecounter
-pub const KERN_TIMECOUNTER: i32 = 69;
+pub const KERN_TIMECOUNTER: c_int = 69;
 /// Int: locks per uid
-pub const KERN_MAXLOCKSPERUID: i32 = 70;
+pub const KERN_MAXLOCKSPERUID: c_int = 70;
 /// Array: cp_time2
-pub const KERN_CPTIME2: i32 = 71;
+pub const KERN_CPTIME2: c_int = 71;
 /// Buffer cache % of physmem
-pub const KERN_CACHEPCT: i32 = 72;
+pub const KERN_CACHEPCT: c_int = 72;
 /// Struct: file entries
-pub const KERN_FILE: i32 = 73;
+pub const KERN_FILE: c_int = 73;
 /// Int: w^x sigabrt & core
-pub const KERN_WXABORT: i32 = 74;
+pub const KERN_WXABORT: c_int = 74;
 /// Dev_t console terminal device
-pub const KERN_CONSDEV: i32 = 75;
+pub const KERN_CONSDEV: c_int = 75;
 /// Int: Int: number of network livelocks
-pub const KERN_NETLIVELOCKS: i32 = 76;
+pub const KERN_NETLIVELOCKS: c_int = 76;
 /// Int: enable pool_debug
-pub const KERN_POOL_DEBUG: i32 = 77;
+pub const KERN_POOL_DEBUG: c_int = 77;
 /// Node: proc cwd
-pub const KERN_PROC_CWD: i32 = 78;
+pub const KERN_PROC_CWD: c_int = 78;
 /// Node: proc no broadcast kill
-pub const KERN_PROC_NOBROADCASTKILL: i32 = 79;
+pub const KERN_PROC_NOBROADCASTKILL: c_int = 79;
 /// Node: proc vmmap
-pub const KERN_PROC_VMMAP: i32 = 80;
+pub const KERN_PROC_VMMAP: c_int = 80;
 /// Allow ptrace globally
-pub const KERN_GLOBAL_PTRACE: i32 = 81;
+pub const KERN_GLOBAL_PTRACE: c_int = 81;
 /// Int: console message buffer size
-pub const KERN_CONSBUFSIZE: i32 = 82;
+pub const KERN_CONSBUFSIZE: c_int = 82;
 /// Console message buffer
-pub const KERN_CONSBUF: i32 = 83;
+pub const KERN_CONSBUF: c_int = 83;
 /// Console message buffer
-pub const KERN_AUDIO: i32 = 84;
+pub const KERN_AUDIO: c_int = 84;
 /// Struct: audio properties
-pub const KERN_CPUSTATS: i32 = 85;
+pub const KERN_CPUSTATS: c_int = 85;
 /// Struct: pf status and stats
-pub const KERN_PFSTATUS: i32 = 86;
+pub const KERN_PFSTATUS: c_int = 86;
 /// Struct: timeout status and stats
-pub const KERN_TIMEOUT_STATS: i32 = 87;
+pub const KERN_TIMEOUT_STATS: c_int = 87;
 /// Int: adjust RTC time to UTC
-pub const KERN_UTC_OFFSET: i32 = 88;
+pub const KERN_UTC_OFFSET: c_int = 88;
 /// Int: Struct: video properties
-pub const KERN_VIDEO: i32 = 89;
+pub const KERN_VIDEO: c_int = 89;
 /// Node: clockintr
-pub const KERN_CLOCKINTR: i32 = 90;
+pub const KERN_CLOCKINTR: c_int = 90;
 /// Int: kernel device tree state serial
-pub const KERN_AUTOCONF_SERIAL: i32 = 91;
+pub const KERN_AUTOCONF_SERIAL: c_int = 91;
 /// Number of valid kern ids
-pub const KERN_MAXID: i32 = 92;
+pub const KERN_MAXID: c_int = 92;
 
 /// Map CTL kern to their types
-pub const CTL_KERN_NAMES: [(&str, i32); 92] = [
+pub const CTL_KERN_NAMES: [(&str, c_int); KERN_MAXID as size_t] = [
     ("", 0),
     ("ostype", CTLTYPE_STRING),
     ("osrelease", CTLTYPE_STRING),
@@ -341,64 +343,64 @@ pub const CTL_KERN_NAMES: [(&str, i32); 92] = [
 
 // KERN_PROC subtypes
 /// Everything but kernel threads
-pub const KERN_PROC_ALL: i32 = 0;
+pub const KERN_PROC_ALL: c_int = 0;
 /// By process id
-pub const KERN_PROC_PID: i32 = 1;
+pub const KERN_PROC_PID: c_int = 1;
 /// By process group id
-pub const KERN_PROC_PGRP: i32 = 2;
+pub const KERN_PROC_PGRP: c_int = 2;
 /// By session of pid
-pub const KERN_PROC_SESSION: i32 = 3;
+pub const KERN_PROC_SESSION: c_int = 3;
 /// By controlling tty
-pub const KERN_PROC_TTY: i32 = 4;
+pub const KERN_PROC_TTY: c_int = 4;
 /// By effective uid
-pub const KERN_PROC_UID: i32 = 5;
+pub const KERN_PROC_UID: c_int = 5;
 /// By real uid
-pub const KERN_PROC_RUID: i32 = 6;
+pub const KERN_PROC_RUID: c_int = 6;
 /// Also return kernel threads
-pub const KERN_PROC_KTHREAD: i32 = 7;
+pub const KERN_PROC_KTHREAD: c_int = 7;
 /// Also return normal threads
-pub const KERN_PROC_SHOW_THREADS: i32 = 0x40000000;
+pub const KERN_PROC_SHOW_THREADS: c_int = 0x40000000;
 
 // KERN_SYSVIPC_INFO subtypes
 /// Msginfo and msgid_ds
-pub const KERN_SYSVIPC_MSG_INFO: i32 = 1;
+pub const KERN_SYSVIPC_MSG_INFO: c_int = 1;
 /// Seminfo and semid_ds
-pub const KERN_SYSVIPC_SEM_INFO: i32 = 2;
+pub const KERN_SYSVIPC_SEM_INFO: c_int = 2;
 /// Shminfo and shmid_ds
-pub const KERN_SYSVIPC_SHM_INFO: i32 = 3;
+pub const KERN_SYSVIPC_SHM_INFO: c_int = 3;
 
 // KERN_PROC_ARGS subtypes
-pub const KERN_PROC_ARGV: i32 = 1;
-pub const KERN_PROC_NARGV: i32 = 2;
-pub const KERN_PROC_ENV: i32 = 3;
-pub const KERN_PROC_NENV: i32 = 4;
+pub const KERN_PROC_ARGV: c_int = 1;
+pub const KERN_PROC_NARGV: c_int = 2;
+pub const KERN_PROC_ENV: c_int = 3;
+pub const KERN_PROC_NENV: c_int = 4;
 
 // KERN_AUDIO
-pub const KERN_AUDIO_RECORD: i32 = 1;
-pub const KERN_AUDIO_KBDCONTROL: i32 = 2;
-pub const KERN_AUDIO_MAXID: i32 = 3;
+pub const KERN_AUDIO_RECORD: c_int = 1;
+pub const KERN_AUDIO_KBDCONTROL: c_int = 2;
+pub const KERN_AUDIO_MAXID: c_int = 3;
 
 /// Map the kern audio names to their types
-pub const CTL_KERN_AUDIO_NAMES: [(&str, i32); 3] = [
+pub const CTL_KERN_AUDIO_NAMES: [(&str, c_int); KERN_AUDIO_MAXID as size_t] = [
     ("", 0),
     ("record", CTLTYPE_INT),
     ("kbdcontrol", CTLTYPE_INT),
 ];
 
 // KERN_VIDEO
-pub const KERN_VIDEO_RECORD: i32 = 1;
-pub const KERN_VIDEO_MAXID: i32 = 2;
+pub const KERN_VIDEO_RECORD: c_int = 1;
+pub const KERN_VIDEO_MAXID: c_int = 2;
 
 /// Map the kern video names to their types
-pub const CTL_KERN_VIDEO_NAMES: [(&str, i32); 2] = [("", 0), ("record", CTLTYPE_INT)];
+pub const CTL_KERN_VIDEO_NAMES: [(&str, c_int); KERN_VIDEO_MAXID as size_t] = [("", 0), ("record", CTLTYPE_INT)];
 
 // KERN_WITNESS
-pub const KERN_WITNESS_WATCH: i32 = 1;
-pub const KERN_WITNESS_LOCKTRACE: i32 = 2;
-pub const KERN_WITNESS_MAXID: i32 = 3;
+pub const KERN_WITNESS_WATCH: c_int = 1;
+pub const KERN_WITNESS_LOCKTRACE: c_int = 2;
+pub const KERN_WITNESS_MAXID: c_int = 3;
 
 /// Map their kern witness names to their types
-pub const CTL_KERN_WITNESS_NAMES: [(&str, i32); 3] =
+pub const CTL_KERN_WITNESS_NAMES: [(&str, c_int); KERN_WITNESS_MAXID as size_t] =
     [("", 0), ("watch", CTLTYPE_INT), ("locktrace", CTLTYPE_INT)];
 
 /*
@@ -407,27 +409,27 @@ pub const CTL_KERN_WITNESS_NAMES: [(&str, i32); 3] =
  * elements should only be added to the end of this structure so
  * binary compatibility can be preserved.
  */
-pub const KI_NGROUPS: usize = 16;
+pub const KI_NGROUPS: c_int = 16;
 /// Includes NUL. From /usr/include/sys/syslimits.h:83
-pub const KI_MAXCOMLEN: usize = 24;
-pub const KI_WMESGLEN: usize = 8;
-pub const KI_MAXLOGNAME: usize = 32;
-pub const KI_EMULNAMELEN: usize = 8;
+pub const KI_MAXCOMLEN: c_int = 24;
+pub const KI_WMESGLEN: c_int = 8;
+pub const KI_MAXLOGNAME: c_int = 32;
+pub const KI_EMULNAMELEN: c_int = 8;
 
 pub const KI_NOCPU: u64 = u64::MAX;
 
 /// Controlling tty vnode active
-pub const EPROC_CTTY: i32 = 0x01;
+pub const EPROC_CTTY: c_int = 0x01;
 /// Session leader
-pub const EPROC_SLEADER: i32 = 0x02;
+pub const EPROC_SLEADER: c_int = 0x02;
 /// Has unveil settings
-pub const EPROC_UNVEIL: i32 = 0x04;
+pub const EPROC_UNVEIL: c_int = 0x04;
 /// Unveil is locked
-pub const EPROC_LKUNVAIL: i32 = 0x08;
+pub const EPROC_LKUNVAIL: c_int = 0x08;
 
 /// See /usr/include/sys/sysctl.h
 #[allow(non_snake_case)]
-pub struct KinfoProc {
+pub struct kinfo_proc {
     /// PTR: linked run/sleep queue
     pub p_forw: u64,
     /// PTR: linked run/sleep queue
@@ -453,7 +455,7 @@ pub struct KinfoProc {
     /// PTR: Exit information
     pub p_ru: u64,
     /// LONG: extra kinfo_proc flags
-    pub p_eflag: u64,
+    pub p_eflag: i32,
     /// Unused, always zero
     pub p_exitsig: i32,
     /// INT: P_* flags
@@ -477,7 +479,7 @@ pub struct KinfoProc {
     /// GID_T: real group id
     pub p_rgid: u32,
     /// GID_T: groups
-    pub p_groups: [u32; KI_NGROUPS],
+    pub p_groups: [u32; KI_NGROUPS as size_t],
     /// SHORT: number of groups
     pub p_ngroups: i16,
     /// SHORT: job control counter
@@ -532,13 +534,13 @@ pub struct KinfoProc {
     pub p_xstat: u16,
     /// U_SHORT: unused
     pub p_spare: u16,
-    pub p_comm: [u8; KI_MAXLOGNAME],
+    pub p_comm: [u8; KI_MAXLOGNAME as size_t],
     /// wchan message
-    pub p_wmesg: [u8; KI_WMESGLEN],
+    pub p_wmesg: [u8; KI_WMESGLEN as size_t],
     /// PTR: sleep address
     pub p_wchan: u64,
     /// setlogin() name
-    pub p_login: [u8; KI_MAXLOGNAME],
+    pub p_login: [u8; KI_MAXLOGNAME as size_t],
     /// SEGSZ_T: current resident set size in pages
     pub p_vm_rssize: i32,
     /// SEGSZ_T: text size (pages)
@@ -602,7 +604,7 @@ pub struct KinfoProc {
     /// GID_T: saved group id
     pub p_svgid: u32,
     /// syscall emulation name
-    pub p_emul: [u8; KI_EMULNAMELEN],
+    pub p_emul: [u8; KI_EMULNAMELEN as size_t],
     /// RLIM_T: soft limit for rss
     pub p_rlim_rss_cur: u64,
     /// LONG: CPU id
@@ -616,7 +618,7 @@ pub struct KinfoProc {
     /// U_INT64_T: Pledge flags
     pub p_pledge: u64,
     /// Thread name
-    pub p_name: [u8; KI_MAXCOMLEN],
+    pub p_name: [u8; KI_MAXCOMLEN as size_t],
 }
 
 /// VM address range entry, matching struct vm_map_entry.  Useful for
@@ -624,57 +626,57 @@ pub struct KinfoProc {
 ///
 /// To iterate entries, set the last kve_end as the base address into
 /// kve_start.
-pub struct KinfoVmEntry {
+pub struct kinfo_vmentry {
     /// vaddr_t
-    pub kve_start: libc::c_ulong,
+    pub kve_start: c_ulong,
     /// vaddr_t
-    pub kve_end: libc::c_ulong,
+    pub kve_end: c_ulong,
     /// vsize_t
-    pub kve_guard: libc::c_ulong,
+    pub kve_guard: c_ulong,
     /// vsize_t
-    pub kve_fspace: libc::c_ulong,
+    pub kve_fspace: c_ulong,
     /// vsize_t
-    pub kve_fspace_augment: libc::c_ulong,
+    pub kve_fspace_augment: c_ulong,
     /// voff_t
     pub kve_offset: u64,
-    pub kve_wired_count: libc::c_int,
-    pub kve_etype: libc::c_int,
-    pub kve_protection: libc::c_int,
-    pub kve_max_protection: libc::c_int,
-    pub kve_advice: libc::c_int,
-    pub kve_inheritance: libc::c_int,
+    pub kve_wired_count: c_int,
+    pub kve_etype: c_int,
+    pub kve_protection: c_int,
+    pub kve_max_protection: c_int,
+    pub kve_advice: c_int,
+    pub kve_inheritance: c_int,
     pub kve_flags: u8,
 }
 
 // keep in sync with UVM_ET_*
-pub const KVE_ET_OBJ: i32 = 0x00000001;
-pub const KVE_ET_SUBMAP: i32 = 0x00000002;
-pub const KVE_ET_COPYONWRITE: i32 = 0x00000004;
-pub const KVE_ET_NEEDSCOPY: i32 = 0x00000008;
-pub const KVE_ET_HOLE: i32 = 0x00000010;
-pub const KVE_ET_NOFAULT: i32 = 0x00000020;
-pub const KVE_ET_STACK: i32 = 0x00000040;
-pub const KVE_ET_WC: i32 = 0x00000080;
-pub const KVE_ET_CONCEAL: i32 = 0x00000100;
-pub const KVE_ET_SYSCALL: i32 = 0x00000200;
-pub const KVE_ET_FREEMAPPED: i32 = 0x00000800;
+pub const KVE_ET_OBJ: c_int = 0x00000001;
+pub const KVE_ET_SUBMAP: c_int = 0x00000002;
+pub const KVE_ET_COPYONWRITE: c_int = 0x00000004;
+pub const KVE_ET_NEEDSCOPY: c_int = 0x00000008;
+pub const KVE_ET_HOLE: c_int = 0x00000010;
+pub const KVE_ET_NOFAULT: c_int = 0x00000020;
+pub const KVE_ET_STACK: c_int = 0x00000040;
+pub const KVE_ET_WC: c_int = 0x00000080;
+pub const KVE_ET_CONCEAL: c_int = 0x00000100;
+pub const KVE_ET_SYSCALL: c_int = 0x00000200;
+pub const KVE_ET_FREEMAPPED: c_int = 0x00000800;
 
-pub const KVE_PROT_NONE: i32 = 0x00000000;
-pub const KVE_PROT_READ: i32 = 0x00000001;
-pub const KVE_PROT_WRITE: i32 = 0x00000002;
-pub const KVE_PROT_EXEC: i32 = 0x00000004;
+pub const KVE_PROT_NONE: c_int = 0x00000000;
+pub const KVE_PROT_READ: c_int = 0x00000001;
+pub const KVE_PROT_WRITE: c_int = 0x00000002;
+pub const KVE_PROT_EXEC: c_int = 0x00000004;
 
-pub const KVE_ADV_NORMAL: i32 = 0x00000000;
-pub const KVE_ADV_RANDOM: i32 = 0x00000001;
-pub const KVE_ADV_SEQUENTIAL: i32 = 0x00000002;
+pub const KVE_ADV_NORMAL: c_int = 0x00000000;
+pub const KVE_ADV_RANDOM: c_int = 0x00000001;
+pub const KVE_ADV_SEQUENTIAL: c_int = 0x00000002;
 
-pub const KVE_INH_SHARE: i32 = 0x00000000;
-pub const KVE_INH_COPY: i32 = 0x00000010;
-pub const KVE_INH_NONE: i32 = 0x00000020;
-pub const KVE_INH_ZERO: i32 = 0x00000030;
+pub const KVE_INH_SHARE: c_int = 0x00000000;
+pub const KVE_INH_COPY: c_int = 0x00000010;
+pub const KVE_INH_NONE: c_int = 0x00000020;
+pub const KVE_INH_ZERO: c_int = 0x00000030;
 
-pub const KVE_F_STATIC: i32 = 0x01;
-pub const KVE_F_KMEM: i32 = 0x02;
+pub const KVE_F_STATIC: c_int = 0x01;
+pub const KVE_F_KMEM: c_int = 0x02;
 
 /*
  * kern.file returns an array of these structures, which are designed
@@ -684,21 +686,21 @@ pub const KVE_F_KMEM: i32 = 0x02;
  * structures (struct vnode, struct proc) in order to make the file
  * information more useful.
  */
-pub const KERN_FILE_BYFILE: i32 = 1;
-pub const KERN_FILE_BYPID: i32 = 2;
-pub const KERN_FILE_BYUID: i32 = 3;
-pub const KERN_FILESLOP: i32 = 10;
+pub const KERN_FILE_BYFILE: c_int = 1;
+pub const KERN_FILE_BYPID: c_int = 2;
+pub const KERN_FILE_BYUID: c_int = 3;
+pub const KERN_FILESLOP: c_int = 10;
 
-pub const KERN_FILE_TEXT: i32 = -1;
-pub const KERN_FILE_CDIR: i32 = -2;
-pub const KERN_FILE_RDIR: i32 = -3;
-pub const KERN_FILE_TRACE: i32 = -4;
+pub const KERN_FILE_TEXT: c_int = -1;
+pub const KERN_FILE_CDIR: c_int = -2;
+pub const KERN_FILE_RDIR: c_int = -3;
+pub const KERN_FILE_TRACE: c_int = -4;
 
 /// Rounded up from 90
-pub const KI_MNAMELEN: usize = 96;
-pub const KI_UNPPATHLEN: usize = 104;
+pub const KI_MNAMELEN: c_int = 96;
+pub const KI_UNPPATHLEN: c_int = 104;
 
-pub struct KinfoFile {
+pub struct kinfo_file {
     /// PTR: address of struct file
     pub f_fileaddr: u64,
     /// UINT: flags (see fcntl.h)
@@ -757,7 +759,7 @@ pub struct KinfoFile {
     pub va_mode: u32,
     /// DEV_T: filesystem device
     pub va_fsid: u32,
-    pub f_mntonname: [u8; KI_MNAMELEN],
+    pub f_mntonname: [u8; KI_MNAMELEN as size_t],
     /// SHORT: socket type
     pub so_type: u32,
     /// SHORT: socket state
@@ -802,7 +804,7 @@ pub struct KinfoFile {
     pub p_gid: u32,
     /// PID_T: thread id
     pub p_tid: u32,
-    pub p_comm: [u8; KI_MAXCOMLEN],
+    pub p_comm: [u8; KI_MAXCOMLEN as size_t],
     /// UINT: Routing table identifier
     pub inp_rtableid: u32,
     /// PTR: f_data of spliced socket
@@ -819,7 +821,7 @@ pub struct KinfoFile {
     pub unp_nextref: u64,
     /// PTR: address ps the socket address
     pub unp_addr: u64,
-    pub unp_path: [u8; KI_UNPPATHLEN],
+    pub unp_path: [u8; KI_UNPPATHLEN as size_t],
     /// CHAR: raw protocol id
     pub inp_proto: u32,
     /// SHORT: tcp state
@@ -836,18 +838,18 @@ pub struct KinfoFile {
 
 // KERN_INTRCNT
 /// Int: # intrcnt
-pub const KERN_INTRCNT_NUM: i32 = 1;
+pub const KERN_INTRCNT_NUM: c_int = 1;
 /// Node: intrcnt
-pub const KERN_INTRCNT_CNT: i32 = 2;
+pub const KERN_INTRCNT_CNT: c_int = 2;
 /// Node: names
-pub const KERN_INTRCNT_NAME: i32 = 3;
+pub const KERN_INTRCNT_NAME: c_int = 3;
 /// Node: interrupt vector
-pub const KERN_INTRCNT_VECTOR: i32 = 4;
-pub const KERN_INTRCNT_MAXID: i32 = 5;
+pub const KERN_INTRCNT_VECTOR: c_int = 4;
+pub const KERN_INTRCNT_MAXID: c_int = 5;
 
 /// Map the CTL kern intrcnt names to their types
 /// See /usr/include/sys/sysctl:851
-pub const CTL_KERN_INTRCNT_NAMES: [(&str, i32); 4] = [
+pub const CTL_KERN_INTRCNT_NAMES: [(&str, c_int); 4] = [
     ("", 0),
     ("nintrcnt", CTLTYPE_INT),
     ("intrcnt", CTLTYPE_NODE),
@@ -855,27 +857,27 @@ pub const CTL_KERN_INTRCNT_NAMES: [(&str, i32); 4] = [
 ];
 
 // KERN_WATCHDOG
-pub const KERN_WATCHDOG_PERIOD: i32 = 1;
-pub const KERN_WATCHDOG_AUTO: i32 = 2;
-pub const KERN_WATCHDOG_MAXID: i32 = 3;
+pub const KERN_WATCHDOG_PERIOD: c_int = 1;
+pub const KERN_WATCHDOG_AUTO: c_int = 2;
+pub const KERN_WATCHDOG_MAXID: c_int = 3;
 
-pub const CTL_KERN_WATCHDOG_NAMES: [(&str, i32); 3] =
+pub const CTL_KERN_WATCHDOG_NAMES: [(&str, c_int); KERN_WATCHDOG_MAXID as size_t] =
     [("", 0), ("period", CTLTYPE_INT), ("auto", CTLTYPE_INT)];
 
 // KERN_TIMECOUNTER
 
 /// Int: number of revolutions
-pub const KERN_TIMECOUNTER_TICK: i32 = 1;
+pub const KERN_TIMECOUNTER_TICK: c_int = 1;
 /// Int: log a warning when time change
-pub const KERN_TIMECOUNTER_TIMESTEPWARNINGS: i32 = 2;
+pub const KERN_TIMECOUNTER_TIMESTEPWARNINGS: c_int = 2;
 /// String: tick hardware used
-pub const KERN_TIMECOUNTER_HARDWARE: i32 = 3;
+pub const KERN_TIMECOUNTER_HARDWARE: c_int = 3;
 /// String: tick hardware used
-pub const KERN_TIMECOUNTER_CHOICE: i32 = 4;
-pub const KERN_TIMECOUNTER_MAXID: i32 = 5;
+pub const KERN_TIMECOUNTER_CHOICE: c_int = 4;
+pub const KERN_TIMECOUNTER_MAXID: c_int = 5;
 
 /// Map the CTL kern timetounter names to their types
-pub const CTL_KERN_TIMECOUNTER_NAMES: [(&str, i32); 5] = [
+pub const CTL_KERN_TIMECOUNTER_NAMES: [(&str, c_int); KERN_TIMECOUNTER_MAXID as size_t] = [
     ("", 0),
     ("tick", CTLTYPE_INT),
     ("timestepwarnings", CTLTYPE_INT),
@@ -885,77 +887,77 @@ pub const CTL_KERN_TIMECOUNTER_NAMES: [(&str, i32); 5] = [
 
 // KERN_CLOCKINTR
 /// Struct: stats
-pub const KERN_CLOCKINTR_STATS: i32 = 1;
-pub const KERN_CLOCKINTR_MAXID: i32 = 2;
+pub const KERN_CLOCKINTR_STATS: c_int = 1;
+pub const KERN_CLOCKINTR_MAXID: c_int = 2;
 
 /// Map the CTL kern clockintr names to their types
-pub const CTL_KERN_CLOCKINTR_NAMES: [(&str, i32); 2] = [("", 0), ("stats", CTLTYPE_STRUCT)];
+pub const CTL_KERN_CLOCKINTR_NAMES: [(&str, c_int); KERN_CLOCKINTR_MAXID as size_t] = [("", 0), ("stats", CTLTYPE_STRUCT)];
 
 // CTL_HW identifiers
 /// String: machine class
-pub const HW_MACHINE: i32 = 1;
+pub const HW_MACHINE: c_int = 1;
 /// String: specific machine model
-pub const HW_MODEL: i32 = 2;
+pub const HW_MODEL: c_int = 2;
 /// Int: number of configured cpus
-pub const HW_NCPU: i32 = 3;
+pub const HW_NCPU: c_int = 3;
 /// Int: machine byte order
-pub const HW_BYTEORDER: i32 = 4;
+pub const HW_BYTEORDER: c_int = 4;
 /// Int: total memory
-pub const HW_PHYSMEM: i32 = 5;
+pub const HW_PHYSMEM: c_int = 5;
 /// Int: non-kernel memory
-pub const HW_USERMEM: i32 = 6;
+pub const HW_USERMEM: c_int = 6;
 /// Int: software page size
-pub const HW_PAGESIZE: i32 = 7;
+pub const HW_PAGESIZE: c_int = 7;
 /// Strings: disk drive names
-pub const HW_DISKNAMES: i32 = 8;
+pub const HW_DISKNAMES: c_int = 8;
 /// Struct: diskstats[]
-pub const HW_DISKSTATS: i32 = 9;
+pub const HW_DISKSTATS: c_int = 9;
 /// Int: number of disks
-pub const HW_DISKCOUNT: i32 = 10;
+pub const HW_DISKCOUNT: c_int = 10;
 /// Node: hardware monitors
-pub const HW_SENSORS: i32 = 11;
+pub const HW_SENSORS: c_int = 11;
 /// Get CPU frequency
-pub const HW_CPUSPEED: i32 = 12;
+pub const HW_CPUSPEED: c_int = 12;
 /// Set CPU performance
-pub const HW_SETPERF: i32 = 13;
+pub const HW_SETPERF: c_int = 13;
 /// String: vendor name
-pub const HW_VENDOR: i32 = 14;
+pub const HW_VENDOR: c_int = 14;
 /// String: product name
-pub const HW_PRODUCT: i32 = 15;
+pub const HW_PRODUCT: c_int = 15;
 /// String: hardware version
-pub const HW_VERSION: i32 = 16;
+pub const HW_VERSION: c_int = 16;
 /// String: hardware serial number
-pub const HW_SERIALNO: i32 = 17;
+pub const HW_SERIALNO: c_int = 17;
 /// String: universal unique id
-pub const HW_UUID: i32 = 18;
+pub const HW_UUID: c_int = 18;
 /// Quad: total memory
-pub const HW_PHYSMEM64: i32 = 19;
+pub const HW_PHYSMEM64: c_int = 19;
 /// Quad: non-kernel memory
-pub const HW_USERMEM64: i32 = 20;
+pub const HW_USERMEM64: c_int = 20;
 /// Int: number of cpus found
-pub const HW_NCPUFOUND: i32 = 21;
+pub const HW_NCPUFOUND: c_int = 21;
 /// Allow power button shutdown
-pub const HW_ALLOWPOWERDOWN: i32 = 22;
+pub const HW_ALLOWPOWERDOWN: c_int = 22;
 /// Set performance policy
-pub const HW_PERFPOLICY: i32 = 23;
+pub const HW_PERFPOLICY: c_int = 23;
 /// Int: enable SMT/HT/CMT
-pub const HW_SMT: i32 = 24;
+pub const HW_SMT: c_int = 24;
 /// Int: number of cpus being used
-pub const HW_NCPUONLINE: i32 = 25;
+pub const HW_NCPUONLINE: c_int = 25;
 /// Int: machine has wall-power
-pub const HW_POWER: i32 = 26;
+pub const HW_POWER: c_int = 26;
 /// Node: battery
-pub const HW_BATTERY: i32 = 27;
+pub const HW_BATTERY: c_int = 27;
 /// Strings: ucom names
-pub const HW_UCOMNAMES: i32 = 28;
+pub const HW_UCOMNAMES: c_int = 28;
 /// String: cpu types to block
-pub const HW_BLOCKCPU: i32 = 29;
+pub const HW_BLOCKCPU: c_int = 29;
 /// Number of valid hw ids
-pub const HW_MAXID: i32 = 30;
+pub const HW_MAXID: c_int = 30;
 
 /// Map the CTL hw names to their type
 /// See /usr/include/sys/sysctl.h:933
-pub const CTL_HW_NAMES: [(&str, i32); 30] = [
+pub const CTL_HW_NAMES: [(&str, c_int); HW_MAXID as size_t] = [
     ("", 0),
     ("machine", CTLTYPE_STRING),
     ("model", CTLTYPE_STRING),
@@ -990,15 +992,15 @@ pub const CTL_HW_NAMES: [(&str, i32); 30] = [
 
 // HW_BATTERY
 /// Int: battery charging mode
-pub const HW_BATTERY_CHARGEMODE: i32 = 1;
+pub const HW_BATTERY_CHARGEMODE: c_int = 1;
 /// Int: battery start charge percent
-pub const HW_BATTERY_CHARGESTART: i32 = 2;
+pub const HW_BATTERY_CHARGESTART: c_int = 2;
 /// Int: battery stop charge percent
-pub const HW_BATTERY_CHARGESTOP: i32 = 3;
-pub const HW_BATTERY_MAXID: i32 = 4;
+pub const HW_BATTERY_CHARGESTOP: c_int = 3;
+pub const HW_BATTERY_MAXID: c_int = 4;
 
 /// Mat the CTL hw battery names to their types
-pub const CTL_HW_BATTERY_NAMES: [(&str, i32); 4] = [
+pub const CTL_HW_BATTERY_NAMES: [(&str, c_int); HW_BATTERY_MAXID as size_t] = [
     ("", 0),
     ("chargemode", CTLTYPE_INT),
     ("chargestart", CTLTYPE_INT),
@@ -1012,10 +1014,10 @@ pub const CTL_HW_BATTERY_NAMES: [(&str, i32); 4] = [
  * Third level identifier specifies which structure component.
  */
 /// String: variable name
-pub const CTL_DEBUG_NAME: i32 = 1;
+pub const CTL_DEBUG_NAME: c_int = 1;
 /// Int: variale value
-pub const CTL_DEBUG_VALUE: i32 = 2;
-pub const CTL_DEBUG_MAXID: i32 = 20;
+pub const CTL_DEBUG_VALUE: c_int = 2;
+pub const CTL_DEBUG_MAXID: c_int = 20;
 
 /// CTL_DEBUG variables.
 ///
@@ -1027,26 +1029,25 @@ pub const CTL_DEBUG_MAXID: i32 = 20;
 /// conveniently locate them when queried. If more debugging
 /// variables are added, they must also be declared here and also
 /// entered into the array.
-pub struct CtlDebug {
+pub struct ctldebug {
     /// Name of debugging variable
-    pub debugname: *mut libc::c_char,
+    pub debugname: *mut c_char,
     /// Pointer to debugging variable
-    pub debugvar: *mut libc::c_int,
+    pub debugvar: *mut c_int,
 }
 
 /// Exported sysctl variable with valid bounds. Both bounds are inclusive to
 /// allow full range of values.
-///
-pub struct SysctlBoundedArgs {
+pub struct sysctl_bounded_args {
     /// identifier shared with userspace as a CTL_ constant
-    pub mib: libc::c_int,
+    pub mib: c_int,
     /// Never NULL
-    pub var: *mut libc::c_int,
+    pub var: *mut c_int,
     /// Checking is disabled if minimum == maximum
-    pub minimum: libc::c_int,
+    pub minimum: c_int,
     /// Read-only variable if minimum > maximum
-    pub maximum: libc::c_int,
+    pub maximum: c_int,
 }
 
 /// Special case minimum,maximum marker for sysctl_bounded_args.
-pub const SYSCTL_INT_READONLY: (i32, i32) = (1, 0);
+pub const SYSCTL_INT_READONLY: (c_int, c_int) = (1, 0);

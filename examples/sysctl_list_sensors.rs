@@ -3,10 +3,10 @@
 //! See https://man.openbsd.org/sysctl.2
 //! and https://docs.rs/libc/latest/libc/fn.sysctl.html
 
-use i3status_again::sensors::sysctl::openbsd::headers::sensors::{
-    SENSOR_MAX_TYPES, Sensor, SensorDev,
+use i3status_again::sensors::sysctl::openbsd::{
+    CTL_HW, HW_SENSORS, SENSOR_MAX_TYPES, get_sensor_desc, get_sensordev_name, sensor,
+    sensor_type_tostring, sensordev,
 };
-use i3status_again::sensors::sysctl::openbsd::headers::sysctl::{CTL_HW, HW_SENSORS};
 use libc::{c_void, size_t, sysctl};
 use std::mem::MaybeUninit;
 
@@ -18,7 +18,7 @@ fn main() {
 
         // No need to request the size with a first sysctl call, SensorDev has a
         // fixed size
-        let mut size = size_of::<SensorDev>();
+        let mut size = size_of::<sensordev>();
 
         // Read the data of the sensor device #device_id
         let mut buf = MaybeUninit::uninit();
@@ -38,29 +38,23 @@ fn main() {
             break;
         }
 
-        if size != size_of::<SensorDev>() {
+        if size != size_of::<sensordev>() {
             println!("Size is invalid. A field could have been updated / added in SensorDev.");
             break;
         }
 
-        let device: SensorDev = unsafe { buf.assume_init() };
-        let device_name = String::from_utf8(device.xname.to_vec()).unwrap();
+        let device: sensordev = unsafe { buf.assume_init() };
+        let device_name = get_sensordev_name(&device);
 
         // Loop over the device' sensors
-        // SensorDev.max_numt is index by type of sensor. See sensors::sysctl::openbsd::SensorType.
-        // SensorTemp = 0, SensorFanrpm = 1, etc.
+        // sensordev.max_numt is index by type of sensor. See sensors::sysctl::openbsd::SENSOR_TYPE_*
+        // constants.
         for sensor_type_id in 0..SENSOR_MAX_TYPES {
-            let sensor_number = device.max_numt[sensor_type_id];
+            let sensor_number = device.max_numt[sensor_type_id as usize];
             for sensor_id in 0..sensor_number {
-                let mib = [
-                    CTL_HW,
-                    HW_SENSORS,
-                    device_id,
-                    sensor_type_id.try_into().unwrap(),
-                    sensor_id,
-                ];
+                let mib = [CTL_HW, HW_SENSORS, device_id, sensor_type_id, sensor_id];
                 // The size is fixed, no need to call sysctl twice to get the size
-                let mut size = size_of::<Sensor>();
+                let mut size = size_of::<sensor>();
                 let mut buf = MaybeUninit::uninit();
                 unsafe {
                     let ret = sysctl(
@@ -76,16 +70,16 @@ fn main() {
                         break;
                     }
                 }
-                if size != size_of::<Sensor>() {
+                if size != size_of::<sensor>() {
                     println!("Size is invalid. A field could have been updated / added in Sensor.");
                     break;
                 }
-                let sensor: Sensor = unsafe { buf.assume_init() };
+                let sensor: sensor = unsafe { buf.assume_init() };
 
                 // Note: the values are raw. Example: hw.sensors.cpu0.temp is in
                 // micro Kelvin, not Celsius.
-                let sensor_name = sensor.type_.to_string();
-                let sensor_desc = String::from_utf8(sensor.desc.to_vec()).unwrap();
+                let sensor_name = sensor_type_tostring(sensor_type_id);
+                let sensor_desc = get_sensor_desc(&sensor);
                 println!(
                     "hw.sensors.{}.{}{} = {} / {}",
                     device_name, sensor_name, sensor_id, sensor.value, sensor_desc

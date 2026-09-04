@@ -11,7 +11,7 @@ pub fn get_cpu_freq(
     unit: FreqUnit,
     aggregation: AggregatUnit,
 ) -> Result<f64, CpuFreqError> {
-    let sensors = match sysctl_sensors(SensorDevType::SensorDevCpu, SensorType::SensorFreq) {
+    let sensors = match sysctl_sensors(SensorDevType::SensorDevCpu, SENSOR_TYPE_FREQ) {
         Ok(v) => v,
         Err(e) => return Err(e.into()),
     };
@@ -19,7 +19,7 @@ pub fn get_cpu_freq(
     let mut frequencies: Vec<i64> = Vec::new();
     let cpu_id: u8 = cpu_index.unwrap_or(u8::MAX);
     for (device, sensor) in sensors {
-        let device_id = device.get_id();
+        let device_id = get_sensordev_id(&device);
         if cpu_id == device_id || cpu_index.is_none() {
             frequencies.push(sensor.value);
         }

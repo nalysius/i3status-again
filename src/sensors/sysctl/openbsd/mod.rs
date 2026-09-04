@@ -38,7 +38,7 @@ impl fmt::Display for SysctlError {
             SysctlError::InvalidAddress => write!(f, "Sysctl: invalid address."),
             SysctlError::InvalidName => write!(f, "Sysctl: invalid name."),
             SysctlError::InvalidSize(_, _) => {
-                write!(f, "Sysctl: Sensor or SensorDev has an invalid size.")
+                write!(f, "Sysctl: sensor or sensordev has an invalid size.")
             }
             SysctlError::Other(_) => write!(f, "Sysctl: other error."),
         }
@@ -73,7 +73,7 @@ impl<'a> TryFrom<&str> for SensorDevType {
 
 /// A wrapper around sysctl to get all sensors maching the types.
 ///
-/// To filter the returned sensors, one can use the Sensor.desc field.
+/// To filter the returned sensors, one can use the sensor.desc field.
 /// For example when requesting the watthours of the batteries, instead
 /// of depending on the index (e.g.: watthour3), using the description
 /// "remaining capacity" should be more flexible.
@@ -81,26 +81,26 @@ impl<'a> TryFrom<&str> for SensorDevType {
 /// ## Examples
 ///
 /// To get all the watthours of all batteries:
-///   let sensors_res = sysctl_sensors(SensorDevType::SensorDevBattery, SensorType::SensorWatthour);
+///   let sensors_res = sysctl_sensors(SensorDevType::SensorDevBattery, SENSOR_TYPE_WATTHOUR);
 ///
 /// To get all the frequencies of all CPUs:
-///   let sensors_res = sysctl_sensors(SensorDevType::SensorDevCpu, SensorType::SensorFreq);
+///   let sensors_res = sysctl_sensors(SensorDevType::SensorDevCpu, SENSOR_TYPE_FREQ);
 pub fn sysctl_sensors(
     device_type: SensorDevType,
-    sensor_type: SensorType,
-) -> Result<Vec<(SensorDev, Sensor)>, SysctlError> {
-    let mut sensors: Vec<(SensorDev, Sensor)> = Vec::new();
+    sensor_type: c_int,
+) -> Result<Vec<(sensordev, sensor)>, SysctlError> {
+    let mut sensors: Vec<(sensordev, sensor)> = Vec::new();
     // Loop over all the sensor devices
     let mut device_id = 0;
     loop {
         let mib = [CTL_HW, HW_SENSORS, device_id];
-        let device: SensorDev = match sysctl_sensordev(&mib) {
+        let device: sensordev = match sysctl_sensordev(&mib) {
             Err(SysctlError::NotFound) => return Ok(sensors),
             Err(x) => return Err(x),
             Ok(d) => d,
         };
 
-        let device_name = device.get_name();
+        let device_name = get_sensordev_name(&device);
         let found_device_t = SensorDevType::try_from(device_name.as_str());
 
         // No need to enumerate the sensors if the device doesn't have the
@@ -111,41 +111,34 @@ pub fn sysctl_sensors(
         }
 
         // Loop over the device' sensors for the right type
-        let sensor_type_id: usize = sensor_type as usize;
-        let sensor_number = device.max_numt[sensor_type_id];
+        let sensor_number = device.max_numt[sensor_type as usize];
         for sensor_id in 0..sensor_number {
-            let mib = [
-                CTL_HW,
-                HW_SENSORS,
-                device_id,
-                sensor_type_id.try_into().unwrap(),
-                sensor_id,
-            ];
-            let sensor: Sensor = sysctl_sensor(&mib)?;
+            let mib = [CTL_HW, HW_SENSORS, device_id, sensor_type, sensor_id];
+            let sensor: sensor = sysctl_sensor(&mib)?;
             sensors.push((device, sensor));
         }
         device_id += 1;
     }
 }
 
-/// A wrapper around sysctl to get a Sensor.
-pub fn sysctl_sensor(mib: &[c_int]) -> Result<Sensor, SysctlError> {
+/// A wrapper around sysctl to get a sensor.
+pub fn sysctl_sensor(mib: &[c_int]) -> Result<sensor, SysctlError> {
     sysctl_fixed(mib)
 }
 
-/// A wrapper around sysctl to get a SensorDev.
-pub fn sysctl_sensordev(mib: &[c_int]) -> Result<SensorDev, SysctlError> {
+/// A wrapper around sysctl to get a sensordev.
+pub fn sysctl_sensordev(mib: &[c_int]) -> Result<sensordev, SysctlError> {
     sysctl_fixed(mib)
 }
 
 /// A wrapper around sysctl to get a uvmexp.
 pub fn sysctl_uvmexp(mib: &[c_int]) -> Result<uvmexp, SysctlError> {
-	sysctl_fixed(mib)
+    sysctl_fixed(mib)
 }
 
 /// A wrapper around sysctl.
 ///
-/// Works for any type with a fixed size, like Sensor or SensorDev.
+/// Works for any type with a fixed size, like sensor or sensordev.
 /// DON'T use it to query a String or any type with a dynamic size.
 fn sysctl_fixed<T: Copy>(mib: &[c_int]) -> Result<T, SysctlError> {
     let mut size = size_of::<T>();
@@ -191,17 +184,16 @@ pub fn sysctlnametomib(name: &str) -> Result<Vec<c_int>, SysctlError> {
     loop {
         let mib = [CTL_HW, HW_SENSORS, device_id];
 
-        let device: SensorDev = sysctl_sensordev(&mib)?;
+        let device: sensordev = sysctl_sensordev(&mib)?;
         // The device name has a length of 16, so the null chars used to fill the
         // string need to be trimmed.
-        let device_name: String = device.get_name();
+        let device_name: String = get_sensordev_name(&device);
 
         // Loop over the device' sensors
-        // SensorDev.max_numt is index by type of sensor.
-        // See sensors::sysctl::openbsd::headers::SensorType.
-        // SensorType::SensorTemp = 0, SensorType::SensorFanrpm = 1, etc.
+        // sensordev.max_numt is index by type of sensor.
+        // See sensors::sysctl::openbsd::headers::SENSOR_TYPE_* constants.
         for sensor_type_id in 0..SENSOR_MAX_TYPES {
-            let sensor_number = device.max_numt[sensor_type_id];
+            let sensor_number = device.max_numt[sensor_type_id as usize];
             for sensor_id in 0..sensor_number {
                 let mib = [
                     CTL_HW,
@@ -210,10 +202,10 @@ pub fn sysctlnametomib(name: &str) -> Result<Vec<c_int>, SysctlError> {
                     sensor_type_id.try_into().unwrap(),
                     sensor_id,
                 ];
-                let sensor: Sensor = sysctl_sensor(&mib)?;
+                let _sensor: sensor = sysctl_sensor(&mib)?;
                 // The values are raw. Example: hw.sensors.cpu0.temp is in
                 // micro Kelvin, not Celsius.
-                let sensor_name = sensor.type_.to_string();
+                let sensor_name = sensor_type_tostring(sensor_type_id.try_into().unwrap());
                 let found_name =
                     &format!("hw.sensors.{}.{}{}", device_name, sensor_name, sensor_id);
                 if found_name == name {
@@ -229,4 +221,64 @@ pub fn sysctlnametomib(name: &str) -> Result<Vec<c_int>, SysctlError> {
         }
         device_id += 1;
     }
+}
+
+/// Get the string representation of a sensor type.
+pub fn sensor_type_tostring(sensor_type: c_int) -> String {
+    match sensor_type {
+        SENSOR_TYPE_TEMP => "temp".to_string(),
+        SENSOR_TYPE_FANRPM => "fan".to_string(),
+        SENSOR_TYPE_VOLTSDC => "volt".to_string(),
+        SENSOR_TYPE_VOLTSAC => "acvolt".to_string(),
+        SENSOR_TYPE_OHMS => "resistance".to_string(),
+        SENSOR_TYPE_WATTS => "power".to_string(),
+        SENSOR_TYPE_AMPS => "current".to_string(),
+        SENSOR_TYPE_WATTHOUR => "watthour".to_string(),
+        SENSOR_TYPE_AMPHOUR => "amphour".to_string(),
+        SENSOR_TYPE_INDICATOR => "indicator".to_string(),
+        SENSOR_TYPE_INTEGER => "raw".to_string(),
+        SENSOR_TYPE_PERCENT => "percent".to_string(),
+        SENSOR_TYPE_LUX => "illuminance".to_string(),
+        SENSOR_TYPE_DRIVE => "drive".to_string(),
+        SENSOR_TYPE_TIMEDELTA => "timedelta".to_string(),
+        SENSOR_TYPE_HUMIDITY => "humidity".to_string(),
+        SENSOR_TYPE_FREQ => "frequency".to_string(),
+        SENSOR_TYPE_ANGLE => "angle".to_string(),
+        SENSOR_TYPE_DISTANCE => "distance".to_string(),
+        SENSOR_TYPE_PRESSURE => "pressure".to_string(),
+        SENSOR_TYPE_ACCEL => "acceleration".to_string(),
+        SENSOR_TYPE_VELOCITY => "velocity".to_string(),
+        SENSOR_TYPE_ENERGY => "energy".to_string(),
+        _ => "undefined".to_string(),
+    }
+}
+
+/// Get the description of a sensor as a String.
+pub fn get_sensor_desc(sensor: &sensor) -> String {
+    String::from_utf8(sensor.desc.to_vec())
+        .unwrap()
+        .trim_matches(char::from(0))
+        .to_string()
+}
+
+/// Get the name of the sensordev.
+pub fn get_sensordev_name(sensordev: &sensordev) -> String {
+    String::from_utf8(sensordev.xname.to_vec())
+        .unwrap()
+        .trim_end_matches(char::from(0))
+        .to_string()
+}
+
+/// Get the id of the sensordev, extracted from the name.
+pub fn get_sensordev_id(sensordev: &sensordev) -> u8 {
+    get_sensordev_name(&sensordev)
+        .chars()
+        .rev()
+        .take_while(|c| c.is_ascii_digit())
+        .collect::<Vec<_>>()
+        .into_iter()
+        .rev()
+        .collect::<String>()
+        .parse()
+        .unwrap_or(u8::MAX)
 }

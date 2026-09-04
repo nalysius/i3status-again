@@ -2,186 +2,82 @@
 //! functions and structs used on OpenBSD to request sensors information.
 //! See /usr/include/sys/sensors.h.
 
+use libc::{c_int, size_t, timeval};
+
 /// A sensor flag for sensor invalid
 /// See /usr/include/sys/sensor.h:120
-pub const SENSOR_FINVALID: i32 = 0x0001;
+pub const SENSOR_FINVALID: c_int = 0x0001;
 /// A sensor flag for sensor unknown
 /// See /usr/include/sys/sensor.h:121
-pub const SENSOR_FUNKNOWN: i32 = 0x0002;
+pub const SENSOR_FUNKNOWN: c_int = 0x0002;
 
-/// The value of the last SensorType variant.
-/// If [variant_count](https://doc.rust-lang.org/std/mem/fn.variant_count.html)
-/// becomes stable in the future, use it to be safe in case OpenBSD adds a new
-/// type of sensor.
-/// See /usr/include/sys/sensor.h:57
-pub const SENSOR_MAX_TYPES: usize = 23;
+// Match the sensor_state enum.
+// See /usr/include/sys/sensors.h:100
+pub const SENSOR_STATUS_UNSPEC: c_int = 0;
+pub const SENSOR_STATUS_OK: c_int = 1;
+pub const SENSOR_STATUS_WARN: c_int = 2;
+pub const SENSOR_STATUS_CRIT: c_int = 3;
+pub const SENSOR_STATUS_UNKNOWN: c_int = 4;
 
-/// Sensor states.
-/// See /usr/include/sys/sensors.h:100
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub enum SensorStatus {
-    SensorSUnspec,
-    SensorSOk,
-    SensorSWarn,
-    SensorSCrit,
-    SensorSUnknown,
-}
-
-/// Sensor types
-/// See /usr/include/sys/sensors.h:33
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub enum SensorType {
-    /// Temperature (uK)
-    SensorTemp = 0,
-    /// Fan revolution speed
-    SensorFanrpm,
-    /// Voltage (uV DC)
-    SensorVoltsDc,
-    /// Voltage (uV AC)
-    SensorVoltsAc,
-    /// Resistance
-    SensorOhms,
-    /// Power (uW)
-    SensorWatts,
-    /// Current (uA)
-    SensorAmps,
-    /// Power capacity (uWh)
-    SensorWatthour,
-    /// Power capacity (uAh)
-    SensorAmphour,
-    /// Boolean indicator
-    SensorIndicator,
-    /// Generic integer value
-    SensorInteger,
-    /// Percent (m%)
-    SensorPercent,
-    /// Illuminance (ulx)
-    SensorLux,
-    /// Disk
-    SensorDrive,
-    /// System time error (nSec)
-    SensorTimedelta,
-    /// Humidity (m%RH)
-    SensorHumidity,
-    /// Frequency (uHz)
-    SensorFreq,
-    /// Angle (uDegrees)
-    SensorAngle,
-    /// Distance (uMeter)
-    SensorDistance,
-    /// Pressure (mPa)
-    SensorPressure,
-    /// Acceleration (u m/s^2)
-    SensorAccel,
-    /// Velocity (u m/s)
-    SensorVelocity,
-    /// Energy
-    SensorEnergy,
-    SensorMaxType,
-}
-
-impl ToString for SensorType {
-    /// Convert a SensorType to a string
-    fn to_string(&self) -> String {
-        match &self {
-            SensorType::SensorTemp => "temp".to_string(),
-            SensorType::SensorFanrpm => "fan".to_string(),
-            SensorType::SensorVoltsDc => "volt".to_string(),
-            SensorType::SensorVoltsAc => "acvolt".to_string(),
-            SensorType::SensorOhms => "resistance".to_string(),
-            SensorType::SensorWatts => "power".to_string(),
-            SensorType::SensorAmps => "current".to_string(),
-            SensorType::SensorWatthour => "watthour".to_string(),
-            SensorType::SensorAmphour => "amphour".to_string(),
-            SensorType::SensorIndicator => "indicator".to_string(),
-            SensorType::SensorInteger => "raw".to_string(),
-            SensorType::SensorPercent => "percent".to_string(),
-            SensorType::SensorLux => "illuminance".to_string(),
-            SensorType::SensorDrive => "drive".to_string(),
-            SensorType::SensorTimedelta => "timedelta".to_string(),
-            SensorType::SensorHumidity => "humidity".to_string(),
-            SensorType::SensorFreq => "frequency".to_string(),
-            SensorType::SensorAngle => "angle".to_string(),
-            SensorType::SensorDistance => "distance".to_string(),
-            SensorType::SensorPressure => "pressure".to_string(),
-            SensorType::SensorAccel => "acceleration".to_string(),
-            SensorType::SensorVelocity => "velocity".to_string(),
-            SensorType::SensorEnergy => "energy".to_string(),
-            SensorType::SensorMaxType => "undefined".to_string(),
-        }
-    }
-}
+// Match the sensor_type enum
+// See /usr/include/sys/sensors.h:33
+pub const SENSOR_TYPE_TEMP: c_int = 0;
+pub const SENSOR_TYPE_FANRPM: c_int = 1;
+pub const SENSOR_TYPE_VOLTSDC: c_int = 2;
+pub const SENSOR_TYPE_VOLTSAC: c_int = 3;
+pub const SENSOR_TYPE_OHMS: c_int = 4;
+pub const SENSOR_TYPE_WATTS: c_int = 5;
+pub const SENSOR_TYPE_AMPS: c_int = 6;
+pub const SENSOR_TYPE_WATTHOUR: c_int = 7;
+pub const SENSOR_TYPE_AMPHOUR: c_int = 8;
+pub const SENSOR_TYPE_INDICATOR: c_int = 9;
+pub const SENSOR_TYPE_INTEGER: c_int = 10;
+pub const SENSOR_TYPE_PERCENT: c_int = 11;
+pub const SENSOR_TYPE_LUX: c_int = 12;
+pub const SENSOR_TYPE_DRIVE: c_int = 13;
+pub const SENSOR_TYPE_TIMEDELTA: c_int = 14;
+pub const SENSOR_TYPE_HUMIDITY: c_int = 15;
+pub const SENSOR_TYPE_FREQ: c_int = 16;
+pub const SENSOR_TYPE_ANGLE: c_int = 17;
+pub const SENSOR_TYPE_DISTANCE: c_int = 18;
+pub const SENSOR_TYPE_PRESSURE: c_int = 19;
+pub const SENSOR_TYPE_ACCEL: c_int = 20;
+pub const SENSOR_TYPE_VELOCITY: c_int = 21;
+pub const SENSOR_TYPE_ENERGY: c_int = 22;
+pub const SENSOR_MAX_TYPES: c_int = 23;
 
 /// A Sensor.
 /// See /usr/include/sys/sensors.h:112
 #[repr(C)]
 #[derive(Clone, Copy)]
-pub struct Sensor {
+pub struct sensor {
     /// The description of the sensor (e.g.: remaining capacity).
     pub desc: [u8; 32],
     /// Datetime when the value was measured.
-    pub timeval: libc::timeval,
+    pub timeval: timeval,
     /// The measured value.
     pub value: i64,
     /// The type of sensor.
-    pub type_: SensorType,
+    pub type_: c_int,
     /// The status of the sensor.
-    pub status: SensorStatus,
+    pub status: c_int,
     /// The index of sensor. For example in hw.sensors.acpibat0.watthour3
     /// numt = 3.
-    pub numt: i32,
+    pub numt: c_int,
     /// SENSOR_* flags.
-    pub flags: i32,
-}
-
-impl Sensor {
-    /// Get the sensor description as a string.
-    pub fn get_desc(&self) -> String {
-        String::from_utf8(self.desc.to_vec())
-            .unwrap()
-            .trim_matches(char::from(0))
-            .to_string()
-    }
+    pub flags: c_int,
 }
 
 /// A Sensor Device.
 /// See /usr/include/sys/sensors.h:127
 #[repr(C)]
 #[derive(Clone, Copy)]
-pub struct SensorDev {
+pub struct sensordev {
     /// SensorDev number.
-    pub num: i32,
+    pub num: c_int,
     /// Unix device name.
     pub xname: [u8; 16],
     /// The number of sensors of this device, indexed by type.
-    pub max_numt: [i32; SENSOR_MAX_TYPES],
-    pub sensors_count: i32,
-}
-
-impl SensorDev {
-    /// Get the identifier of the device.
-    /// Example: for acpibat0 it returns 0.
-    /// Default to u8::MAX
-    pub fn get_id(&self) -> u8 {
-        self.get_name()
-            .chars()
-            .rev()
-            .take_while(|c| c.is_ascii_digit())
-            .collect::<Vec<_>>()
-            .into_iter()
-            .rev()
-            .collect::<String>()
-            .parse()
-            .unwrap_or(u8::MAX)
-    }
-
-    /// Get the device name as a String
-    pub fn get_name(&self) -> String {
-        String::from_utf8(self.xname.to_vec())
-            .unwrap()
-            .trim_end_matches(char::from(0))
-            .to_string()
-    }
+    pub max_numt: [i32; SENSOR_MAX_TYPES as size_t],
+    pub sensors_count: c_int,
 }

@@ -1,6 +1,6 @@
 //! The os::cpu_temp::openbsd module implements the OpenBSD way to get the
 //! temperature of the CPU. It provides the public functions required by the
-//! cpu_temp.
+//! cpu_temp block.
 
 use crate::common::TempUnit;
 use crate::os::cpu_temp::*;
@@ -15,7 +15,7 @@ use crate::sensors::sysctl::openbsd::*;
 /// sensors, the maximum temperature is returned.
 ///
 /// unit is the target unit of temperature.
-pub fn get_cpu_temp(cpu_index: Option<u8>, unit: TempUnit) -> Result<u8, CpuError> {
+pub fn get_cpu_temp(cpu_index: Option<u8>, unit: TempUnit) -> Result<u8, CpuTempError> {
     let sensors = match sysctl_sensors(SensorDevType::SensorDevCpu, SensorType::SensorTemp) {
         Ok(v) => v,
         Err(e) => return Err(e.into()),

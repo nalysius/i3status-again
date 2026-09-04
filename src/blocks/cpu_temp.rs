@@ -27,11 +27,6 @@ impl CpuTempBlock {
 
 impl Block for CpuTempBlock {
     fn get_output(&self) -> BlockOutput {
-        let temp_unit = match self.unit {
-            TempUnit::Celsius => "°C".to_string(),
-            TempUnit::Fahrenheit => "°F".to_string(),
-        };
-
         let cpu_temp: String = match get_cpu_temp(self.index, self.unit) {
             Ok(l) => format!("{}", l),
             Err(e) => e.to_string(),
@@ -40,7 +35,7 @@ impl Block for CpuTempBlock {
         let out = self
             .format
             .replace("{temp}", &cpu_temp)
-            .replace("{unit}", &temp_unit);
+            .replace("{unit}", &self.unit.to_string());
         BlockOutput::new(&format!("{}", out))
     }
 }

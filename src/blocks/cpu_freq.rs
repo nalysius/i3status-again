@@ -1,4 +1,4 @@
-//! The blocks::cpu_temp module implements the cpu_temp block.
+//! The blocks::cpu_freq module implements the cpu_freq block.
 
 use crate::bar::BlockOutput;
 use crate::blocks::Block;

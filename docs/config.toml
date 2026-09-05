@@ -1,5 +1,9 @@
 # See docs/features.md for the full documentation about the blocks.
 
+# The interval between each refresh
+interval = 1
+
+# The block to display CPU frequency
 [[blocks]]
 block = "cpu_freq"
 format = "{freq} {unit}"
@@ -7,17 +11,20 @@ format = "{freq} {unit}"
 #unit = "ghz"
 #aggregation = "average"
 
+# The block to display CPU temperature
 [[blocks]]
 block = "cpu_temp"
 format = "{temp} {unit}"
 #index = 0
 #unit = "celsius"
 
+# The block to display battery information
 [[blocks]]
 block = "battery"
 format = "{chr_state} {rem_percent}% {rem_time}"
 #index = 0
 
+# The block to display date and time
 [[blocks]]
 block = "datetime"
 format = "%Y-%m-%d %H:%M"

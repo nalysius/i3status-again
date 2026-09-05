@@ -13,6 +13,18 @@ operating systems. If it's as easy to use as pledge and unveil, there is
 no reason for a package maintainer to apply custom patches, security
 should be built-in.
 
+## Top level configuration
+
+The configuration isn't only about blocks, it's also possible to configure
+options at the top-level of the configuration file.
+
+### interval
+
+The `interval` field lets the user decides the interval, in seconds, between
+two updates of the status bar. It's optional and default to 1, meaning that by
+default the information will be updated every second.  
+The maximum value is 255.
+
 ## Blocks
 
 An i3 status bar is built around the concept of blocks. A block to display

@@ -13,7 +13,7 @@ fn main() {
     let config_file = argv.nth(1).unwrap();
     let config = load_config(&config_file).expect("Unable to read configuration");
     let blocks = config.to_blocks();
-    let sleep_time = time::Duration::from_millis(1000);
+    let sleep_time = time::Duration::from_secs(config.interval.into());
 
     println!(r#"{{"version":1}}"#);
     // Open a JSON array

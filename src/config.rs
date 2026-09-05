@@ -87,6 +87,10 @@ pub struct CpuFreqConfig {
 /// and docs/config.toml for an example of configuration.
 #[derive(Debug, Deserialize)]
 pub struct Config {
+    /// The interval between refresh, in seconds.
+    #[serde(default = "default_interval")]
+    pub interval: u8,
+    /// The blocks.
     pub blocks: Vec<BlockConfig>,
 }
 
@@ -129,4 +133,9 @@ pub fn load_config(path: &str) -> Result<Config, Box<dyn error::Error>> {
     let content = fs::read_to_string(path)?;
     let config: Config = toml::from_str(&content)?;
     Ok(config)
+}
+
+/// Get the default value for Config.interval.
+fn default_interval() -> u8 {
+    1
 }

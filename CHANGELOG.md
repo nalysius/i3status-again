@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- An `interval` option in the configuration to let the user decide how often the
+  bar updates its information. Default to 1 second.
 - A block "cpu_freq" for OpenBSD, that displays the frequency of the CPU in MHz
   or GHz. If several CPUs are combined in one block, it's possible to display the
   average or maximum frequency.
@@ -16,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Celsius or Fahrenheit.
 - Documentation in the [./docs](./docs) directory to explain the choices that
   have been made, the project architecture, and describe how the blocks work.
+
+### Changed
+
+- The ports of the OpenBSD C headers sensors.h, sysctl.h and uvmexp.g to Rust
+  have been improved to follow the libc guidelines.
 
 ## [0.1.0] - 2026-09-03
 

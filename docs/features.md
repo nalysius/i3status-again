@@ -51,7 +51,7 @@ format = "{chr_state} {rem_percent}% {rem_time}"
 - `block` contains the name of the block, here "battery".
 - `format` describes how to display the information about the battery. Some people
   want only the percentage, some others want the remaining time, all can choose.
-  There are three placeholders that can be used:
+  Here are the available placeholders:
   - `{chr_state}` means charging state. It's "CHR" when the battery is charging,
 	"BAT" otherwise.
   - `{rem_percent}` means remaining percentage. It is the remaining capacity of
@@ -81,7 +81,7 @@ The cpu_freq block displays the frequency of the CPU. Here is its configuration:
 ```toml
 [[blocks]]
 block = "cpu_freq"
-format = "{freq} {unit}"
+format = "CPU {freq} {unit}"
 #index = 0
 #unit = "ghz"
 #aggregation = "average"
@@ -90,7 +90,7 @@ format = "{freq} {unit}"
 - `block` contains the name of the block, here "cpu_freq".
 - `format` describes how to display the information about the battery. Some people
   want only the value, some others want the unit, all can choose.
-  There are two placeholders that can be used:
+  Here are the available placeholders:
   - `freq` means frequency. It's the frequency of the CPU without the unit, like
 	"2.65".
   - `unit` is the frequency unit, either "MHz" or "GHz".
@@ -115,7 +115,7 @@ The cpu_temp block displays the temperature of the CPU. Here is its configuratio
 ```toml
 [[blocks]]
 block = "cpu_temp"
-format = "{temp} {unit}"
+format = "CPU {temp} {unit}"
 #index = 0
 #unit = "fahrenheit"
 ```
@@ -123,7 +123,7 @@ format = "{temp} {unit}"
 - `block` contains the name of the block, here "cpu_temp".
 - `format` describes how to display the temperature of the CPU. Some people
   want the unit, some others want only the value, all can choose.
-  There are two placeholders that can be used:
+  Here are the available placeholders:
   - `{temp}` means temperature. It's the temperature of the CPU, without the
 	unit.
   - `{unit}` is the temperature unit, °C of °F.
@@ -160,3 +160,35 @@ format = "%Y-%m-%d %H:%M:%S"
 [openbsd-pledge]: https://man.openbsd.org/pledge.2
 [openbsd-unveil]: https://man.openbsd.org/unveil.2
 [chrono-format]: https://docs.rs/chrono/latest/chrono/format/strftime/index.html
+
+### Memory
+
+The memory block shows the information about the used memory. Here is its
+configuration:
+
+```toml
+[[blocks]]
+block = "memory"
+format = "MEM {mem_used} / {mem_total} {unit} ({mem_used_percent}%)"
+#unit = "gibibyte"
+```
+
+- `block` contains the name of the block, here "memory".
+- `format` describes how to display the memory information. Some people
+  want the amount, some others want only the percentages, all can choose.
+  Here are the available placeholders:
+  - `{mem_used}` means memory used. It's the amount of used memory.
+  - `{mem_used_percent}` means memory used percentage. It's the percentage ot
+	memory that is used.
+  - `{mem_total}` means memory total. It's the total amount of memory accessible
+	to the operating system.
+  - `{unit}` is the memory unit, MiB or GiB.
+- `unit` (optional, default = "gibibyte") contains the wanted unit to use to
+  compute memory amounts. Either "mebybyte" or "gibibyte", without an 's' at the
+  end.
+
+#### Note for OpenBSD
+
+On OpenBSD, sysctl reads a uvmexp to compute the memory amounts. See
+[./decisions.md](./decisions.md) to understand what is takes into account
+exactly and why.

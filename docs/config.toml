@@ -3,10 +3,17 @@
 # The interval between each refresh
 interval = 1
 
+# The block to display the used memory
+[[blocks]]
+block = "memory"
+format = "MEM {mem_used_percent}%"
+#format = "MEM {mem_used} / {mem_total} {unit} ({mem_used_percent}%)"
+#unit = "gibibyte"
+
 # The block to display CPU frequency
 [[blocks]]
 block = "cpu_freq"
-format = "{freq} {unit}"
+format = "CPU {freq} {unit}"
 #index = 0
 #unit = "ghz"
 #aggregation = "average"
@@ -14,7 +21,7 @@ format = "{freq} {unit}"
 # The block to display CPU temperature
 [[blocks]]
 block = "cpu_temp"
-format = "{temp} {unit}"
+format = "CPU {temp} {unit}"
 #index = 0
 #unit = "celsius"
 

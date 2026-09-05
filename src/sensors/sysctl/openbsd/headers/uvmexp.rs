@@ -80,6 +80,7 @@ pub struct uvmexp {
     pub paging: c_int,
     /// [a] number of wired pages
     pub wired: c_int,
+
     /// [aF] number of zero's pages
     pub zeropages: c_int,
     /// [I] number of pages reserved for pagedaemon

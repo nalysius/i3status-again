@@ -50,3 +50,21 @@ impl fmt::Display for FreqUnit {
         }
     }
 }
+
+/// Memory unit
+#[derive(Clone, Copy, Debug, Default, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum MemoryUnit {
+    MebiByte,
+    #[default]
+    GibiByte,
+}
+
+impl fmt::Display for MemoryUnit {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        match self {
+            MemoryUnit::MebiByte => write!(f, "MiB"),
+            MemoryUnit::GibiByte => write!(f, "GiB"),
+        }
+    }
+}

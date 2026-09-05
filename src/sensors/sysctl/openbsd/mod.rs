@@ -132,8 +132,8 @@ pub fn sysctl_sensordev(mib: &[c_int]) -> Result<sensordev, SysctlError> {
 }
 
 /// A wrapper around sysctl to get a uvmexp.
-pub fn sysctl_uvmexp(mib: &[c_int]) -> Result<uvmexp, SysctlError> {
-    sysctl_fixed(mib)
+pub fn sysctl_uvmexp() -> Result<uvmexp, SysctlError> {
+    sysctl_fixed(&[CTL_VM, VM_UVMEXP])
 }
 
 /// A wrapper around sysctl.

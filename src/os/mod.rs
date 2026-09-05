@@ -14,3 +14,4 @@
 pub mod battery;
 pub mod cpu_freq;
 pub mod cpu_temp;
+pub mod memory;

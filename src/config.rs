@@ -1,7 +1,7 @@
 //! The config module handles the configuration.
 
 use crate::blocks::*;
-use crate::common::{AggregatUnit, FreqUnit, TempUnit};
+use crate::common::{AggregatUnit, FreqUnit, MemoryUnit, TempUnit};
 use serde::Deserialize;
 use std::error;
 use std::fs;
@@ -20,20 +20,13 @@ use toml;
 #[derive(Debug, Deserialize)]
 #[serde(tag = "block", rename_all = "lowercase")]
 pub enum BlockConfig {
-    DateTime(DateTimeConfig),
     Battery(BatteryConfig),
-    #[serde(rename = "cpu_temp")]
-    CpuTemp(CpuTempConfig),
     #[serde(rename = "cpu_freq")]
     CpuFreq(CpuFreqConfig),
-}
-
-/// The configuration for the "datetime" block.
-#[derive(Debug, Deserialize)]
-pub struct DateTimeConfig {
-    /// The string used to format the date time.
-    /// See the crate chrono for the placeholders. Example: %Y-%m-%d %H:%M.
-    pub format: String,
+    #[serde(rename = "cpu_temp")]
+    CpuTemp(CpuTempConfig),
+    DateTime(DateTimeConfig),
+    Memory(MemoryConfig),
 }
 
 /// The configuration for the "battery" block.
@@ -45,21 +38,6 @@ pub struct BatteryConfig {
     /// The identifier of the battery to monitor, starting from 0.
     /// If None, all the batteries are monitored and displayed as one.
     pub index: Option<u8>,
-}
-
-/// The configuration for the "cpu_temp" block.
-#[derive(Debug, Deserialize)]
-pub struct CpuTempConfig {
-    /// The string used to format the CPU temperature display.
-    /// Supported placeholders are documented in docs/features.md.
-    pub format: String,
-    /// The identifier of the CPU to monitor, starting from 0.
-    /// If None, all the CPUs are monitored and displayed as one.
-    pub index: Option<u8>,
-    /// The unit of the temperature.
-    /// Default to Celsius.
-    #[serde(default)]
-    pub unit: TempUnit,
 }
 
 /// The configuration for the "cpu_temp" block.
@@ -79,6 +57,41 @@ pub struct CpuFreqConfig {
     /// Default to average.
     #[serde(default)]
     pub aggregation: AggregatUnit,
+}
+
+/// The configuration for the "cpu_temp" block.
+#[derive(Debug, Deserialize)]
+pub struct CpuTempConfig {
+    /// The string used to format the CPU temperature display.
+    /// Supported placeholders are documented in docs/features.md.
+    pub format: String,
+    /// The identifier of the CPU to monitor, starting from 0.
+    /// If None, all the CPUs are monitored and displayed as one.
+    pub index: Option<u8>,
+    /// The unit of the temperature.
+    /// Default to Celsius.
+    #[serde(default)]
+    pub unit: TempUnit,
+}
+
+/// The configuration for the "datetime" block.
+#[derive(Debug, Deserialize)]
+pub struct DateTimeConfig {
+    /// The string used to format the date time.
+    /// See docs/features.md for the details about placeholders.
+    /// Example: %Y-%m-%d %H:%M:%S.
+    pub format: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct MemoryConfig {
+    /// The string used to format the memory.
+    /// See docs/features.md for the available placeholders.
+    pub format: String,
+    /// The unit to use to compute the memory.
+    /// Default gibibyte
+    #[serde(default)]
+    pub unit: MemoryUnit,
 }
 
 /// The global configuration structure.
@@ -115,6 +128,10 @@ impl Config {
                 BlockConfig::DateTime(d) => {
                     let dt_block = DateTimeBlock::from_config(&d);
                     blocks.push(BlockType::DateTime(dt_block));
+                }
+                BlockConfig::Memory(m) => {
+                    let m_block = MemoryBlock::from_config(&m);
+                    blocks.push(BlockType::Memory(m_block));
                 }
             }
         }

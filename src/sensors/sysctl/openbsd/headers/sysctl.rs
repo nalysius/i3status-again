@@ -392,7 +392,8 @@ pub const KERN_VIDEO_RECORD: c_int = 1;
 pub const KERN_VIDEO_MAXID: c_int = 2;
 
 /// Map the kern video names to their types
-pub const CTL_KERN_VIDEO_NAMES: [(&str, c_int); KERN_VIDEO_MAXID as size_t] = [("", 0), ("record", CTLTYPE_INT)];
+pub const CTL_KERN_VIDEO_NAMES: [(&str, c_int); KERN_VIDEO_MAXID as size_t] =
+    [("", 0), ("record", CTLTYPE_INT)];
 
 // KERN_WITNESS
 pub const KERN_WITNESS_WATCH: c_int = 1;
@@ -891,7 +892,8 @@ pub const KERN_CLOCKINTR_STATS: c_int = 1;
 pub const KERN_CLOCKINTR_MAXID: c_int = 2;
 
 /// Map the CTL kern clockintr names to their types
-pub const CTL_KERN_CLOCKINTR_NAMES: [(&str, c_int); KERN_CLOCKINTR_MAXID as size_t] = [("", 0), ("stats", CTLTYPE_STRUCT)];
+pub const CTL_KERN_CLOCKINTR_NAMES: [(&str, c_int); KERN_CLOCKINTR_MAXID as size_t] =
+    [("", 0), ("stats", CTLTYPE_STRUCT)];
 
 // CTL_HW identifiers
 /// String: machine class

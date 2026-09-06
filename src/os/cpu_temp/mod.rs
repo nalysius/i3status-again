@@ -10,9 +10,18 @@ pub mod openbsd;
 #[cfg(target_os = "openbsd")]
 pub use crate::os::cpu_temp::openbsd::*;
 
+#[cfg(not(any(target_os = "openbsd")))]
+pub mod notsupported;
+#[cfg(not(any(target_os = "openbsd")))]
+pub use crate::os::cpu_temp::notsupported::*;
+
 /// The errors that can occur when reading the temperature of the CPU.
 pub enum CpuTempError {
+    /// The CPU hasn't been found.
     CpuNotFound,
+    /// The OS doesn't support this block.
+    OsNotSupported,
+    /// There was a compatibility issue with sysctl, probably the structures.
     SysctlCompat,
 }
 
@@ -20,6 +29,7 @@ impl fmt::Display for CpuTempError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             CpuTempError::CpuNotFound => write!(f, "CPU not found"),
+            CpuTempError::OsNotSupported => write!(f, "OS not supported"),
             CpuTempError::SysctlCompat => write!(f, "Sysctl compat. error"),
         }
     }

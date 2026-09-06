@@ -3,7 +3,7 @@
 //! cpu_freq block.
 
 use crate::common::{AggregatUnit, FreqUnit};
-use crate::os::cpu_freq::*;
+use crate::os::cpu_freq::CpuFreqError;
 use crate::sensors::sysctl::openbsd::*;
 
 pub fn get_cpu_freq(

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Empty implementations of the `os` module so compiling the project works
+  even on OS with one or more unsupported blocks.
 - A block `memory`for OpenBSD, that displays the amount of percentage of used
   memory.
 - An `interval` option in the configuration to let the user decide how often the

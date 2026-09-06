@@ -10,9 +10,18 @@ pub mod openbsd;
 #[cfg(target_os = "openbsd")]
 pub use crate::os::cpu_freq::openbsd::*;
 
+#[cfg(not(any(target_os = "openbsd")))]
+pub mod notsupported;
+#[cfg(not(any(target_os = "openbsd")))]
+pub use crate::os::cpu_freq::notsupported::*;
+
 /// The errors that can occur when reading the frequency of the CPU.
 pub enum CpuFreqError {
+    /// The CPU could not be found.
     CpuNotFound,
+    /// The OS doesn't support this block.
+    OsNotSupported,
+    /// A compatibility error with sysctl, probably the structures.
     SysctlCompat,
 }
 
@@ -20,6 +29,7 @@ impl fmt::Display for CpuFreqError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             CpuFreqError::CpuNotFound => write!(f, "CPU not found"),
+            CpuFreqError::OsNotSupported => write!(f, "OS not supported"),
             CpuFreqError::SysctlCompat => write!(f, "Sysctl compat. error"),
         }
     }

@@ -10,11 +10,18 @@ pub mod openbsd;
 #[cfg(target_os = "openbsd")]
 pub use crate::os::battery::openbsd::*;
 
+#[cfg(not(any(target_os = "openbsd")))]
+pub mod notsupported;
+#[cfg(not(any(target_os = "openbsd")))]
+pub use crate::os::battery::notsupported::*;
+
 /// The errors that can occur when querying a battery.
 pub enum BatteryError {
     /// The battery wasn't found.
     BatNotFound,
-    /// The is a compatibility error with the sysctl's structures
+    /// The operating system doesn't support this block.
+    OsNotSupported,
+    /// The is a compatibility error with the sysctl's structures.
     SysctlCompat,
 }
 
@@ -22,6 +29,7 @@ impl fmt::Display for BatteryError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             BatteryError::BatNotFound => write!(f, "Battery not found"),
+            BatteryError::OsNotSupported => write!(f, "Not supported on this OS"),
             BatteryError::SysctlCompat => write!(f, "Sysctl compat. error"),
         }
     }

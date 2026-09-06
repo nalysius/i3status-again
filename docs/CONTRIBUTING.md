@@ -52,7 +52,9 @@ steps:
    Result in case reading the sensors fails. Each `os` submodule defines its
    error enumeration, so it's isolated from the `sensors` submodule and can be
    used in the block. Don't forget to re-export the functions with "pub use" in
-   `mod.rs`, so the API is OS-independent.
+   `mod.rs`, so the API is OS-independent. Since you create a new block, also
+   create the empty implementation in `notsupported.rs` so the program still
+   compiles on the OS that don't support the block.
 3. Preparing the configuration of the new block. In `src/config.rs`, add a
    variant in the `BlockConfig` enum and create a struct for your block's
    configuration. Then in the `Config`'s `to_blocks()` method, add a match
@@ -80,6 +82,8 @@ less work than creating a new one. The steps are as follow:
    system pair. Implement the same functions that other operating systems for
    the block you're interested in, and don't forget to re-export them using
    "pub use" in `mod.rs`. This way the existing block will be able to use them.
+   Update the `#[cfg]` in `mod.rs` so your operating system uses your module
+   instead of the default `notsupported` one.
 3. Updating the [README.md](../README.md)'s table to show that the block now
    supports the new operating system.
 

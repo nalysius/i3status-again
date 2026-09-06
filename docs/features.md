@@ -181,7 +181,9 @@ format = "MEM {mem_used} / {mem_total} {unit} ({mem_used_percent}%)"
   - `{mem_used_percent}` means memory used percentage. It's the percentage ot
 	memory that is used.
   - `{mem_total}` means memory total. It's the total amount of memory accessible
-	to the operating system.
+	to the operating system. It can be lower than the amount of physical memory
+	of your machine, because the firmware usually keeps a bit of memory for
+	itself and it's not accessible to the operating system.
   - `{unit}` is the memory unit, MiB or GiB.
 - `unit` (optional, default = "gibibyte") contains the wanted unit to use to
   compute memory amounts. Either "mebybyte" or "gibibyte", without an 's' at the

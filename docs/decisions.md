@@ -22,7 +22,11 @@ Now the battery block works on all architectures where OpenBSD works.
 
 ## OpenBSD: what is used or available memory
 
-It's not straightforward to say exactly how much memory is used.
+It's not straightforward to say exactly how much memory is used. Firstly, one
+has to decide between measuring the total memory (hw.physmem) or the
+user-available memory (hw.usermem) only. I consider the memory used by the kernel
+as mine too, I want the global picture so I choose to measure the total memory.
+
 To access memory information on OpenBSD, sysctl reads a
 [uvmexp][openbsd-uvm-struct] struct, which has fields like:
 

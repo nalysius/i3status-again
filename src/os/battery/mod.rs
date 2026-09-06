@@ -15,14 +15,14 @@ pub enum BatteryError {
     /// The battery wasn't found.
     BatNotFound,
     /// The is a compatibility error with the sysctl's structures
-    SysctlCompatError,
+    SysctlCompat,
 }
 
 impl fmt::Display for BatteryError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             BatteryError::BatNotFound => write!(f, "Battery not found"),
-            BatteryError::SysctlCompatError => write!(f, "Sysctl compat. error"),
+            BatteryError::SysctlCompat => write!(f, "Sysctl compat. error"),
         }
     }
 }
@@ -32,7 +32,7 @@ impl From<SysctlError> for BatteryError {
     fn from(value: SysctlError) -> Self {
         match value {
             SysctlError::NotFound => Self::BatNotFound,
-            _ => Self::SysctlCompatError,
+            _ => Self::SysctlCompat,
         }
     }
 }

@@ -13,14 +13,14 @@ pub use crate::os::cpu_temp::openbsd::*;
 /// The errors that can occur when reading the temperature of the CPU.
 pub enum CpuTempError {
     CpuNotFound,
-    SysctlCompatError,
+    SysctlCompat,
 }
 
 impl fmt::Display for CpuTempError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             CpuTempError::CpuNotFound => write!(f, "CPU not found"),
-            CpuTempError::SysctlCompatError => write!(f, "Sysctl compat. error"),
+            CpuTempError::SysctlCompat => write!(f, "Sysctl compat. error"),
         }
     }
 }
@@ -30,7 +30,7 @@ impl From<SysctlError> for CpuTempError {
     fn from(value: SysctlError) -> Self {
         match value {
             SysctlError::NotFound => Self::CpuNotFound,
-            _ => Self::SysctlCompatError,
+            _ => Self::SysctlCompat,
         }
     }
 }

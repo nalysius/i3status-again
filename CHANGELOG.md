@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The variants of the error enumerations in the `os` module
+  (e.g.: `os::battery::BatteryError`) don't end with "Error" anymore to avoid
+  redundancy.
 - The ports of the OpenBSD C headers sensors.h, sysctl.h and uvmexp.g to Rust
   have been improved to follow the libc guidelines.
 

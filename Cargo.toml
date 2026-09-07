@@ -1,11 +1,26 @@
 [package]
 name = "i3status-again"
-version = "0.1.0"
+version = "0.2.0"
+authors = ["Anthony <anthony@abosec.fr>"]
+categories = ["command-line-utilities"]
+description = "A portable status line for i3bar, targeting OpenBSD first."
 edition = "2024"
+keywords = ["i3", "i3status", "openbsd", "bsd", "status-bar"]
+license = "ISC"
+publish = true
+readme = "README.md"
+repository = "https://github.com/nalysius/i3status-again"
+rust-version = "1.85"
 
 [dependencies]
 chrono = { version = "0.4.45", default-features = false, features = ["alloc", "std", "clock", "now"] }
-toml = "1.1.4"
+toml = "1.1.5"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
 libc = "1.0.0-alpha.4"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"

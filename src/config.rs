@@ -100,9 +100,9 @@ pub struct MemoryConfig {
 /// and docs/config.toml for an example of configuration.
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    /// The interval between refresh, in seconds.
+    /// The interval between refresh, in milliseconds.
     #[serde(default = "default_interval")]
-    pub interval: u8,
+    pub interval: u64,
     /// The blocks.
     pub blocks: Vec<BlockConfig>,
 }
@@ -153,6 +153,6 @@ pub fn load_config(path: &str) -> Result<Config, Box<dyn error::Error>> {
 }
 
 /// Get the default value for Config.interval.
-fn default_interval() -> u8 {
-    1
+fn default_interval() -> u64 {
+    1000
 }

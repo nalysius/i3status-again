@@ -1,7 +1,7 @@
 # See docs/features.md for the full documentation about the blocks.
 
-# The interval between each refresh
-interval = 1
+# The interval between each refresh, in milliseconds
+interval = 1000
 
 # The block to display the used memory
 [[blocks]]

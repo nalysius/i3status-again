@@ -8,12 +8,20 @@ use std::{thread, time};
 fn main() {
     let mut argv = env::args();
     if argv.len() < 2 {
-        panic!("Usage: i3status-again path/to/config.toml");
+        println!("Usage: i3status-again path/to/config.toml");
+        return;
     }
     let config_file = argv.nth(1).unwrap();
     let config = load_config(&config_file).expect("Unable to read configuration");
     let blocks = config.to_blocks();
     let sleep_time = time::Duration::from_millis(config.interval.into());
+
+    if sleep_time < time::Duration::from_millis(10) {
+        eprintln!(
+            "Invalid configuration: 'interval' is in milliseconds, it must be greater than 10."
+        );
+        return;
+    }
 
     println!(r#"{{"version":1}}"#);
     // Open a JSON array

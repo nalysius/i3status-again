@@ -30,6 +30,8 @@ format = "CPU {temp} {unit}"
 block = "battery"
 format = "{chr_state} {rem_percent}% {rem_time}"
 #index = 0
+#bg_critical = "#ff0000"
+#critical_level = 10
 
 # The block to display date and time
 [[blocks]]

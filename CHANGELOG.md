@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Options `bg_critical` and `critical_level` in the `battery` block, to change
+  the background of the battery block under a choosen level. Default to red
+  if <= 10%.
+
 ### Changed
 
 - The `interval` configuration option is now in milliseconds instead of seconds.

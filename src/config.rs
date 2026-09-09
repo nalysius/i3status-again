@@ -1,7 +1,7 @@
 //! The config module handles the configuration.
 
 use crate::blocks::*;
-use crate::common::{AggregatUnit, FreqUnit, MemoryUnit, TempUnit};
+use crate::common::{AggregatUnit, Color, FreqUnit, MemoryUnit, TempUnit};
 use serde::Deserialize;
 use std::error;
 use std::fs;
@@ -38,6 +38,12 @@ pub struct BatteryConfig {
     /// The identifier of the battery to monitor, starting from 0.
     /// If None, all the batteries are monitored and displayed as one.
     pub index: Option<u8>,
+    /// The background color when the battery level is critical.
+    #[serde(default = "Color::red")]
+    pub bg_critical: Color,
+    /// From which percent the level is considered critical.
+    #[serde(default = "default_battery_critical_level")]
+    pub critical_level: u8,
 }
 
 /// The configuration for the "cpu_temp" block.
@@ -155,4 +161,9 @@ pub fn load_config(path: &str) -> Result<Config, Box<dyn error::Error>> {
 /// Get the default value for Config.interval.
 fn default_interval() -> u64 {
     1000
+}
+
+/// Get the default value for BatteryConfig.critical_level.
+fn default_battery_critical_level() -> u8 {
+    10
 }

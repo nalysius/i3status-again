@@ -45,6 +45,8 @@ The battery block displays information about the battery. Here is its configurat
 block = "battery"
 format = "{chr_state} {rem_percent}% {rem_time}"
 #index = 0
+#bg_critical = "#ff0000"
+#critical_level = 10
 ```
 
 - `block` contains the name of the block, here "battery".
@@ -66,6 +68,10 @@ format = "{chr_state} {rem_percent}% {rem_time}"
   have several of them that you want to combine to display in one block. If you
   want to have one block for each of your batteries, define several "battery"
   blocks, one with index = 0, the other one with index = 1 and so on.
+- `bg_critical` (optional, default = "#ff0000") is the background color to use
+  when the level of the battery is critical.
+- `critical_level` (optional, default = 10) is the percentage from which the
+  battery level is considered critical.
 
 #### Note for OpenBSD
 

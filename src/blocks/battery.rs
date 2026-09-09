@@ -30,7 +30,6 @@ impl BatteryBlock {
 
 impl Block for BatteryBlock {
     fn get_output(&self) -> BlockOutput {
-        
         let (rem_percentage_s, rem_percentage): (String, u8) = match get_battery_level(self.index) {
             Ok(l) => (format!("{}", l), l),
             Err(e) => (e.to_string(), 0),

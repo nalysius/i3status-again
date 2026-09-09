@@ -111,8 +111,10 @@ impl TryFrom<&str> for Color {
             ));
         }
 
-        let pair = |s: &str| u8::from_str_radix(s, 16)
-            .map_err(|_| format!("invalid color '{value}': invalid hex digit"));
+        let pair = |s: &str| {
+            u8::from_str_radix(s, 16)
+                .map_err(|_| format!("invalid color '{value}': invalid hex digit"))
+        };
 
         Ok(Color {
             red: pair(&digits[0..2])?,

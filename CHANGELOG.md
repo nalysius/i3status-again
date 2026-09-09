@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-09
+
 ### Added
 
 - Options `bg_critical` and `critical_level` in the `battery` block, to change
@@ -15,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- The `interval` configuration option is now in milliseconds instead of seconds.
+- **Breaking** The `interval` configuration option is now in milliseconds instead of seconds.
 
 ## [0.2.0] - 2026-09-06
 

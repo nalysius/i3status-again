@@ -1,6 +1,6 @@
 # Decisions
 
-This document describes the choices that have been made in this project.
+This document describes the choices made in this project.
 
 ## A portable program
 
@@ -86,7 +86,26 @@ used_memory = (active + wired) * pagesize
 It means that _active_ and _wired_ are counted as used memory, and everything
 else is counted as available.
 
+## Why implement C headers in the project?
 
+Since i3status-again doesn't call external programs, it needs to communicate
+with the operating system using libc. It's done in the `sensors` module.
+In Rust, the libc crate contains many FFI definitions to use the libc of any
+operating systems. It doesn't contain everything for every OS, so some FFI
+definitions must be declared manually.  
+Implementing them manually is good to understand how the operating system works,
+and it's faster than sending everything to the libc crate and wait until it's
+merged and published. Sending pull requests to the libc crate is a long-term
+goal, but implementing the missing headers in the project lets me move faster.
+
+The C headers ported to Rust try to follow the crate's conventions. Structures
+and constants keep their original names and C types are used as much as
+possible. We don't have the crate's `s!` and `c_enum!` macros, so the structures
+derive useful traits manually and the C enumerations are ported as constants
+whose names are the name of the variants.  
+The pull requests to the crate have started in September 2026. When a structure
+or an enumeration is added in Rust's libc, switching to it should be as simple
+as updating the `use` path.
 
 
 

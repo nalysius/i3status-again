@@ -160,11 +160,36 @@ format = "%Y-%m-%d %H:%M:%S"
 - `format` describes how to display the date and time. For the full list of
   specifiers, see the [chrono documentation][chrono-format].
 
+### Disk Usage
 
+The disk_usage block displays how much space is used on a filesystem. Here is
+its configuration:
 
-[openbsd-pledge]: https://man.openbsd.org/pledge.2
-[openbsd-unveil]: https://man.openbsd.org/unveil.2
-[chrono-format]: https://docs.rs/chrono/latest/chrono/format/strftime/index.html
+```toml
+[[blocks]]
+block = "disk_usage"
+format = "/ {space_available}{unit}"
+mount_point = "/home"
+#unit = "gibibyte"
+```
+
+- `block` contains the name of the block, here "disk_usage".
+- `format` describes how to display the disk usage. Some people want used
+  memory, some others want the available memory, all can choose.
+  Here are the available placeholders:
+  - `{space_used}` is the amount of space being used.
+  - `{space_total}` is the total amount of space on the choosen filesystem.
+  - `{space_used_percent}` is the percentage or used memory.
+  - `{space_available}` is the amount of available space.
+  - `{unit}` is the memory unit, GiB or MiB.
+- `mount_point` is the mount point of the partition to monitor. Common choices
+  are "/" or "/home", check in your "/etc/fstab" file to know.
+- `unit` is the memory unit used to compute the used or available space.
+
+#### Note for OpenBSD
+
+On OpenBSD, statvfs is used to read values. Space reserved for root is counted
+as used.
 
 ### Memory
 
@@ -199,3 +224,10 @@ format = "MEM {mem_used} / {mem_total} {unit} ({mem_used_percent}%)"
 On OpenBSD, sysctl reads a uvmexp to compute the memory amounts. See
 [./decisions.md](./decisions.md) to understand what is takes into account
 exactly and why.
+
+
+
+
+[openbsd-pledge]: https://man.openbsd.org/pledge.2
+[openbsd-unveil]: https://man.openbsd.org/unveil.2
+[chrono-format]: https://docs.rs/chrono/latest/chrono/format/strftime/index.html

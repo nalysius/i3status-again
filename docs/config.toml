@@ -3,6 +3,13 @@
 # The interval between each refresh, in milliseconds
 interval = 1000
 
+# The block to display disk usage
+[[blocks]]
+block = "disk_usage"
+format = "/ {space_available}{unit}"
+mount_point = "/home"
+#unit = "gibibyte"
+
 # The block to display the used memory
 [[blocks]]
 block = "memory"

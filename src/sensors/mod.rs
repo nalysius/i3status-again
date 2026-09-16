@@ -2,4 +2,5 @@
 //! Wrappers of unsafe code are defined here to avoid unsafe
 //! being used everywhere. Example: sysctl.
 
+pub mod statvfs;
 pub mod sysctl;

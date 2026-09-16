@@ -26,6 +26,8 @@ pub enum BlockConfig {
     #[serde(rename = "cpu_temp")]
     CpuTemp(CpuTempConfig),
     DateTime(DateTimeConfig),
+    #[serde(rename = "disk_usage")]
+    DiskUsage(DiskUsageConfig),
     Memory(MemoryConfig),
 }
 
@@ -89,6 +91,21 @@ pub struct DateTimeConfig {
     pub format: String,
 }
 
+/// The configuration for the "disk_usage" block.
+#[derive(Debug, Deserialize)]
+pub struct DiskUsageConfig {
+    /// The string used to format the output.
+    /// See docs/features.md for the details about placeholders.
+    /// Example: {used_memory}{unit}.
+    pub format: String,
+    /// The unit to compute the available space.
+    /// Default gibibyte
+    #[serde(default)]
+    pub unit: MemoryUnit,
+    /// The mount point of the partition to monitor.
+    pub mount_point: String,
+}
+
 #[derive(Debug, Deserialize)]
 pub struct MemoryConfig {
     /// The string used to format the memory.
@@ -134,6 +151,10 @@ impl Config {
                 BlockConfig::DateTime(d) => {
                     let dt_block = DateTimeBlock::from_config(&d);
                     blocks.push(BlockType::DateTime(dt_block));
+                }
+                BlockConfig::DiskUsage(d) => {
+                    let du_block = DiskUsageBlock::from_config(&d);
+                    blocks.push(BlockType::DiskUsage(du_block));
                 }
                 BlockConfig::Memory(m) => {
                     let m_block = MemoryBlock::from_config(&m);

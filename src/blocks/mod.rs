@@ -11,12 +11,14 @@ pub mod battery;
 pub mod cpu_freq;
 pub mod cpu_temp;
 pub mod datetime;
+pub mod disk_usage;
 pub mod memory;
 
 pub use crate::blocks::battery::BatteryBlock;
 pub use crate::blocks::cpu_freq::CpuFreqBlock;
 pub use crate::blocks::cpu_temp::CpuTempBlock;
 pub use crate::blocks::datetime::DateTimeBlock;
+pub use crate::blocks::disk_usage::DiskUsageBlock;
 pub use crate::blocks::memory::MemoryBlock;
 
 use crate::bar::BlockOutput;
@@ -30,6 +32,7 @@ pub enum BlockType {
     CpuFreq(CpuFreqBlock),
     CpuTemp(CpuTempBlock),
     DateTime(DateTimeBlock),
+    DiskUsage(DiskUsageBlock),
     Memory(MemoryBlock),
 }
 
@@ -41,6 +44,7 @@ impl BlockType {
             Self::CpuFreq(c) => c.get_output(),
             Self::CpuTemp(c) => c.get_output(),
             Self::DateTime(d) => d.get_output(),
+            Self::DiskUsage(d) => d.get_output(),
             Self::Memory(m) => m.get_output(),
         }
     }

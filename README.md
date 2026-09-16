@@ -20,6 +20,7 @@ The table below shows which blocks are supported on which operating systems.
 | cpu_freq   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | cpu_temp   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | datetime   |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
+| disk_usage |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | memory     |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 
 ✅ = supported  

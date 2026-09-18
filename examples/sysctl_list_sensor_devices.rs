@@ -19,7 +19,7 @@ fn main() {
         let mut size = size_of::<sensordev>();
 
         // Read the data of the sensor device #device_id
-        let mut buf = MaybeUninit::uninit();
+        let mut buf = MaybeUninit::zeroed();
         let ret: i32;
         unsafe {
             ret = sysctl(

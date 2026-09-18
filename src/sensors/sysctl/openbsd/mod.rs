@@ -142,7 +142,7 @@ pub fn sysctl_uvmexp() -> Result<uvmexp, SysctlError> {
 /// DON'T use it to query a String or any type with a dynamic size.
 fn sysctl_fixed<T: Copy>(mib: &[c_int]) -> Result<T, SysctlError> {
     let mut size = size_of::<T>();
-    let mut buf = MaybeUninit::<T>::uninit();
+    let mut buf = MaybeUninit::<T>::zeroed();
     let ret: c_int;
     unsafe {
         ret = sysctl(

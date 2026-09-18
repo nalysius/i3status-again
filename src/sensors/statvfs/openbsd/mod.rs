@@ -42,7 +42,7 @@ impl Error for StatvfsError {}
 /// Note: blocks reserved for root count as used, since the user will never
 /// have access to it.
 pub fn statvfs_rs(mount_point: &str) -> Result<(f64, f64, f64, f64), StatvfsError> {
-    let mut buf = MaybeUninit::uninit();
+    let mut buf = MaybeUninit::zeroed();
     let path = CString::new(mount_point).unwrap();
     let ret = unsafe { statvfs(path.as_ptr(), buf.as_mut_ptr() as *mut statvfs) };
     if ret != 0 {

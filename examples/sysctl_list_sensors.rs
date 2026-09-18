@@ -21,7 +21,7 @@ fn main() {
         let mut size = size_of::<sensordev>();
 
         // Read the data of the sensor device #device_id
-        let mut buf = MaybeUninit::uninit();
+        let mut buf = MaybeUninit::zeroed();
         let ret: i32;
         unsafe {
             ret = sysctl(
@@ -55,7 +55,7 @@ fn main() {
                 let mib = [CTL_HW, HW_SENSORS, device_id, sensor_type_id, sensor_id];
                 // The size is fixed, no need to call sysctl twice to get the size
                 let mut size = size_of::<sensor>();
-                let mut buf = MaybeUninit::uninit();
+                let mut buf = MaybeUninit::zeroed();
                 unsafe {
                     let ret = sysctl(
                         mib.as_ptr(),                    // name

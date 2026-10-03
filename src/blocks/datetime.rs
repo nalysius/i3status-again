@@ -20,7 +20,7 @@ impl DateTimeBlock {
 }
 
 impl Block for DateTimeBlock {
-    fn get_output(&self) -> BlockOutput {
+    fn get_output(&mut self) -> BlockOutput {
         BlockOutput::new(&format!("{}", Local::now().format(self.format.as_str())))
     }
 }

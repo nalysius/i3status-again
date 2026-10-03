@@ -23,7 +23,7 @@ impl MemoryBlock {
 }
 
 impl Block for MemoryBlock {
-    fn get_output(&self) -> BlockOutput {
+    fn get_output(&mut self) -> BlockOutput {
         let (total_memory, used_memory, used_percent) = match get_memory(self.unit) {
             Ok((tm, um, up)) => (tm, um, up),
             Err(e) => return BlockOutput::new(&e.to_string()),

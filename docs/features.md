@@ -225,6 +225,27 @@ On OpenBSD, sysctl reads a uvmexp to compute the memory amounts. See
 [./decisions.md](./decisions.md) to understand what is takes into account
 exactly and why.
 
+### Volume
+
+The volume block shows the volume. Here is its configuration:
+
+```toml
+[[blocks]]
+block = "volume"
+format = "SND {vol_percent}%"
+format_muted = "SND M {vol_percent}%"
+```
+
+- `block` contains the name of the block, here "volume".
+- `format` describes how to display the volume information. Here are the
+  available placeholders:
+  - `{vol_percent}` means volume percentage.
+- `format_muted` is similar to `format` and has the same placeholders, but is
+  used when the sound is muted.
+
+#### Note for OpenBSD
+
+On OpenBSD, sndio is used to get information about volume.
 
 
 

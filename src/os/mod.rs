@@ -16,3 +16,4 @@ pub mod cpu_freq;
 pub mod cpu_temp;
 pub mod disk_usage;
 pub mod memory;
+pub mod volume;

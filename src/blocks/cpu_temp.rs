@@ -26,7 +26,7 @@ impl CpuTempBlock {
 }
 
 impl Block for CpuTempBlock {
-    fn get_output(&self) -> BlockOutput {
+    fn get_output(&mut self) -> BlockOutput {
         let cpu_temp: String = match get_cpu_temp(self.index, self.unit) {
             Ok(l) => format!("{}", l),
             Err(e) => e.to_string(),

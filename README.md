@@ -22,9 +22,13 @@ The table below shows which blocks are supported on which operating systems.
 | datetime   |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
 | disk_usage |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | memory     |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
+| volume(1)  |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 
 ✅ = supported  
 ❌ = not yet supported
+
+(1) the volume block can work on other OS if sndio is installed and
+i3status-again is compiled against it, but it's not the case by default.
 
 ## Features
 

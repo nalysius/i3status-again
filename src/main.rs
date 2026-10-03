@@ -13,7 +13,7 @@ fn main() {
     }
     let config_file = argv.nth(1).unwrap();
     let config = load_config(&config_file).expect("Unable to read configuration");
-    let blocks = config.to_blocks();
+    let mut blocks = config.to_blocks();
     let sleep_time = time::Duration::from_millis(config.interval.into());
 
     if sleep_time < time::Duration::from_millis(10) {
@@ -30,7 +30,7 @@ fn main() {
 
     loop {
         let mut outputs = Vec::new();
-        for block in &blocks {
+        for block in &mut blocks {
             outputs.push(block.get_output());
         }
 

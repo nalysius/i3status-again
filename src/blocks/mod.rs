@@ -13,6 +13,7 @@ pub mod cpu_temp;
 pub mod datetime;
 pub mod disk_usage;
 pub mod memory;
+pub mod volume;
 
 pub use crate::blocks::battery::BatteryBlock;
 pub use crate::blocks::cpu_freq::CpuFreqBlock;
@@ -20,6 +21,7 @@ pub use crate::blocks::cpu_temp::CpuTempBlock;
 pub use crate::blocks::datetime::DateTimeBlock;
 pub use crate::blocks::disk_usage::DiskUsageBlock;
 pub use crate::blocks::memory::MemoryBlock;
+pub use crate::blocks::volume::VolumeBlock;
 
 use crate::bar::BlockOutput;
 
@@ -34,18 +36,20 @@ pub enum BlockType {
     DateTime(DateTimeBlock),
     DiskUsage(DiskUsageBlock),
     Memory(MemoryBlock),
+    Volume(VolumeBlock),
 }
 
 impl BlockType {
     /// A shortcut function to call get_output on the block.
-    pub fn get_output(&self) -> BlockOutput {
-        match &self {
+    pub fn get_output(&mut self) -> BlockOutput {
+        match self {
             Self::Battery(b) => b.get_output(),
             Self::CpuFreq(c) => c.get_output(),
             Self::CpuTemp(c) => c.get_output(),
             Self::DateTime(d) => d.get_output(),
             Self::DiskUsage(d) => d.get_output(),
             Self::Memory(m) => m.get_output(),
+            Self::Volume(v) => v.get_output(),
         }
     }
 }
@@ -53,5 +57,5 @@ impl BlockType {
 /// A simple trait to enforce some methods in every traits.
 pub trait Block {
     /// Main method of a block to generate an output.
-    fn get_output(&self) -> BlockOutput;
+    fn get_output(&mut self) -> BlockOutput;
 }

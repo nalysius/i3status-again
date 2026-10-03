@@ -29,6 +29,7 @@ pub enum BlockConfig {
     #[serde(rename = "disk_usage")]
     DiskUsage(DiskUsageConfig),
     Memory(MemoryConfig),
+    Volume(VolumeConfig),
 }
 
 /// The configuration for the "battery" block.
@@ -117,6 +118,17 @@ pub struct MemoryConfig {
     pub unit: MemoryUnit,
 }
 
+/// The configuration for the "volume" block.
+#[derive(Debug, Deserialize)]
+pub struct VolumeConfig {
+    /// The string used to format the volume display.
+    /// Supported placeholders are documented in docs/features.md.
+    pub format: String,
+    /// The string used to format the volume display when volume is muted.
+    /// Supported placeholders are documented in docs/features.md.
+    pub format_muted: String,
+}
+
 /// The global configuration structure.
 ///
 /// It's a list of [[blocks]] section with BlockConfig in each. See BlockConfig
@@ -159,6 +171,10 @@ impl Config {
                 BlockConfig::Memory(m) => {
                     let m_block = MemoryBlock::from_config(&m);
                     blocks.push(BlockType::Memory(m_block));
+                }
+                BlockConfig::Volume(v) => {
+                    let v_block = VolumeBlock::from_config(&v);
+                    blocks.push(BlockType::Volume(v_block));
                 }
             }
         }

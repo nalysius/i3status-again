@@ -3,6 +3,11 @@
 # The interval between each refresh, in milliseconds
 interval = 1000
 
+[[blocks]]
+block = "volume"
+format = "SND {vol_percent}%"
+format_muted = "SND M {vol_percent}%"
+
 # The block to display disk usage
 [[blocks]]
 block = "disk_usage"

@@ -29,7 +29,7 @@ impl CpuFreqBlock {
 }
 
 impl Block for CpuFreqBlock {
-    fn get_output(&self) -> BlockOutput {
+    fn get_output(&mut self) -> BlockOutput {
         let cpu_freq: String = match get_cpu_freq(self.index, self.unit, self.aggregation) {
             Ok(l) => format!("{:.2}", l),
             Err(e) => e.to_string(),

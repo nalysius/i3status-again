@@ -26,7 +26,7 @@ impl DiskUsageBlock {
 }
 
 impl Block for DiskUsageBlock {
-    fn get_output(&self) -> BlockOutput {
+    fn get_output(&mut self) -> BlockOutput {
         let (total_space, used_space, used_percent, avail_space) =
             match get_disk_usage(&self.mount_point, self.unit) {
                 Ok((ts, us, up, asp)) => (ts, us, up, asp),

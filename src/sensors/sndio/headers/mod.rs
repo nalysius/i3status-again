@@ -4,7 +4,7 @@
 //! use sndio from Rust.
 //! See /usr/include/sndio.h
 
-use libc::{c_char, c_int, c_uint, c_void, size_t};
+use libc::{c_char, c_int, c_uint, c_void, pollfd, size_t};
 use std::ffi::CStr;
 
 // Default audio device and MIDI port
@@ -189,17 +189,20 @@ pub const SIO_LE_NATIVE: c_int = if cfg!(target_endian = "little") { 1 } else { 
 
 /// Maximum value of volume, eg. for sio_setvol()
 pub const SIO_MAXVOL: c_int = 127;
-
+/*
+#[derive(Clone)]
 #[repr(C)]
 pub struct pollfd {
     _private: [u8; 0],
 }
+*/
 
-pub type SioOnmoveCb = extern "C" fn(arg: *mut c_void, delta: c_int);
-pub type SioOnxrunCb = extern "C" fn(arg: *mut c_void);
-pub type SioOnvolCb = extern "C" fn(arg: *mut c_void, vol: c_uint);
-pub type SioctlOndescCb = extern "C" fn(arg: *mut c_void, desc: *mut sioctl_desc, val: c_int);
-pub type SioctlOnvalCb = extern "C" fn(arg: *mut c_void, addr: c_uint, val: c_uint);
+pub type SioOnmoveCb = unsafe extern "C" fn(arg: *mut c_void, delta: c_int);
+pub type SioOnxrunCb = unsafe extern "C" fn(arg: *mut c_void);
+pub type SioOnvolCb = unsafe extern "C" fn(arg: *mut c_void, vol: c_uint);
+pub type SioctlOndescCb =
+    unsafe extern "C" fn(arg: *mut c_void, desc: *mut sioctl_desc, val: c_int);
+pub type SioctlOnvalCb = unsafe extern "C" fn(arg: *mut c_void, addr: c_uint, val: c_uint);
 
 unsafe extern "C" {
     pub fn sio_initpar(par: *mut sio_par);

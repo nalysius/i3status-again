@@ -1,5 +1,5 @@
 //! The os::battery::notsupported module is the default empty implementation
-//! that is used on unsupported operating sytems.
+//! that is used on unsupported operating systems.
 
 use crate::os::battery::BatteryError;
 

@@ -94,7 +94,7 @@ impl SndioCtx {
         }
     }
 
-    /// Read the volume.
+    /// Reads the volume.
     /// Must be called after poll().
     /// If Some(), contains (volume_current, volume_max, is_muted), so it's easy
     /// to compute a percentage.

@@ -1,4 +1,4 @@
-//! The common module contains structs or functions that can be used in any
+//! The common module contains structs and functions that can be used in any
 //! other module.
 
 use serde::{Deserialize, Serialize};
@@ -70,6 +70,7 @@ impl fmt::Display for MemoryUnit {
     }
 }
 
+/// A color, from and to hex notation. Example: "#ff0000".
 #[derive(Debug, Clone, Copy, Deserialize, PartialEq, Serialize)]
 #[serde(try_from = "String", into = "String")]
 pub struct Color {
@@ -99,6 +100,7 @@ impl TryFrom<String> for Color {
 impl TryFrom<&str> for Color {
     type Error = String;
 
+    /// Reads a string like "#ff0000" to a color.
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let digits = value
             .strip_prefix('#')
@@ -125,6 +127,7 @@ impl TryFrom<&str> for Color {
 }
 
 impl From<Color> for String {
+    /// Color to String
     fn from(color: Color) -> String {
         format!("#{:02x}{:02x}{:02x}", color.red, color.green, color.blue)
     }

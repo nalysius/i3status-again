@@ -6,7 +6,7 @@ use crate::common::MemoryUnit;
 use crate::os::disk_usage::DiskUsageError;
 use crate::sensors::statvfs::openbsd::*;
 
-/// Get the usage information for the given partition.
+/// Gets the usage information for the given partition.
 pub fn get_disk_usage(
     mount_point: &str,
     unit: MemoryUnit,

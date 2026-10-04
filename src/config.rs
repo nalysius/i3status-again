@@ -16,7 +16,7 @@ use toml;
 /// block = "datetime"
 /// format = "%Y-%m-%d %H:%M"
 ///
-/// The fields format comes directly from the DateTimeConfig.
+/// The field format comes directly from the DateTimeConfig.
 #[derive(Debug, Deserialize)]
 #[serde(tag = "block", rename_all = "lowercase")]
 pub enum BlockConfig {
@@ -42,9 +42,11 @@ pub struct BatteryConfig {
     /// If None, all the batteries are monitored and displayed as one.
     pub index: Option<u8>,
     /// The background color when the battery level is critical.
+    /// Default to red.
     #[serde(default = "Color::red")]
     pub bg_critical: Color,
     /// From which percent the level is considered critical.
+    /// Default to 10.
     #[serde(default = "default_battery_critical_level")]
     pub critical_level: u8,
 }
@@ -136,6 +138,7 @@ pub struct VolumeConfig {
 #[derive(Debug, Deserialize)]
 pub struct Config {
     /// The interval between refresh, in milliseconds.
+    /// Default 1000 milliseconds
     #[serde(default = "default_interval")]
     pub interval: u64,
     /// The blocks.
@@ -143,7 +146,7 @@ pub struct Config {
 }
 
 impl Config {
-    /// Convert the configuration to a list of BlockType.
+    /// Converts the configuration to a list of BlockType.
     pub fn to_blocks(&self) -> Vec<BlockType> {
         let mut blocks = Vec::new();
         for block in &self.blocks {
@@ -182,7 +185,7 @@ impl Config {
     }
 }
 
-/// Read a TOML configuration file.
+/// Reads a TOML configuration file.
 ///
 /// # Errors
 ///
@@ -195,7 +198,7 @@ pub fn load_config(path: &str) -> Result<Config, Box<dyn error::Error>> {
     Ok(config)
 }
 
-/// Get the default value for Config.interval.
+/// Get the default value for Config.interval, in milliseconds.
 fn default_interval() -> u64 {
     1000
 }

@@ -6,6 +6,7 @@ use crate::common::{AggregatUnit, FreqUnit};
 use crate::os::cpu_freq::CpuFreqError;
 use crate::sensors::sysctl::openbsd::*;
 
+/// Gets the frequency of the CPU.
 pub fn get_cpu_freq(
     cpu_index: Option<u8>,
     unit: FreqUnit,

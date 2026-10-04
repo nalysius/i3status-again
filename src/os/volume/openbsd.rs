@@ -1,12 +1,12 @@
-//! The os::volume::notsupported module is the default empty implementation
-//! that is used on unsupported operating systems.
+//! The os::volume::openbsd module is the OpenBSD way to query the sound
+//! volume.
 
 use crate::os::volume::VolumeError;
 use crate::sensors::sndio::SndioCtx;
 
 pub type VolumeCtx = Box<SndioCtx>;
 
-/// Get a new volume context.
+/// Gets a new volume context.
 pub fn volume_ctx_new() -> VolumeCtx {
     SndioCtx::new().expect("Cannot initialize sndio context.")
 }
@@ -16,7 +16,7 @@ pub fn is_volume_ctx_valid(ctx: &VolumeCtx) -> bool {
     !ctx.is_dead()
 }
 
-/// Get the current volume.
+/// Gets the current volume.
 /// If Ok(), contains (volume_percentage, is_muted).
 pub fn get_volume(ctx: &mut VolumeCtx) -> Result<(u8, bool), VolumeError> {
     ctx.poll();

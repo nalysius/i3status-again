@@ -36,7 +36,7 @@ impl fmt::Display for CpuTempError {
 }
 
 impl From<SysctlError> for CpuTempError {
-    /// Convert a SysctlError to a CpuTempError.
+    /// Converts a SysctlError to a CpuTempError.
     fn from(value: SysctlError) -> Self {
         match value {
             SysctlError::NotFound => Self::CpuNotFound,

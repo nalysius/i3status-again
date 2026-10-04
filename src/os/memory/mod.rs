@@ -39,7 +39,7 @@ impl fmt::Display for MemoryError {
 }
 
 impl From<SysctlError> for MemoryError {
-    /// Convert a SysctlError to a MemoryError.
+    /// Converts a SysctlError to a MemoryError.
     fn from(value: SysctlError) -> Self {
         match value {
             _ => Self::SysctlCompat,

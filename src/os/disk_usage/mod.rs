@@ -39,7 +39,7 @@ impl fmt::Display for DiskUsageError {
 }
 
 impl From<StatvfsError> for DiskUsageError {
-    /// Convert a StatvfsError to a DiskUsageError.
+    /// Converts a StatvfsError to a DiskUsageError.
     fn from(value: StatvfsError) -> Self {
         match value {
             StatvfsError::InvalidMountPoint => Self::MountPointNotFound,

@@ -12,6 +12,7 @@ pub mod cpu_freq;
 pub mod cpu_temp;
 pub mod datetime;
 pub mod disk_usage;
+pub mod load;
 pub mod memory;
 pub mod volume;
 
@@ -20,6 +21,7 @@ pub use crate::blocks::cpu_freq::CpuFreqBlock;
 pub use crate::blocks::cpu_temp::CpuTempBlock;
 pub use crate::blocks::datetime::DateTimeBlock;
 pub use crate::blocks::disk_usage::DiskUsageBlock;
+pub use crate::blocks::load::LoadBlock;
 pub use crate::blocks::memory::MemoryBlock;
 pub use crate::blocks::volume::VolumeBlock;
 
@@ -35,6 +37,7 @@ pub enum BlockType {
     CpuTemp(CpuTempBlock),
     DateTime(DateTimeBlock),
     DiskUsage(DiskUsageBlock),
+    Load(LoadBlock),
     Memory(MemoryBlock),
     Volume(VolumeBlock),
 }
@@ -48,6 +51,7 @@ impl BlockType {
             Self::CpuTemp(c) => c.get_output(),
             Self::DateTime(d) => d.get_output(),
             Self::DiskUsage(d) => d.get_output(),
+            Self::Load(l) => l.get_output(),
             Self::Memory(m) => m.get_output(),
             Self::Volume(v) => v.get_output(),
         }

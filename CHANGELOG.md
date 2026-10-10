@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- A block `load` for all Unix-like operating systems, that displays the load
+  averages.
 - A block `volume` for OpenBSD, that displays the volume of the sound.
 - A block `disk_usage` for OpenBSD, that displays how much of a filesystem
   is used.

@@ -191,6 +191,24 @@ mount_point = "/home"
 On OpenBSD, statvfs is used to read values. Space reserved for root is counted
 as used.
 
+### Load
+
+The load block shows the load averages. This block is common to all operating
+systems since it's based on `getloadavg(3)`. Here is its configuration:
+
+```toml
+[[blocks]]
+block = "load"
+format = "LOAD {load1m}, {load5m}, {load15m}"
+```
+
+- `block` contains the name of the block, here "load".
+- `format` describes how to display the load information. Here are the available
+  placeholders:
+  - `{load1m}` means load 1 minute.
+  - `{load5m}` means load 5 minutes.
+  - `{load15m}` means load 15 minutes.
+
 ### Memory
 
 The memory block shows the information about the used memory. Here is its
@@ -246,7 +264,6 @@ format_muted = "SND M {vol_percent}%"
 #### Note for OpenBSD
 
 On OpenBSD, sndio is used to get information about volume.
-
 
 
 [openbsd-pledge]: https://man.openbsd.org/pledge.2

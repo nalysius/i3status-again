@@ -28,6 +28,7 @@ pub enum BlockConfig {
     DateTime(DateTimeConfig),
     #[serde(rename = "disk_usage")]
     DiskUsage(DiskUsageConfig),
+    Load(LoadConfig),
     Memory(MemoryConfig),
     Volume(VolumeConfig),
 }
@@ -109,6 +110,15 @@ pub struct DiskUsageConfig {
     pub mount_point: String,
 }
 
+/// The configuration for the "load" block.
+#[derive(Debug, Deserialize)]
+pub struct LoadConfig {
+    /// The string used to format the output.
+    /// See docs/features.md for the details about placeholders.
+    /// Example: {load1m}, {load5m}, {load15m}.
+    pub format: String,
+}
+
 #[derive(Debug, Deserialize)]
 pub struct MemoryConfig {
     /// The string used to format the memory.
@@ -170,6 +180,10 @@ impl Config {
                 BlockConfig::DiskUsage(d) => {
                     let du_block = DiskUsageBlock::from_config(&d);
                     blocks.push(BlockType::DiskUsage(du_block));
+                }
+                BlockConfig::Load(l) => {
+                    let l_block = LoadBlock::from_config(&l);
+                    blocks.push(BlockType::Load(l_block));
                 }
                 BlockConfig::Memory(m) => {
                     let m_block = MemoryBlock::from_config(&m);

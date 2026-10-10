@@ -21,6 +21,7 @@ The table below shows which blocks are supported on which operating systems.
 | cpu_temp   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | datetime   |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
 | disk_usage |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
+| load       |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
 | memory     |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | volume(1)  |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 

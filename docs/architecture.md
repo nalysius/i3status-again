@@ -15,7 +15,11 @@ The `src/` directory looks like this :
 |   |-- cpu_freq.rs
 |   |-- cpu_temp.rs
 |   |-- datetime.rs
-|   `-- mod.rs
+|   |-- disk_usage.rs
+|   |-- load.rs
+|   |-- memory.rs
+|   |-- mod.rs
+|   `-- volume.rs
 |-- common.rs
 |-- config.rs
 |-- lib.rs
@@ -23,23 +27,52 @@ The `src/` directory looks like this :
 |-- os
 |   |-- battery
 |   |   |-- mod.rs
+|   |   |-- notsupported.rs
 |   |   `-- openbsd.rs
 |   |-- cpu_freq
 |   |   |-- mod.rs
+|   |   |-- notsupported.rs
 |   |   `-- openbsd.rs
 |   |-- cpu_temp
 |   |   |-- mod.rs
+|   |   |-- notsupported.rs
 |   |   `-- openbsd.rs
-|   `-- mod.rs
+|   |-- disk_usage
+|   |   |-- mod.rs
+|   |   |-- notsupported.rs
+|   |   `-- openbsd.rs
+|   |-- load
+|   |   |-- common.rs
+|   |   `-- mod.rs
+|   |-- memory
+|   |   |-- mod.rs
+|   |   |-- notsupported.rs
+|   |   `-- openbsd.rs
+|   |-- mod.rs
+|   `-- volume
+|       |-- mod.rs
+|       |-- notsupported.rs
+|       `-- openbsd.rs
 `-- sensors
+    |-- load
+    |   `-- mod.rs
     |-- mod.rs
+    |-- sndio
+    |   |-- headers
+    |   |   `-- mod.rs
+    |   `-- mod.rs
+    |-- statvfs
+    |   |-- mod.rs
+    |   `-- openbsd
+    |       `-- mod.rs
     `-- sysctl
         |-- mod.rs
         `-- openbsd
             |-- headers
             |   |-- mod.rs
             |   |-- sensors.rs
-            |   `-- sysctl.rs
+            |   |-- sysctl.rs
+            |   `-- uvmexp.rs
             `-- mod.rs
 ```
 
@@ -88,6 +121,11 @@ For example the `os::battery` module provides functions like
 In `os::battery::openbsd` it uses `sensors::sysctl::openbsd` to get the
 information, in `os::battery::linux` it could use `sensors::power_supply::linux`,
 but both expose the same functions.
+
+The `os::load` module is an exception, it's common to all operating systems
+(for the moment) so it's implemented in a `os::load::common` modules. If a new
+OS that work in a different way is added in the future, adding a #[cfg()]  and
+implement the new OS will be enough.
 
 For the `blocks` module to be OS-independent, each submodule of `os` re-exports
 the functions defined for the right OS. It's done this way:

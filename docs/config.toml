@@ -3,6 +3,11 @@
 # The interval between each refresh, in milliseconds
 interval = 1000
 
+# The block to display the load
+[[blocks]]
+block = "load"
+format = "LOAD {load1m}, {load5m}, {load15m}"
+
 [[blocks]]
 block = "volume"
 format = "SND {vol_percent}%"

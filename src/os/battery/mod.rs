@@ -6,12 +6,12 @@ use std::convert::From;
 use std::fmt;
 
 #[cfg(target_os = "openbsd")]
-pub mod openbsd;
+mod openbsd;
 #[cfg(target_os = "openbsd")]
 pub use crate::os::battery::openbsd::*;
 
 #[cfg(not(any(target_os = "openbsd")))]
-pub mod notsupported;
+mod notsupported;
 #[cfg(not(any(target_os = "openbsd")))]
 pub use crate::os::battery::notsupported::*;
 

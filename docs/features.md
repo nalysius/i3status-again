@@ -2,16 +2,14 @@
 
 ## Security
 
-It's planned to implement security features provided by operating systems.  
-
-i3status-again needs to read only a few files: config.toml,
-/sys/class/power_supply/ on Linux, etc. It doesn't need to
-create or execute files, nor to access the Internet.  
-So, it makes sense to implement [pledge(2)][openbsd-pledge] and
-[unveil(2)][openbsd-unveil] on OpenBSD, and similar mechanisms on other
-operating systems. If it's as easy to use as pledge and unveil, there is
-no reason for a package maintainer to apply custom patches, security
-should be built-in.
+On OpenBSD, [pledge(2)][openbsd-pledge] and [unveil(2)][openbsd-unveil] are
+used.  
+About pledge, only what's needed to access standard input/output, read, write
+and create paths (required for sndio), access memory information and unix
+sockets are allowed. Access to the DNS, the routing table or calling
+[execve][openbsd-execve] aren't allowed.
+Regarding unveil, only what's needed for sndio and access the local timezone
+are available. The user's home directory or /etc aren't seen by the program.
 
 ## Top level configuration
 
@@ -268,4 +266,5 @@ On OpenBSD, sndio is used to get information about volume.
 
 [openbsd-pledge]: https://man.openbsd.org/pledge.2
 [openbsd-unveil]: https://man.openbsd.org/unveil.2
+[openbsd-execve]: https://man.openbsd.org/execve.2
 [chrono-format]: https://docs.rs/chrono/latest/chrono/format/strftime/index.html

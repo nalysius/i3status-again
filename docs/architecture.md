@@ -53,6 +53,9 @@ The `src/` directory looks like this :
 |       |-- mod.rs
 |       |-- notsupported.rs
 |       `-- openbsd.rs
+|-- sec
+|   |-- mod.rs
+|   `-- openbsd.rs
 `-- sensors
     |-- load
     |   `-- mod.rs
@@ -93,6 +96,14 @@ remain as small as possible.
 
 The `config` module reads the TOML configuration and defines structs to give the
 configuration to the blocks.
+
+### `sec`
+
+The `sec` module contains OS-specific security features. For example the
+`openbsd` submodule calls [pledge(2)][openbsd-pledge] and
+[unveil(2)][openbsd-unveil]. Each submodule only exposes one function, which is
+re-exported by the `sec` module. This way, the main() function can call it
+without checking which OS it's about.
 
 ### `sensors`
 
@@ -163,14 +174,12 @@ operating system without breaking it for another one.
 
 To port the `battery` block to Linux, a module `sensors::power_supply::linux`
 will be implemented, independently of the existing code.  
-Then a `os::battery::linux` module will implement the required functions,
+Then an `os::battery::linux` module will implement the required functions,
 without affecting the OpenBSD code, and re-export them in `os::battery`.  
 That's all.
 
-With such a modular architecture, it should be easy to implement OS security like
-[pledge(2)][openbsd-pledge] and [unveil(2)][openbsd-unveil] in the program,
-without the need for package maintainers to apply patches for this.
-  
+Applying OS security features is as easy, it works in the same way but in the
+`sec` module.
 
 [openbsd-sysctl]: https://man.openbsd.org/sysctl.2
 [github-openbsd-sensor]: https://github.com/openbsd/src/blob/master/sys/sys/sensors.h#L112

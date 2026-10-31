@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-31
+
 ### Added
 
+- Implementation of security features pledge(2) and unveil(2) on OpenBSD.
 - A block `load` for all Unix-like operating systems, that displays the load
   averages.
 - A block `volume` for OpenBSD, that displays the volume of the sound.

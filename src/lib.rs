@@ -3,4 +3,5 @@ pub mod blocks;
 pub mod common;
 pub mod config;
 pub mod os;
+pub mod sec;
 pub mod sensors;

@@ -1,4 +1,5 @@
 use i3status_again::config::load_config;
+use i3status_again::sec::*;
 
 use serde_json::json;
 use std::env;
@@ -13,6 +14,7 @@ fn main() {
     }
     let config_file = argv.nth(1).unwrap();
     let config = load_config(&config_file).expect("Unable to read configuration");
+    apply_security(&config_file);
     let mut blocks = config.to_blocks();
     let sleep_time = time::Duration::from_millis(config.interval.into());
 

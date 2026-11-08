@@ -10,6 +10,7 @@ use std::string::ToString;
 
 pub mod headers;
 
+pub use crate::sensors::sysctl::openbsd::headers::sched::*;
 pub use crate::sensors::sysctl::openbsd::headers::sensors::*;
 pub use crate::sensors::sysctl::openbsd::headers::sysctl::*;
 pub use crate::sensors::sysctl::openbsd::headers::uvmexp::*;

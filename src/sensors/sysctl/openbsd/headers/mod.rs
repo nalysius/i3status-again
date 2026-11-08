@@ -3,6 +3,7 @@
 //! found in OpenBSD.
 //! See /usr/include/sys/sensors.h and /usr/include/sys/sysctl.h
 
+pub mod sched;
 pub mod sensors;
 pub mod sysctl;
 pub mod uvmexp;

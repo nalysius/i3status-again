@@ -13,6 +13,7 @@ pub const CP_INTR: c_int = 4;
 pub const CP_IDLE: c_int = 5;
 pub const CPUSTATES: c_int = 6;
 
+#[derive(Clone, Copy, Debug)]
 #[repr(C)]
 pub struct cpustats {
     /// CPU state statistics

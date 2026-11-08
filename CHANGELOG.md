@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- A block `cpu_usage` for OpenBSD, that displays how much the CPU is used.
+
 ## [0.4.0] - 2026-10-31
 
 ### Added

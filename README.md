@@ -19,6 +19,7 @@ The table below shows which blocks are supported on which operating systems.
 | battery    |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | cpu_freq   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | cpu_temp   |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
+| cpu_usage  |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | datetime   |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |
 | disk_usage |   ✅    |   ❌    |   ❌   |      ❌       |   ❌  |
 | load       |   ✅    |   ✅    |   ✅   |      ✅       |   ✅  |

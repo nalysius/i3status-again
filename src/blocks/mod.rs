@@ -10,6 +10,7 @@
 pub mod battery;
 pub mod cpu_freq;
 pub mod cpu_temp;
+pub mod cpu_usage;
 pub mod datetime;
 pub mod disk_usage;
 pub mod load;
@@ -19,6 +20,7 @@ pub mod volume;
 pub use crate::blocks::battery::BatteryBlock;
 pub use crate::blocks::cpu_freq::CpuFreqBlock;
 pub use crate::blocks::cpu_temp::CpuTempBlock;
+pub use crate::blocks::cpu_usage::CpuUsageBlock;
 pub use crate::blocks::datetime::DateTimeBlock;
 pub use crate::blocks::disk_usage::DiskUsageBlock;
 pub use crate::blocks::load::LoadBlock;
@@ -35,6 +37,7 @@ pub enum BlockType {
     Battery(BatteryBlock),
     CpuFreq(CpuFreqBlock),
     CpuTemp(CpuTempBlock),
+    CpuUsage(CpuUsageBlock),
     DateTime(DateTimeBlock),
     DiskUsage(DiskUsageBlock),
     Load(LoadBlock),
@@ -49,6 +52,7 @@ impl BlockType {
             Self::Battery(b) => b.get_output(),
             Self::CpuFreq(c) => c.get_output(),
             Self::CpuTemp(c) => c.get_output(),
+            Self::CpuUsage(c) => c.get_output(),
             Self::DateTime(d) => d.get_output(),
             Self::DiskUsage(d) => d.get_output(),
             Self::Load(l) => l.get_output(),

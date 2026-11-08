@@ -144,6 +144,33 @@ format = "CPU {temp} {unit}"
 On OpenBSD, sysctl reads values under `hw.sensors.cpuX`, where X can be
 `index`.
 
+### CPU Usage
+
+The cpu_usage block displays the percentage of usage of the CPU. Here is its configuration:
+
+```toml
+[[blocks]]
+block = "cpu_usage"
+format = "CPU {used_percent}%"
+#index = 0
+```
+
+- `block` contains the name of the block, here "cpu_usage".
+- `format` describes how to display the usage of the CPU.
+  Here are the available placeholders:
+  - `{used_percent}` means used percentage. It's the percentage of how much
+	the CPU is used.
+- `{index}` is the index of the CPU to monitor. Remove or comment this setting
+  if you have only one CPU or if you have several that you want to combine
+  to display in one block. If you want to have one block for each of your
+  CPUs, define several "cpu_usage" blocks, one with index = 0, the other one
+  with index = 1 and so on.
+
+#### Note for OpenBSD
+
+On OpenBSD, sysctl reads values under `hw.ncpu`, and `kern.cpustats.X` where
+X is `index`.
+
 ### Datetime
 
 The datetime block shows the current date and time. Here is the configuration:

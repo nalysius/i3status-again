@@ -137,6 +137,16 @@ pub fn sysctl_uvmexp() -> Result<uvmexp, SysctlError> {
     sysctl_fixed(&[CTL_VM, VM_UVMEXP])
 }
 
+/// A wrapper around sysctl to get a cpustats.
+pub fn sysctl_cpustats(mib: &[c_int]) -> Result<cpustats, SysctlError> {
+    sysctl_fixed(mib)
+}
+
+/// A wrapper around sysctl to get an integer.
+pub fn sysctl_int(mib: &[c_int]) -> Result<c_int, SysctlError> {
+    sysctl_fixed(mib)
+}
+
 /// A wrapper around sysctl.
 ///
 /// Works for any type with a fixed size, like sensor or sensordev.

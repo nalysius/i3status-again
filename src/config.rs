@@ -25,6 +25,8 @@ pub enum BlockConfig {
     CpuFreq(CpuFreqConfig),
     #[serde(rename = "cpu_temp")]
     CpuTemp(CpuTempConfig),
+    #[serde(rename = "cpu_usage")]
+    CpuUsage(CpuUsageConfig),
     DateTime(DateTimeConfig),
     #[serde(rename = "disk_usage")]
     DiskUsage(DiskUsageConfig),
@@ -84,6 +86,17 @@ pub struct CpuTempConfig {
     /// Default to Celsius.
     #[serde(default)]
     pub unit: TempUnit,
+}
+
+/// The configuration for the "cpu_usage" block.
+#[derive(Debug, Deserialize)]
+pub struct CpuUsageConfig {
+    /// The string used to format the CPU usage display.
+    /// Supported placeholders are documented in docs/features.md.
+    pub format: String,
+    /// The identifier of the CPU to monitor, starting from 0.
+    /// If None, all the CPUs are monitored and displayed as one.
+    pub index: Option<i32>,
 }
 
 /// The configuration for the "datetime" block.
@@ -172,6 +185,10 @@ impl Config {
                 BlockConfig::CpuTemp(c) => {
                     let ct_block = CpuTempBlock::from_config(&c);
                     blocks.push(BlockType::CpuTemp(ct_block));
+                }
+                BlockConfig::CpuUsage(c) => {
+                    let cu_block = CpuUsageBlock::from_config(&c);
+                    blocks.push(BlockType::CpuUsage(cu_block));
                 }
                 BlockConfig::DateTime(d) => {
                     let dt_block = DateTimeBlock::from_config(&d);

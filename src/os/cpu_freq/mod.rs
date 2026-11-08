@@ -36,7 +36,7 @@ impl fmt::Display for CpuFreqError {
 }
 
 impl From<SysctlError> for CpuFreqError {
-    /// Convert a SysctlError to a CpuError.
+    /// Convert a SysctlError to a CpuFreqError.
     fn from(value: SysctlError) -> Self {
         match value {
             SysctlError::NotFound => Self::CpuNotFound,

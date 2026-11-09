@@ -107,7 +107,58 @@ The pull requests to the crate have started in September 2026. When a structure
 or an enumeration is added in Rust's libc, switching to it should be as simple
 as updating the `use` path.
 
+## OpenBSD: pledge and unveil
 
+OpenBSD provides two nice features to programs, pledge(2) and unveil(2). Pledge
+lets a program restrict the system operations it can do, while unveil restricts
+the parts of the filesystem it can access.  
+
+i3status-again uses pledge with the following promises: stdio rpath cpath vminfo
+unveil unix.  
+- `stdio` is required because the program writes to stdout.
+- `rpath` is required to read the configuration file and a few other files
+  related to sndio.
+- `cpath` is required for sndio, which creates a file ~/.sndio/cookie.
+- `vminfo` is required for the `memory` block which reads memory information.
+- `unveil` is temporarily required to call unveil(2), and removed then.
+- `unix` is required for sndio, to connect to a unix socket.
+
+The following paths are allowed in unveil:
+- `~/.sndio/cookie rwc` is the cookie created when connecting to sndio the first
+  time.
+- `/var/run/sndio rw` and `/tmp/sndio rw` are directories where the sndio socket
+  can be created.
+- `/etc/localtime r` is the file (symlink) containing the user's timezone, used
+  for the `datetime` block.
+
+## Notes about CPU usage
+
+Some decisions had to be made for the module `cpu_usage`, I'll describe them here.
+
+1. The block only provides the percentage of usage, mixing user, system and so on.
+   Not all OS have the same details, for example spin isn't available everywhere.
+   To keep it easily portable, only the busy time is computed. It should be enough
+   for a status line, top(1) can be used if more details are needed.
+2. Everything except idle is considered busy. On OpenBSD the following times are
+   measured: user, nice, sys, spin, intr and idle. We could debate about whether
+   spin (waiting for a lock) should count as busy, since it's not actually doing
+   something, but it's not available either. To keep it simple, I decided that
+   only idle counted as free, everything else counted as busy.
+3. The block computes percentage of time, nothing more. If a CPU core spends
+   50% if its _ticks_ in idle state, then it's 50% busy, no matter how often the
+   bar refreshes, only the ticks between two refreshes are compared. This way, no
+   need to know the clock rate. The kind of CPU core doesn't impact the
+   computation either. A Performant core being at 90% doesn't have the same
+   importance than a Lethargic core being at 90%, but this isn't taken into
+   account here since the block only computes time, not load.
+4. Only the online CPU cores are computed. If some cores are offline, they are
+   just ignored. For example on OpenBSD SMT and Lethargic cores are disabled by
+   default, so if a CPU has 3 physical cores with SMT support but SMT is disabled,
+   only 3 cores will be available, while 6 would be if SMT was enabled.
+5. Unless a CPU index is provided in the block configuration, all the CPUs are
+   re-discovered at each refresh. Offline cores can be re-activated while the
+   host is running and the core indexes aren't necessarily contiguous. So it's
+   easier to test all the CPU each time.
 
 [openbsd-apm]: https://man.openbsd.org/man4/amd64/apm.4
 [openbsd-uvm-struct]: https://github.com/openbsd/src/blob/master/sys/uvm/uvmexp.h#L53

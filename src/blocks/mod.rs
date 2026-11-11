@@ -29,6 +29,16 @@ pub use crate::blocks::volume::VolumeBlock;
 
 use crate::bar::BlockOutput;
 
+pub const BLOCK_NAME_BATTERY: &str = "battery";
+pub const BLOCK_NAME_CPU_FREQ: &str = "cpu_freq";
+pub const BLOCK_NAME_CPU_TEMP: &str = "cpu_temp";
+pub const BLOCK_NAME_CPU_USAGE: &str = "cpu_usage";
+pub const BLOCK_NAME_DATETIME: &str = "datetime";
+pub const BLOCK_NAME_DISK_USAGE: &str = "disk_usage";
+pub const BLOCK_NAME_LOAD: &str = "load";
+pub const BLOCK_NAME_MEMORY: &str = "memory";
+pub const BLOCK_NAME_VOLUME: &str = "volume";
+
 /// BlockType is an enumeration used to represent block types.
 ///
 /// It makes storing different blocks together easier. Instead of a

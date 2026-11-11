@@ -214,6 +214,43 @@ impl Config {
         }
         blocks
     }
+
+    /// Get the enabled block names.
+    pub fn get_block_names(&self) -> Vec<String> {
+        let mut names: Vec<String> = Vec::new();
+        for block in &self.blocks {
+            match block {
+                BlockConfig::Battery(_) => {
+                    names.push(BLOCK_NAME_BATTERY.to_string());
+                }
+                BlockConfig::CpuFreq(_) => {
+                    names.push(BLOCK_NAME_CPU_FREQ.to_string());
+                }
+                BlockConfig::CpuTemp(_) => {
+                    names.push(BLOCK_NAME_CPU_TEMP.to_string());
+                }
+                BlockConfig::CpuUsage(_) => {
+                    names.push(BLOCK_NAME_CPU_USAGE.to_string());
+                }
+                BlockConfig::DateTime(_) => {
+                    names.push(BLOCK_NAME_DATETIME.to_string());
+                }
+                BlockConfig::DiskUsage(_) => {
+                    names.push(BLOCK_NAME_DISK_USAGE.to_string());
+                }
+                BlockConfig::Load(_) => {
+                    names.push(BLOCK_NAME_LOAD.to_string());
+                }
+                BlockConfig::Memory(_) => {
+                    names.push(BLOCK_NAME_MEMORY.to_string());
+                }
+                BlockConfig::Volume(_) => {
+                    names.push(BLOCK_NAME_VOLUME.to_string());
+                }
+            }
+        }
+        return names;
+    }
 }
 
 /// Reads a TOML configuration file.

@@ -58,7 +58,8 @@ steps:
 3. Preparing the configuration of the new block. In `src/config.rs`, add a
    variant in the `BlockConfig` enum and create a struct for your block's
    configuration. Then in the `Config`'s `to_blocks()` method, add a match
-   branch to convert your `BlockConfig` variant to a `BlockType`.
+   branch to convert your `BlockConfig` variant to a `BlockType`. A constant
+   BLOCK_NAME_* needs to be created for the new block.
 4. Preparing the ground for the new block. `BlockType` is defined in
    `src/blocks/mod.rs`, add a variant to store your future block.
 5. Creating the block under `src/blocks/`. The logic is similar between most

@@ -131,6 +131,10 @@ The following paths are allowed in unveil:
 - `/etc/localtime r` is the file (symlink) containing the user's timezone, used
   for the `datetime` block.
 
+EDIT 2026-11-11: the promises in pledge and paths in unveil are allowed only if
+the corresponding blocks are enabled. For example if the block `memory` isn't
+enabled, the `vminfo` promise isn't applied.
+
 ## Notes about CPU usage
 
 Some decisions had to be made for the module `cpu_usage`, I'll describe them here.

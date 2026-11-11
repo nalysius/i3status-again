@@ -3,11 +3,11 @@
 //! https://man.openbsd.org/pledge.2
 //! https://man.openbsd.org/unveil.2
 
+use crate::blocks::*;
 use crate::sec::expand_home;
 use core::ffi::{c_char, c_int};
 use std::ffi::CString;
 use std::io::{self, Error};
-use std::path::Path;
 
 unsafe extern "C" {
     fn pledge(promises: *const c_char, execpromises: *const c_char) -> c_int;
@@ -53,22 +53,30 @@ pub fn unveil_disable() -> io::Result<()> {
 }
 
 /// Calls pledge(2) and unveil(2).
-pub fn apply_security(config_filepath: &str) {
+pub fn apply_security(block_names: &Vec<String>) {
     let home = expand_home().expect("Cannot read the value of $HOME.");
-    // Ensure ~/.sndio exists, required to unveil ~/.sndio/cookie
-    let sndio_dir = format!("{}/.sndio", home);
-    std::fs::create_dir_all(&sndio_dir).expect("Cannot create ~/.sndio");
+    if block_names.contains(&BLOCK_NAME_VOLUME.to_string()) {
+        // Ensure ~/.sndio exists, required to unveil ~/.sndio/cookie
+        let sndio_dir = format!("{}/.sndio", home);
+        std::fs::create_dir_all(&sndio_dir).expect("Cannot create ~/.sndio");
+        unveil_rs(&format!("{}/cookie", sndio_dir), "rwc").expect("Cannot unveil ~/.sndio.");
+        unveil_rs("/var/run/sndio", "rw").expect("Cannot unveil /var/run/sndio.");
+        unveil_rs("/tmp/sndio", "rw").expect("Cannot unveil /tmp/sndio.");
+    }
+    if block_names.contains(&BLOCK_NAME_DATETIME.to_string()) {
+        unveil_rs("/etc/localtime", "r").expect("Cannot unveil /etc/localtime.");
+    }
+    unveil_disable().expect("Cannot disable unveil.");
 
-    pledge_rs("stdio rpath cpath vminfo unveil unix").expect("Error during pledge.");
+    let mut promises = "stdio rpath unveil ".to_string();
 
-    if Path::new(config_filepath).exists() {
-        unveil_rs(config_filepath, "r").expect("Error during unveil.");
+    if block_names.contains(&BLOCK_NAME_VOLUME.to_string()) {
+        promises.push_str("unix cpath ");
     }
 
-    unveil_rs(&format!("{}/cookie", sndio_dir), "rwc").expect("Cannot unveil ~/.sndio.");
-    unveil_rs("/var/run/sndio", "rw").expect("Cannot unveil /var/run/sndio.");
-    unveil_rs("/tmp/sndio", "rw").expect("Cannot unveil /tmp/sndio.");
-    unveil_rs("/etc/localtime", "r").expect("Cannot unveil /etc/localtime.");
-    unveil_disable().expect("Cannot disable unveil.");
-    pledge_rs("stdio rpath vminfo unix").expect("Error during pledge: removing unveil promise.");
+    if block_names.contains(&BLOCK_NAME_MEMORY.to_string()) {
+        promises.push_str("vminfo ");
+    }
+
+    pledge_rs(&promises).expect("Error during pledge.");
 }

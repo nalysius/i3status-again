@@ -14,8 +14,9 @@ fn main() {
     }
     let config_file = argv.nth(1).unwrap();
     let config = load_config(&config_file).expect("Unable to read configuration");
-    apply_security(&config_file);
     let mut blocks = config.to_blocks();
+    let block_names = config.get_block_names();
+    apply_security(&block_names);
     let sleep_time = time::Duration::from_millis(config.interval.into());
 
     if sleep_time < time::Duration::from_millis(10) {

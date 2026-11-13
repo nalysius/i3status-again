@@ -120,7 +120,6 @@ unveil unix.
   related to sndio.
 - `cpath` is required for sndio, which creates a file ~/.sndio/cookie.
 - `vminfo` is required for the `memory` block which reads memory information.
-- `unveil` is temporarily required to call unveil(2), and removed then.
 - `unix` is required for sndio, to connect to a unix socket.
 
 The following paths are allowed in unveil:
@@ -134,6 +133,8 @@ The following paths are allowed in unveil:
 EDIT 2026-11-11: the promises in pledge and paths in unveil are allowed only if
 the corresponding blocks are enabled. For example if the block `memory` isn't
 enabled, the `vminfo` promise isn't applied.
+EDIT 2026-11-13: since unveil(2) is called before pledge(2), the `unveil` promise
+isn't used in pledge at all.
 
 ## Notes about CPU usage
 

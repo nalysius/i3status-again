@@ -68,7 +68,7 @@ pub fn apply_security(block_names: &Vec<String>) {
     }
     unveil_disable().expect("Cannot disable unveil.");
 
-    let mut promises = "stdio rpath unveil ".to_string();
+    let mut promises = "stdio rpath ".to_string();
 
     if block_names.contains(&BLOCK_NAME_VOLUME.to_string()) {
         promises.push_str("unix cpath ");
